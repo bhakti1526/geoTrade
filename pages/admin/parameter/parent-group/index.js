@@ -1,25 +1,15 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "Brown Sand",
-    image: "https://picsum.photos/300/150",
-    price: 265,
-    unit: "ton",
-    isApproved: true,
-    username: "lemom",
-  },
-  {
-    id: Math.random(),
-    name: "CHHOTAUDEPUR > MORBI",
-    image: "https://picsum.photos/300/300",
-    price: 700,
-    unit: "ton",
-    isApproved: false,
-    username: "lemom",
+    name: "mining",
+    group: "Sand & Gravel",
+    isActive: true,
+    img: "https://picsum.photos/200/300",
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -29,29 +19,22 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "name",
+    Header: "seller type",
     accessor: "name",
   },
   {
-    Header: "image",
-    accessor: "image",
+    Header: "group name",
+    accessor: "group",
+  },
+
+  {
+    Header: "group image",
+    accessor: "img",
     Cell: (e) => <img src={e.value} alt="product" width="56" />,
   },
   {
-    Header: "username",
-    accessor: "username",
-  },
-  {
-    Header: "price",
-    accessor: "price",
-  },
-  {
-    Header: "unit",
-    accessor: "unit",
-  },
-  {
-    Header: "approved",
-    accessor: "isApproved",
+    Header: "status",
+    accessor: "isActive",
     Cell: (e) => (
       <span
         className={
@@ -81,7 +64,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -89,14 +74,15 @@ const column = [
   },
 ];
 
-const managePost = () => {
+const parentGroup = () => {
   return (
     <WrapTable
-      title="manage user post"
+      bText="add parent group"
+      title="manage parent group"
       column={column}
       columnData={columnData}
     />
   );
 };
 
-export default managePost;
+export default parentGroup;

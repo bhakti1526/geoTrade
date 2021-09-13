@@ -81,7 +81,12 @@ const column = [
 
 const city = () => {
   return (
-    <WrapTable title="manage city" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add city"
+      title="manage city"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 

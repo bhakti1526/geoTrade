@@ -1,14 +1,19 @@
 import React from "react";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "mining",
-    group: "Sand & Gravel",
+    name: "fastival special",
+    promoCode: "A5W1ZY",
     isActive: true,
-    img: "https://picsum.photos/200/300",
+  },
+  {
+    id: Math.random(),
+    name: "divali special",
+    promoCode: "0ngRkm",
+    isActive: true,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -18,18 +23,12 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "seller type",
+    Header: "name",
     accessor: "name",
   },
   {
-    Header: "group name",
-    accessor: "group",
-  },
-
-  {
-    Header: "group image",
-    accessor: "img",
-    Cell: (e) => <img src={e.value} alt="product" width="56" />,
+    Header: "promo code",
+    accessor: "promoCode",
   },
   {
     Header: "status",
@@ -71,14 +70,10 @@ const column = [
   },
 ];
 
-const parentGroup = () => {
+const manageOffers = () => {
   return (
-    <WrapTable
-      title="manage parent group"
-      column={column}
-      columnData={columnData}
-    />
+    <WrapTable title="manage offers" column={column} columnData={columnData} />
   );
 };
 
-export default parentGroup;
+export default manageOffers;

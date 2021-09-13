@@ -1,19 +1,17 @@
 import React from "react";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "fastival special",
-    promoCode: "A5W1ZY",
+    name: "premium",
     isActive: true,
   },
   {
     id: Math.random(),
-    name: "divali special",
-    promoCode: "0ngRkm",
-    isActive: true,
+    name: "pentium",
+    isActive: false,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -25,10 +23,6 @@ const column = [
   {
     Header: "name",
     accessor: "name",
-  },
-  {
-    Header: "promo code",
-    accessor: "promoCode",
   },
   {
     Header: "status",
@@ -69,11 +63,14 @@ const column = [
     ),
   },
 ];
-
-const manageOffers = () => {
+const managePackages = () => {
   return (
-    <WrapTable title="manage offers" column={column} columnData={columnData} />
+    <WrapTable
+      title="manage packages"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 
-export default manageOffers;
+export default managePackages;

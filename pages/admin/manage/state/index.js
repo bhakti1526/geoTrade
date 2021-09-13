@@ -1,14 +1,25 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "facebook",
-    icon: "fab fa-facebook",
-    link: "facebook.com/xyz",
-    isActive: false,
+    name: "india",
+    stateName: "gujrat",
+    shortCode: "guj",
+    countryCode: "+91",
+    isActive: true,
+  },
+
+  {
+    id: Math.random(),
+    name: "india",
+    stateName: "delhi",
+    shortCode: "guj",
+    countryCode: "+91",
+    isActive: true,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -18,18 +29,19 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "name",
+    Header: "country name",
     accessor: "name",
   },
   {
-    Header: "link",
-    accessor: "link",
+    Header: "state name",
+    accessor: "stateName",
   },
+
   {
-    Header: "icon",
-    accessor: "icon",
-    Cell: (e) => <i style={{ fontSize: "1.2rem" }} className={e.value}></i>,
+    Header: "state code",
+    accessor: "shortCode",
   },
+
   {
     Header: "status",
     accessor: "isActive",
@@ -62,7 +74,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -70,10 +84,15 @@ const column = [
   },
 ];
 
-const social = () => {
+const state = () => {
   return (
-    <WrapTable title="manage socials" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add state"
+      title="manage state"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 
-export default social;
+export default state;

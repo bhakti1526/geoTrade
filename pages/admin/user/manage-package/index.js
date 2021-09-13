@@ -1,30 +1,20 @@
 import React from "react";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    username: "temp user",
-    email: "temp@user.com",
-    phoneNumber: "12312135412",
-    city: "ahemdabad",
-    state: "gujrat",
-    country: "india",
-    premium: false,
-    sellerType: "mining",
+    username: "temp user 2",
+    packageType: "premium",
+    duration: "28 days",
     isActive: true,
   },
   {
     id: Math.random(),
     username: "temp user 2",
-    email: "temp@@user.com",
-    phoneNumber: "12312135412",
-    city: "surat",
-    state: "gujrat",
-    country: "india",
-    premium: true,
-    sellerType: "mining",
+    packageType: "normal",
+    duration: "60 days",
     isActive: false,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
@@ -35,29 +25,17 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "user info",
+    Header: "user name",
     accessor: "username",
   },
   {
-    Header: "email",
-    accessor: "email",
+    Header: "package type",
+    accessor: "packageType",
   },
+
   {
-    Header: "location",
-    accessor: "state",
-  },
-  {
-    Header: "premium",
-    accessor: "premium",
-    Cell: (e) => (
-      <span
-        className={
-          e.value ? "badge light badge-success" : "badge light badge-danger"
-        }
-      >
-        {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
-      </span>
-    ),
+    Header: "duration",
+    accessor: "duration",
   },
   {
     Header: "status",
@@ -99,10 +77,15 @@ const column = [
   },
 ];
 
-const manageUser = () => {
+const managePackage = () => {
   return (
-    <WrapTable title="manage user" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add package"
+      title="manage user package"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 
-export default manageUser;
+export default managePackage;

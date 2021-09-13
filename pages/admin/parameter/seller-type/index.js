@@ -1,10 +1,15 @@
 import React from "react";
-import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import Link from "next/link";
+import { Dropdown } from "React-bootstrap";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
-  { id: Math.random(), country: "india", tax: "18%", isActive: true },
-  { id: Math.random(), country: "china", tax: "13%", isActive: true },
+  {
+    id: Math.random(),
+    name: "Traders and Suppliers".toLowerCase(),
+    title: "Traders-and-Suppliers".toLowerCase(),
+    img: "https://picsum.photos/200/300",
+  },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
 const column = [
@@ -13,12 +18,13 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "country",
-    accessor: "country",
+    Header: "name",
+    accessor: "name",
   },
   {
-    Header: "tax",
-    accessor: "tax",
+    Header: "seller image",
+    accessor: "img",
+    Cell: (e) => <img src={e.value} alt="product" width="56" />,
   },
   {
     Header: "status",
@@ -52,7 +58,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item as="a">Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -60,10 +68,15 @@ const column = [
   },
 ];
 
-const tax = () => {
+const sellerType = () => {
   return (
-    <WrapTable title="manage tax" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add seller type"
+      title="manage seller type"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 
-export default tax;
+export default sellerType;

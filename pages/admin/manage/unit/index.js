@@ -1,6 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   { id: Math.random(), unit: "killogram", shortName: "kg", isActive: true },
@@ -53,7 +54,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -63,7 +66,12 @@ const column = [
 
 const unit = () => {
   return (
-    <WrapTable title="manage unit" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add unit"
+      title="manage unit"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 

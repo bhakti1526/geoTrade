@@ -1,18 +1,10 @@
 import React from "react";
-import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import { Dropdown } from "react-bootstrap";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
-  {
-    id: Math.random(),
-    name: "premium",
-    isActive: true,
-  },
-  {
-    id: Math.random(),
-    name: "pentium",
-    isActive: false,
-  },
+  { id: Math.random(), country: "india", tax: "18%", isActive: true },
+  { id: Math.random(), country: "china", tax: "13%", isActive: true },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
 const column = [
@@ -21,8 +13,12 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "name",
-    accessor: "name",
+    Header: "country",
+    accessor: "country",
+  },
+  {
+    Header: "tax",
+    accessor: "tax",
   },
   {
     Header: "status",
@@ -63,14 +59,16 @@ const column = [
     ),
   },
 ];
-const managePackages = () => {
+
+const tax = () => {
   return (
     <WrapTable
-      title="manage packages"
+      bText="add tex"
+      title="manage tax"
       column={column}
       columnData={columnData}
     />
   );
 };
 
-export default managePackages;
+export default tax;

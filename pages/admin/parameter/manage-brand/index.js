@@ -1,14 +1,18 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "mining",
-    group: "Sand & Gravel",
-    img: "https://picsum.photos/200/300",
+    brandName: "Ambuja",
     isActive: true,
+  },
+  {
+    id: Math.random(),
+    brandName: "nokia",
+    isActive: false,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -18,18 +22,8 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "parent group",
-    accessor: "name",
-  },
-  {
-    Header: "category name",
-    accessor: "group",
-  },
-
-  {
-    Header: "category image",
-    accessor: "img",
-    Cell: (e) => <img src={e.value} alt="product" width="56" />,
+    Header: "brnad name",
+    accessor: "brandName",
   },
   {
     Header: "status",
@@ -63,7 +57,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item as="a">Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -71,7 +67,7 @@ const column = [
   },
 ];
 
-const parentCategory = () => {
+const manageBrand = () => {
   return (
     <WrapTable
       title="manage parent category"
@@ -81,4 +77,4 @@ const parentCategory = () => {
   );
 };
 
-export default parentCategory;
+export default manageBrand;

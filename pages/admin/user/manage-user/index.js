@@ -1,24 +1,32 @@
 import React from "react";
-import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import Link from "next/link";
+import { Dropdown } from "React-bootstrap";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    name: "india",
-    stateName: "gujrat",
-    shortCode: "guj",
-    countryCode: "+91",
+    username: "temp user",
+    email: "temp@user.com",
+    phoneNumber: "12312135412",
+    city: "ahemdabad",
+    state: "gujrat",
+    country: "india",
+    premium: false,
+    sellerType: "mining",
     isActive: true,
   },
-
   {
     id: Math.random(),
-    name: "india",
-    stateName: "delhi",
-    shortCode: "guj",
-    countryCode: "+91",
-    isActive: true,
+    username: "temp user 2",
+    email: "temp@@user.com",
+    phoneNumber: "12312135412",
+    city: "surat",
+    state: "gujrat",
+    country: "india",
+    premium: true,
+    sellerType: "mining",
+    isActive: false,
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -28,19 +36,30 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "country name",
-    accessor: "name",
+    Header: "user info",
+    accessor: "username",
   },
   {
-    Header: "state name",
-    accessor: "stateName",
+    Header: "email",
+    accessor: "email",
   },
-
   {
-    Header: "state code",
-    accessor: "shortCode",
+    Header: "location",
+    accessor: "state",
   },
-
+  {
+    Header: "premium",
+    accessor: "premium",
+    Cell: (e) => (
+      <span
+        className={
+          e.value ? "badge light badge-success" : "badge light badge-danger"
+        }
+      >
+        {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
+      </span>
+    ),
+  },
   {
     Header: "status",
     accessor: "isActive",
@@ -73,7 +92,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item as="a">Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -81,10 +102,10 @@ const column = [
   },
 ];
 
-const state = () => {
+const manageUser = () => {
   return (
-    <WrapTable title="manage state" column={column} columnData={columnData} />
+    <WrapTable title="manage user" column={column} columnData={columnData} />
   );
 };
 
-export default state;
+export default manageUser;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "react-bootstrap";
 import { useTable, useSortBy } from "react-table";
 
-const WrapTable = ({ title, column, columnData, bText }) => {
+const WrapTable = ({ title, column, columnData, bText = null }) => {
   const columns = useMemo(() => column, []);
   const data = useMemo(() => columnData, []);
 
@@ -22,11 +22,14 @@ const WrapTable = ({ title, column, columnData, bText }) => {
         <div className="card">
           <div className="card-header d-flex">
             <h4 className="card-title  text-capitalize">{title}</h4>
-            <Link href={`${window.location}/add`} passHref>
-              <Button as="a" variant="outline-primary text-capitalize">
-                {bText}
-              </Button>
-            </Link>
+
+            {bText && (
+              <Link href={`${window.location}/add`} passHref>
+                <Button as="a" variant="outline-primary text-capitalize">
+                  {bText}
+                </Button>
+              </Link>
+            )}
           </div>
           <div className="card-body">
             <div className="table-responsive">

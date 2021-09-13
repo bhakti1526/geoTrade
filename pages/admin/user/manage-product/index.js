@@ -1,21 +1,26 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "React-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: Math.random(),
-    username: "temp user 2",
-    packageType: "premium",
-    duration: "28 days",
-    isActive: true,
+    name: "Brown Sand",
+    image: "https://picsum.photos/300/150",
+    price: 265,
+    unit: "ton",
+    isApproved: true,
+    username: "lemom",
   },
   {
     id: Math.random(),
-    username: "temp user 2",
-    packageType: "normal",
-    duration: "60 days",
-    isActive: false,
+    name: "CHHOTAUDEPUR > MORBI",
+    image: "https://picsum.photos/300/300",
+    price: 700,
+    unit: "ton",
+    isApproved: false,
+    username: "lemom",
   },
 ].map((x, i) => ({ ...x, id: i + 1 }));
 
@@ -25,21 +30,29 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "user name",
+    Header: "name",
+    accessor: "name",
+  },
+  {
+    Header: "image",
+    accessor: "image",
+    Cell: (e) => <img src={e.value} alt="product" width="56" />,
+  },
+  {
+    Header: "username",
     accessor: "username",
   },
   {
-    Header: "package type",
-    accessor: "packageType",
-  },
-
-  {
-    Header: "duration",
-    accessor: "duration",
+    Header: "price",
+    accessor: "price",
   },
   {
-    Header: "status",
-    accessor: "isActive",
+    Header: "unit",
+    accessor: "unit",
+  },
+  {
+    Header: "approved",
+    accessor: "isApproved",
     Cell: (e) => (
       <span
         className={
@@ -69,7 +82,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item as="a">Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -77,14 +92,14 @@ const column = [
   },
 ];
 
-const managePackage = () => {
+const manageProduct = () => {
   return (
     <WrapTable
-      title="manage user package"
+      title="manage user product"
       column={column}
       columnData={columnData}
     />
   );
 };
 
-export default managePackage;
+export default manageProduct;
