@@ -1,0 +1,26 @@
+.deznav {
+  width: 18rem;
+}
+
+.content-body {
+  margin-left: 18rem;
+}
+
+.deznav .metismenu > li a > i {
+  font-size: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  margin-right: 10px;
+  border-radius: 2px;
+  line-height: 45px;
+  border-radius: 2px;
+}
+
+.deznav .metismenu ul a {
+  padding-left: 3rem;
+}
