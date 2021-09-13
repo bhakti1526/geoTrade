@@ -8,6 +8,7 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
+
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const update = () => {

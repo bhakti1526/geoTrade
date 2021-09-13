@@ -18,6 +18,10 @@ import store from "../src/redux/store";
 
 import "../src/layouts/sideBar.css";
 
+import "./seller/product-seller.css";
+import "./seller/lead/profile-lead.css";
+import "./seller/lead/rfq-lead.css";
+
 import AppProvider from "../component/context/app.context";
 import { useRouter } from "next/router";
 
@@ -36,8 +40,6 @@ function MyApp({ Component, pageProps }) {
   }, [pages]);
 
   const { pathname } = useRouter();
-
-  console.log(pathname == "/login");
 
   return (
     <Provider store={store}>

@@ -1,5 +1,6 @@
 import MetisMenu from "@metismenu/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
@@ -110,25 +111,35 @@ const Sidebar = () => {
       "page-error-500",
       "page-error-503",
     ];
+
+  const { pathname } = useRouter();
+
   return (
     <div className="deznav">
       {doc && (
         <PerfectScrollbar className="deznav-scroll">
           <MetisMenu className="metismenu" id="menu">
-            <li className={`${dashboard.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-025-dashboard" />
-                <span className="nav-text">Setup</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/setup/user" passHref>
-                    <a className={`${path === "" ? "mm-active" : ""}`}>
-                      Admin User
-                    </a>
-                  </Link>
-                </li>
-                {/* <li>
+            {!pathname.startsWith("/seller") ? (
+              <>
+                <li
+                  className={`${dashboard.includes(path) ? "mm-active" : ""}`}
+                >
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-025-dashboard" />
+                    <span className="nav-text">Setup</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/setup/user" passHref>
+                        <a className={`${path === "" ? "mm-active" : ""}`}>
+                          Admin User
+                        </a>
+                      </Link>
+                    </li>
+                    {/* <li>
                   <Link href="/admin/setup/menu" passHref>
                     <a
                       className={`${path === "index-dark" ? "mm-active" : ""}`}
@@ -137,389 +148,499 @@ const Sidebar = () => {
                     </a>
                   </Link>
                 </li> */}
-                <li>
-                  <Link href="/admin/setup/roles" passHref>
-                    <a
-                      className={`${path === "orders-list" ? "mm-active" : ""}`}
-                    >
-                      Roles
-                    </a>
-                  </Link>
+                    <li>
+                      <Link href="/admin/setup/roles" passHref>
+                        <a
+                          className={`${
+                            path === "orders-list" ? "mm-active" : ""
+                          }`}
+                        >
+                          Roles
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/setup/otp" passHref>
+                        <a
+                          className={`${
+                            path === "order-detail" ? "mm-active" : ""
+                          }`}
+                        >
+                          Otp
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/setup/emails" passHref>
+                        <a
+                          className={`${
+                            path === "customer-list" ? "mm-active" : ""
+                          }`}
+                        >
+                          Email
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/setup/emails-details" passHref>
+                        <a
+                          className={`${
+                            path === "analytics" ? "mm-active" : ""
+                          }`}
+                        >
+                          Email Details
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/setup/email-forms" passHref>
+                        <a
+                          className={`${path === "reviews" ? "mm-active" : ""}`}
+                        >
+                          Email Forms
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/setup/otp" passHref>
-                    <a
-                      className={`${
-                        path === "order-detail" ? "mm-active" : ""
-                      }`}
-                    >
-                      Otp
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/setup/emails" passHref>
-                    <a
-                      className={`${
-                        path === "customer-list" ? "mm-active" : ""
-                      }`}
-                    >
-                      Email
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/setup/emails-details" passHref>
-                    <a className={`${path === "analytics" ? "mm-active" : ""}`}>
-                      Email Details
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/setup/email-forms" passHref>
-                    <a className={`${path === "reviews" ? "mm-active" : ""}`}>
-                      Email Forms
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${app.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-050-info" />
-                <span className="nav-text">Manage</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/manage/content" passHref>
-                    <a
-                      className={`${
-                        path === "apps/profile" ? "mm-active" : ""
-                      }`}
-                    >
-                      Content
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/manage/banner" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      Banner
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/manage/unit" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      Unit
-                    </a>
-                  </Link>
-                </li>
+                <li className={`${app.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-050-info" />
+                    <span className="nav-text">Manage</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/manage/content" passHref>
+                        <a
+                          className={`${
+                            path === "apps/profile" ? "mm-active" : ""
+                          }`}
+                        >
+                          Content
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/banner" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          Banner
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/unit" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          Unit
+                        </a>
+                      </Link>
+                    </li>
 
-                <li>
-                  <Link href="/admin/manage/country" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      Country
-                    </a>
-                  </Link>
+                    <li>
+                      <Link href="/admin/manage/country" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          Country
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/state" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          State
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/city" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          City
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/tax" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          Tax
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/manage/social" passHref>
+                        <a
+                          className={`${
+                            path === "apps/post-details" ? "mm-active" : ""
+                          }`}
+                        >
+                          Social
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/manage/state" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      State
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/manage/city" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      City
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/manage/tax" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      Tax
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/manage/social" passHref>
-                    <a
-                      className={`${
-                        path === "apps/post-details" ? "mm-active" : ""
-                      }`}
-                    >
-                      Social
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-041-graph" />
-                <span className="nav-text">Parameter</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/parameter/seller-type" passHref>
-                    <a
-                      className={`${
-                        path === "chart/rechart" ? "mm-active" : ""
-                      }`}
-                    >
-                      Seller Type
-                    </a>
-                  </Link>
-                </li>
+                <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-041-graph" />
+                    <span className="nav-text">Parameter</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/parameter/seller-type" passHref>
+                        <a
+                          className={`${
+                            path === "chart/rechart" ? "mm-active" : ""
+                          }`}
+                        >
+                          Seller Type
+                        </a>
+                      </Link>
+                    </li>
 
-                <li>
-                  <Link href="/admin/parameter/parent-group" passHref>
-                    <a
-                      className={`${
-                        path === "chart/chartjs" ? "mm-active" : ""
-                      }`}
-                    >
-                      Parent Group
-                    </a>
-                  </Link>
+                    <li>
+                      <Link href="/admin/parameter/parent-group" passHref>
+                        <a
+                          className={`${
+                            path === "chart/chartjs" ? "mm-active" : ""
+                          }`}
+                        >
+                          Parent Group
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/parameter/parent-category" passHref>
+                        <a
+                          className={`${
+                            path === "chart/apex" ? "mm-active" : ""
+                          }`}
+                        >
+                          Parent Category
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/parameter/manage-brand" passHref>
+                        <a
+                          className={`${
+                            path === "chart/chartist" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Brand
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/parameter/manage-post" passHref>
+                        <a
+                          className={`${
+                            path === "chart/sparkline" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Post
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/parameter/parent-category" passHref>
-                    <a
-                      className={`${path === "chart/apex" ? "mm-active" : ""}`}
-                    >
-                      Parent Category
-                    </a>
-                  </Link>
+                <li
+                  className={`${bootstrap.includes(path) ? "mm-active" : ""}`}
+                >
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-086-star" />
+                    <span className="nav-text">User</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/user/manage-user" passHref>
+                        <a
+                          className={`${
+                            path === "ui/accordion" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage User
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/user/manage-product" passHref>
+                        <a
+                          className={`${
+                            path === "ui/alert" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage User Product
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/user/manage-post" passHref>
+                        <a
+                          className={`${
+                            path === "ui/badge" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage User Post
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/user/manage-package" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage User Package
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/parameter/manage-brand" passHref>
-                    <a
-                      className={`${
-                        path === "chart/chartist" ? "mm-active" : ""
-                      }`}
-                    >
-                      Manage Brand
-                    </a>
-                  </Link>
+                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-045-heart" />
+                    <span className="nav-text">Report</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/reports/sales" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Sales
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/reports/registration" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Registration
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/reports/billing" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Billing
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/reports/tracking" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Tracking
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/parameter/manage-post" passHref>
-                    <a
-                      className={`${
-                        path === "chart/sparkline" ? "mm-active" : ""
-                      }`}
-                    >
-                      Manage Post
-                    </a>
-                  </Link>
+                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-013-checkmark" />
+                    <span className="nav-text">Subscription</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/subscription/manage-package" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Package
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/subscription/manage-offer" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Manage Offer
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-              </ul>
-            </li>
-            <li className={`${bootstrap.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-086-star" />
-                <span className="nav-text">User</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/user/manage-user" passHref>
-                    <a
-                      className={`${
-                        path === "ui/accordion" ? "mm-active" : ""
-                      }`}
-                    >
-                      Manage User
-                    </a>
-                  </Link>
+                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-043-menu" />
+                    <span className="nav-text">Other</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/admin/other/change-password" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          change password
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin/subscription/manage-offers" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          notification
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/user/manage-product" passHref>
-                    <a className={`${path === "ui/alert" ? "mm-active" : ""}`}>
-                      Manage User Product
-                    </a>
-                  </Link>
+              </>
+            ) : (
+              <>
+                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
+                  <a
+                    className="has-arrow ai-icon c-pointer"
+                    aria-expanded="false"
+                  >
+                    <i className="flaticon-043-menu" />
+                    <span className="nav-text">seller</span>
+                  </a>
+                  <ul aria-expanded="false">
+                    <li>
+                      <Link href="/seller/brand" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          brand
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/product" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          product
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/post" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          post
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/rfq" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          rfq
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/profile" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          profile lead
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/inquiry" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          inquiry lead
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/contact" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          contect lead
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/admin/user/manage-post" passHref>
-                    <a className={`${path === "ui/badge" ? "mm-active" : ""}`}>
-                      Manage User Post
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/user/manage-package" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage User Package
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-045-heart" />
-                <span className="nav-text">Report</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/reports/sales" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Sales
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/reports/registration" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Registration
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/reports/billing" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Billing
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/reports/tracking" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Tracking
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-013-checkmark" />
-                <span className="nav-text">Subscription</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/subscription/manage-package" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Package
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/subscription/manage-offer" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Manage Offer
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-043-menu" />
-                <span className="nav-text">Other</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/admin/other/change-password" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      change password
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin/subscription/manage-offers" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      notification
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-              <a className="has-arrow ai-icon c-pointer" aria-expanded="false">
-                <i className="flaticon-043-menu" />
-                <span className="nav-text">seller</span>
-              </a>
-              <ul aria-expanded="false">
-                <li>
-                  <Link href="/seller/brand" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      brand
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/product" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      product
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/post" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      post
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/rfq" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      rfq
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/profile" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      profile lead
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/inquiry" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      inquiry lead
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/contact" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      contect lead
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </li>
+              </>
+            )}
           </MetisMenu>
           <div className="copyright">
             <p>
