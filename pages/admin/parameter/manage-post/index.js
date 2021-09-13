@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Dropdown } from "React-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [

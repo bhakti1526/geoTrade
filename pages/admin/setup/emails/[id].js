@@ -6,7 +6,7 @@ import {
   FormControl,
   FormLabel,
   Button,
-} from "React-bootstrap";
+} from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const id = () => {

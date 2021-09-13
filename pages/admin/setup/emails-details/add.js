@@ -1,11 +1,20 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import {
+  Form,
+  FormGroup,
+  FormLabel,
+  FormControl,
+  Button,
+  FormCheck,
+  Row,
+  Col,
+} from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const id = () => {
   return (
     <WrapForm title="update email details">
-      <Form>
+      <Form className="row">
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> Email Name </FormLabel>
           <FormControl type="text" className="form-control" placeholder="" />

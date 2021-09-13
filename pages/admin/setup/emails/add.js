@@ -2,12 +2,11 @@ import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   Form,
-  Form,
   FormGroup,
   FormControl,
   FormLabel,
   Button,
-} from "React-bootstrap";
+} from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const add = () => {

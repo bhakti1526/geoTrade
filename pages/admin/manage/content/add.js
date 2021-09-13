@@ -11,6 +11,8 @@ import {
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const add = () => {
+  if (typeof window === "undefined") return <></>;
+
   return (
     <WrapForm title="add content">
       <Form className="row">

@@ -18,6 +18,9 @@ import store from "../src/redux/store";
 
 import "../src/layouts/sideBar.css";
 
+import AppProvider from "../component/context/app.context";
+import { useRouter } from "next/router";
+
 function MyApp({ Component, pageProps }) {
   const [doc, setDoc] = useState();
   const [pages, setPages] = useState();
@@ -32,36 +35,42 @@ function MyApp({ Component, pageProps }) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, [pages]);
 
+  const { pathname } = useRouter();
+
+  console.log(pathname == "/login");
+
   return (
     <Provider store={store}>
-      <SimpleReactLightbox>
-        <Head>
-          <title>
-            Geo Trade - India's No 1 Mining Directory and B2B Market Place
-          </title>
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="https://geotrade.org.in/static/media/logo.0bf9f979.png"
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-            integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-          />
-        </Head>
+      <AppProvider>
+        <SimpleReactLightbox>
+          <Head>
+            <title>
+              Geo Trade - India's No 1 Mining Directory and B2B Market Place
+            </title>
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="https://geotrade.org.in/static/media/logo.0bf9f979.png"
+            />
+            <link
+              rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+              integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+              crossOrigin="anonymous"
+              referrerpolicy="no-referrer"
+            />
+          </Head>
 
-        {pages && window.location.pathname.includes("pages") ? (
-          <Component {...pageProps} />
-        ) : (
-          <Layout>
+          {pathname == "/login" ? (
             <Component {...pageProps} />
-          </Layout>
-        )}
-      </SimpleReactLightbox>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </SimpleReactLightbox>
+      </AppProvider>
     </Provider>
   );
 }

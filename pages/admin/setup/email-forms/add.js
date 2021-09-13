@@ -12,7 +12,7 @@ import WrapForm from "../../../../src/components/admin/WrapForm";
 const add = () => {
   return (
     <WrapForm title="add email forms">
-      <Form>
+      <Form className="row">
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> Form Name </FormLabel>
           <FormControl type="text" className="form-control" placeholder="" />

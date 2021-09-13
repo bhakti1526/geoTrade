@@ -9,6 +9,12 @@ const changePassword = () => {
         <Row>
           <Col md="4">
             <Form.Group>
+              <Form.Label>old password</Form.Label>
+              <Form.Control />
+            </Form.Group>
+          </Col>
+          <Col md="4">
+            <Form.Group>
               <Form.Label>change password</Form.Label>
               <Form.Control />
             </Form.Group>

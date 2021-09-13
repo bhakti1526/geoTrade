@@ -1,5 +1,11 @@
 import React from "react";
-import { FormLabel, FormGroup, FormControl, Button } from "react-bootstrap";
+import {
+  Form,
+  FormLabel,
+  FormGroup,
+  FormControl,
+  Button,
+} from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const add = () => {

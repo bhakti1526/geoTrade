@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Row, Col } from "React-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const add = () => {
