@@ -1,17 +1,13 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: 1,
-    role: "admin",
+    name: "login rate limit",
     status: true,
-  },
-  {
-    id: 2,
-    role: "manager",
-    status: false,
   },
 ];
 
@@ -21,9 +17,10 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "roles",
-    accessor: "role",
+    Header: "name",
+    accessor: "name",
   },
+
   {
     Header: "status",
     accessor: "status",
@@ -56,7 +53,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -64,10 +63,10 @@ const column = [
   },
 ];
 
-const roles = () => {
+const otp = () => {
   return (
-    <WrapTable title="manage roles" column={column} columnData={columnData} />
+    <WrapTable title="manage otp" column={column} columnData={columnData} />
   );
 };
 
-export default roles;
+export default otp;

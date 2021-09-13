@@ -128,7 +128,7 @@ const Sidebar = () => {
                     </a>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href="/admin/setup/menu" passHref>
                     <a
                       className={`${path === "index-dark" ? "mm-active" : ""}`}
@@ -136,7 +136,7 @@ const Sidebar = () => {
                       Menu
                     </a>
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link href="/admin/setup/roles" passHref>
                     <a
@@ -448,7 +448,7 @@ const Sidebar = () => {
               </a>
               <ul aria-expanded="false">
                 <li>
-                  <Link href="/admin/subscription/manage-packages" passHref>
+                  <Link href="/admin/other/change-password" passHref>
                     <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
                       change password
                     </a>

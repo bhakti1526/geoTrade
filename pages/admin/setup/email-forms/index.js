@@ -1,43 +1,14 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: 1,
-    name: "edecreuze0",
-    email: "bgalliver0@hostgator.com",
-    status: true,
-  },
-  {
-    id: 2,
-    name: "abarck1",
-    email: "ccoldman1@reference.com",
-    status: true,
-  },
-  {
-    id: 3,
-    name: "bewenson2",
-    email: "ajakovijevic2@spiegel.de",
-    status: false,
-  },
-  {
-    id: 4,
-    name: "aologan3",
-    email: "csellars3@cargocollective.com",
-    status: true,
-  },
-  {
-    id: 5,
-    name: "hbecket4",
-    email: "ckick4@ow.ly",
-    status: false,
-  },
-  {
-    id: 6,
-    name: "wlintin5",
-    email: "hlundon5@arizona.edu",
-    status: true,
+    name: "Order Arrived To Admin",
+    templateName: "xyz@demo.com",
+    isActive: false,
   },
 ];
 
@@ -47,16 +18,17 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "username",
+    Header: "name",
     accessor: "name",
   },
   {
-    Header: "email",
-    accessor: "email",
+    Header: "template Name",
+    accessor: "templateName",
   },
+
   {
     Header: "status",
-    accessor: "status",
+    accessor: "isActive",
     Cell: (e) => (
       <span
         className={
@@ -86,7 +58,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item as="a">Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -94,14 +68,15 @@ const column = [
   },
 ];
 
-const user = () => {
+const emailForms = () => {
   return (
     <WrapTable
-      title="manage admin user"
+      bText="add email form"
+      title="manage email form"
       column={column}
       columnData={columnData}
     />
   );
 };
 
-export default user;
+export default emailForms;

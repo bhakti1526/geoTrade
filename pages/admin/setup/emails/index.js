@@ -1,6 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
@@ -56,7 +57,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -66,7 +69,12 @@ const column = [
 
 const emails = () => {
   return (
-    <WrapTable title="manage email" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add emails"
+      title="manage email"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 

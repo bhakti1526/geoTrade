@@ -1,23 +1,18 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: 1,
-    name: "site.com",
-    email: "xyz@xyz.com",
-    outgoinServer: "smtp.gmail.com",
-    port: "587",
-    isActive: true,
+    role: "admin",
+    status: true,
   },
   {
     id: 2,
-    name: "demo.com",
-    email: "demo@xyz.com",
-    outgoinServer: "smtp.gmail.com",
-    port: "999",
-    isActive: false,
+    role: "manager",
+    status: false,
   },
 ];
 
@@ -27,24 +22,12 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "name",
-    accessor: "name",
-  },
-  {
-    Header: "email",
-    accessor: "email",
-  },
-  {
-    Header: "outgoing server",
-    accessor: "outgoinServer",
-  },
-  {
-    Header: "port",
-    accessor: "port",
+    Header: "roles",
+    accessor: "role",
   },
   {
     Header: "status",
-    accessor: "isActive",
+    accessor: "status",
     Cell: (e) => (
       <span
         className={
@@ -74,7 +57,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -82,14 +67,15 @@ const column = [
   },
 ];
 
-const emailsDetails = () => {
+const roles = () => {
   return (
     <WrapTable
-      title="manage email details"
+      bText="add role"
+      title="manage roles"
       column={column}
       columnData={columnData}
     />
   );
 };
 
-export default emailsDetails;
+export default roles;

@@ -1,12 +1,44 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: 1,
-    name: "login rate limit",
+    name: "edecreuze0",
+    email: "bgalliver0@hostgator.com",
     status: true,
+  },
+  {
+    id: 2,
+    name: "abarck1",
+    email: "ccoldman1@reference.com",
+    status: false,
+  },
+  {
+    id: 3,
+    name: "bewenson2",
+    email: "ajakovijevic2@spiegel.de",
+    status: true,
+  },
+  {
+    id: 4,
+    name: "aologan3",
+    email: "csellars3@cargocollective.com",
+    status: false,
+  },
+  {
+    id: 5,
+    name: "hbecket4",
+    email: "ckick4@ow.ly",
+    status: true,
+  },
+  {
+    id: 6,
+    name: "wlintin5",
+    email: "hlundon5@arizona.edu",
+    status: false,
   },
 ];
 
@@ -16,10 +48,13 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "name",
+    Header: "username",
     accessor: "name",
   },
-
+  {
+    Header: "email",
+    accessor: "email",
+  },
   {
     Header: "status",
     accessor: "status",
@@ -52,7 +87,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -60,10 +97,10 @@ const column = [
   },
 ];
 
-const otp = () => {
+const menu = () => {
   return (
-    <WrapTable title="manage otp" column={column} columnData={columnData} />
+    <WrapTable title="manage menu" column={column} columnData={columnData} />
   );
 };
 
-export default otp;
+export default menu;

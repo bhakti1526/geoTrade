@@ -1,43 +1,24 @@
 import React from "react";
+import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../src/components/admin/WrapTable";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
 const columnData = [
   {
     id: 1,
-    name: "edecreuze0",
-    email: "bgalliver0@hostgator.com",
-    status: true,
+    name: "site.com",
+    email: "xyz@xyz.com",
+    outgoinServer: "smtp.gmail.com",
+    port: "587",
+    isActive: true,
   },
   {
     id: 2,
-    name: "abarck1",
-    email: "ccoldman1@reference.com",
-    status: false,
-  },
-  {
-    id: 3,
-    name: "bewenson2",
-    email: "ajakovijevic2@spiegel.de",
-    status: true,
-  },
-  {
-    id: 4,
-    name: "aologan3",
-    email: "csellars3@cargocollective.com",
-    status: false,
-  },
-  {
-    id: 5,
-    name: "hbecket4",
-    email: "ckick4@ow.ly",
-    status: true,
-  },
-  {
-    id: 6,
-    name: "wlintin5",
-    email: "hlundon5@arizona.edu",
-    status: false,
+    name: "demo.com",
+    email: "demo@xyz.com",
+    outgoinServer: "smtp.gmail.com",
+    port: "999",
+    isActive: false,
   },
 ];
 
@@ -47,7 +28,7 @@ const column = [
     accessor: "id",
   },
   {
-    Header: "username",
+    Header: "name",
     accessor: "name",
   },
   {
@@ -55,8 +36,16 @@ const column = [
     accessor: "email",
   },
   {
+    Header: "outgoing server",
+    accessor: "outgoinServer",
+  },
+  {
+    Header: "port",
+    accessor: "port",
+  },
+  {
     Header: "status",
-    accessor: "status",
+    accessor: "isActive",
     Cell: (e) => (
       <span
         className={
@@ -86,7 +75,9 @@ const column = [
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight={true}>
-          <Dropdown.Item>Edit</Dropdown.Item>
+          <Link href={`${window.location}/kdmnksdl`} passHref>
+            <Dropdown.Item>Edit</Dropdown.Item>
+          </Link>
           <Dropdown.Item>delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -94,10 +85,15 @@ const column = [
   },
 ];
 
-const menu = () => {
+const emailsDetails = () => {
   return (
-    <WrapTable title="manage menu" column={column} columnData={columnData} />
+    <WrapTable
+      bText="add email details"
+      title="manage email details"
+      column={column}
+      columnData={columnData}
+    />
   );
 };
 
-export default menu;
+export default emailsDetails;
