@@ -23,6 +23,7 @@ const add = () => {
 
   const {
     query: { id },
+    push,
   } = useRouter();
 
   const router = useRouter();
@@ -34,12 +35,12 @@ const add = () => {
     const { pageName, content } = pageData;
 
     if (pageName !== "" || content !== " ") {
-      await postData(pageData).then(() => router.push("/admin/manage/content"));
+      await postData(pageData).then(() => push("/admin/manage/content"));
     }
   };
 
   return (
-    <WrapForm title="update content">
+    <WrapForm title="add content">
       <Form className="row" onSubmit={handleSubmite}>
         <FormGroup className="col-md-12">
           <FormLabel> Email Template Name </FormLabel>

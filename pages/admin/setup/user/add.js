@@ -1,8 +1,10 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 
 const initValue = {
   name: "",
@@ -12,14 +14,24 @@ const initValue = {
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
+  firstName: Yup.string().required(),
   email: Yup.string().email().required(),
   password: Yup.string().min(6).max(12).required(),
   isActive: Yup.bool().oneOf([true, false]),
 });
 
 const add = () => {
-  const handleSubmit = (val) => console.log(val);
+  const { isLoading, response, postData } = usePostAxios("/signup");
+
+  const { push } = useRouter();
+
+  const handleSubmit = async (val) => {
+    await postData(val);
+
+    if (response !== null) {
+      push("/admin/setup/user");
+    }
+  };
 
   return (
     <WrapForm title="add user">
@@ -45,7 +57,7 @@ const add = () => {
                     <Form.Label>user name</Form.Label>
                     <Form.Control
                       isInvalid={!!touched.name && !!errors.name}
-                      name="name"
+                      name="firstName"
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.name}
@@ -91,7 +103,11 @@ const add = () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group>
-                <Button type="submit" className="rounded-pill">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="rounded-pill"
+                >
                   add user
                 </Button>
               </Form.Group>

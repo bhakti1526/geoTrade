@@ -27,17 +27,17 @@ const update = () => {
   } = useRouter();
   const router = useRouter();
 
-  const { postData } = usePostAxios("/updateCms");
+  const { postData } = usePostAxios(`/updateCms/${id}`);
 
   const { isLoading, response } = useFetchAxios(`/getCms?id=${id}`);
 
   useEffect(() => {
     if (response !== null) {
       setPageData({
-        pageName: response.pageName,
-        content: response.content,
-        _id: response._id,
-        isActive: response.isActive,
+        pageName: response.cms.pageName,
+        content: response.cms.content,
+        _id: response.cms._id,
+        isActive: response.cms.isActive,
       });
     }
   }, [response]);
@@ -47,7 +47,9 @@ const update = () => {
     const { pageName, content } = pageData;
 
     if (pageName !== "" || content !== " ") {
-      await postData(pageData).then(() => router.push("/admin/manage/content"));
+      await postData({ ...pageData, _id: pageData._id }).then(() =>
+        router.push("/admin/manage/content")
+      );
     }
   };
 

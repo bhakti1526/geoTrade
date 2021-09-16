@@ -89,7 +89,7 @@ const state = () => {
       title="manage state"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

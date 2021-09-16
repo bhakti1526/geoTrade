@@ -12,6 +12,8 @@ const country = () => {
 
   if (isLoading === true) return <AppLoader />;
 
+  console.log(res);
+
   const column = [
     {
       Header: "no",
@@ -23,11 +25,11 @@ const country = () => {
     },
     {
       Header: "short name",
-      accessor: "shortCode",
+      accessor: "countryShortCode",
     },
     {
-      Header: "country code",
-      accessor: "countryCode",
+      Header: "country tel code",
+      accessor: "countryTelCode",
     },
     {
       Header: "status",
@@ -85,7 +87,7 @@ const country = () => {
       title="manage country"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      columnData={response?.coun}
     />
   );
 };

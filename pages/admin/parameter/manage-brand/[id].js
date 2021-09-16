@@ -1,75 +1,91 @@
-import React from "react";
-import * as Yup from "yup";
-import { Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   Form,
-  FormLabel,
-  FormCheck,
   FormGroup,
   FormControl,
+  FormLabel,
+  FormCheck,
   Button,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
-
-const validationSchema = {
-  pagrentGroup: Yup.string().required(),
-  parentCategory: Yup.string().required(),
-};
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 
 const id = () => {
+  const [pageData, setPageData] = useState({
+    pageName: "",
+    content: "",
+    isActive: true,
+  });
+
+  const {
+    query: { id },
+  } = useRouter();
+  const { isLoading, postData, response } = usePostAxios(`/updateBrands/${id}`);
+
+  const router = useRouter();
+
+  useEffect(() => {}, []);
+
+  const handleSubmite = async (e) => {
+    await e.preventDefault();
+    const { pageName, content } = pageData;
+
+    if (pageName !== "" || content !== " ") {
+      await postData(pageData).then(() => router.push("/admin/manage/content"));
+    }
+  };
+
   return (
     <WrapForm title="update brand">
-      <Formik>
-        {() => {
-          return (
-            <Form className="row">
-              <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Brand Name</FormLabel>
-                <FormControl
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                />
-              </FormGroup>
+      <Form className="row" onSubmit={handleSubmite}>
+        <FormGroup className="col-md-12">
+          <FormLabel> Email Template Name </FormLabel>
+          <FormControl
+            onChange={(e) =>
+              setPageData((x) => ({ ...x, pageName: e.target.value }))
+            }
+            type="text"
+            className="form-control"
+            placeholder=" "
+          />
+        </FormGroup>
 
-              <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Brand Image</FormLabel>
-                <FormControl
-                  type="file"
-                  className="form-control"
-                  placeholder=""
-                />
-              </FormGroup>
+        <FormGroup className="col-md-12">
+          <div className="summernote">
+            <Editor
+              onChange={(e) =>
+                setPageData((x) => ({
+                  ...x,
+                  content: e.target.getContent(),
+                }))
+              }
+            />
+          </div>
+        </FormGroup>
 
-              <FormGroup className="col-md-6 col-lg-12">
-                <FormLabel> &nbsp; </FormLabel>
-                <div className="summernote">
-                  <Editor />
-                </div>
-              </FormGroup>
+        <FormGroup className="col-md-12 col-lg-12">
+          <FormCheck
+            type="checkbox"
+            checked={pageData.isActive}
+            onClick={() =>
+              setPageData((x) => ({ ...x, isActive: !x.isActive }))
+            }
+            label="make active or inactive"
+          />
+        </FormGroup>
 
-              <FormGroup className="col-md-6 col-lg-3">
-                <FormLabel> Status</FormLabel>
-                <FormCheck type="checkbox" label="active or inactive" />
-              </FormGroup>
-
-              <FormGroup className="col-md-6 col-lg-3">
-                <FormLabel> Admin Approved</FormLabel>
-                <FormCheck type="checkbox" label="active or inactive" />
-              </FormGroup>
-
-              <FormGroup className="col-md-12  text-center">
-                <div className="btn-page">
-                  <Button variant="primary btn-rounded" type="submit">
-                    Update Brand
-                  </Button>
-                </div>
-              </FormGroup>
-            </Form>
-          );
-        }}
-      </Formik>
+        <FormGroup className="col-md-12  text-center btn-page">
+          <Button
+            onClick={handleSubmite}
+            variant="primary btn-rounded"
+            type="submit"
+          >
+            Update brand
+          </Button>
+        </FormGroup>
+      </Form>
     </WrapForm>
   );
 };

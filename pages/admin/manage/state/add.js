@@ -10,14 +10,7 @@ import {
 } from "React-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
-const validationSchema = {
-  img: Yup.string().required(),
-  name: Yup.string().required(),
-  indexNo: Yup.number().required(),
-  isDisplay: Yup.bool().oneOf([true]).required(),
-  isRedirect: Yup.bool().oneOf([true]).required(),
-  redirectUrl: Yup.string().required(),
-};
+const validationSchema = {};
 
 const add = () => {
   const [selectOption, setSelectOption] = useState(null);

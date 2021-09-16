@@ -12,6 +12,8 @@ const content = () => {
 
   if (isLoading === true) return <AppLoader />;
 
+  console.log();
+
   const column = [
     {
       Header: "no",
@@ -72,12 +74,13 @@ const content = () => {
   ];
 
   return (
+    // <></>
     <WrapTable
       bText="add content"
       title="manage content"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      columnData={response.cms}
     />
   );
 };

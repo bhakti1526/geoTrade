@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -12,6 +13,7 @@ import {
   Col,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
@@ -22,20 +24,29 @@ const validationSchema = Yup.object().shape({
   sslTypes: Yup.string().required(),
 });
 
-const initialValues = Yup.object().shape({
+const initialValues = {
   name: "",
   emailAddress: "",
   password: "",
   outGoingServer: "",
   sslTypes: "",
   outGoingServerPort: "",
-});
-
-const handleSubmit = (val) => console.log(val);
+};
 
 const id = () => {
+  const { response, postData, isLoading } = usePostAxios("/addEmail");
+
+  const { push } = useRouter();
+
+  const handleSubmit = async (val) => {
+    await postData(val);
+    if (response !== null) {
+      push(`/admin/setup/emails-details`);
+    }
+  };
+
   return (
-    <WrapForm title="update email details">
+    <WrapForm title="add email details">
       <Formik
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -99,6 +110,18 @@ const id = () => {
               </FormGroup>
 
               <FormGroup className="col-md-4 col-lg-4">
+                <FormLabel> ssl types</FormLabel>
+                <FormControl
+                  type="text"
+                  className="form-control"
+                  placeholder=""
+                  name="sslTypes"
+                  value={values.sslTypes}
+                  isInvalid={!!touched.sslTypes && !!errors.sslTypes}
+                />
+              </FormGroup>
+
+              <FormGroup className="col-md-4 col-lg-4">
                 <FormLabel> Outgoing Port </FormLabel>
                 <FormControl
                   type="text"
@@ -112,30 +135,12 @@ const id = () => {
                 />
               </FormGroup>
 
-              <FormGroup className="col-md-4 col-lg-4">
-                <FormLabel> Outgoing Port </FormLabel>
-                <FormControl
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  name="sslTypes"
-                  value={values.sslTypes}
-                  isInvalid={!!touched.sslTypes && !!errors.sslTypes}
-                />
-              </FormGroup>
-
-              <FormGroup className="col-md-4  ">
-                <Form.Label>status</Form.Label>
-                <FormCheck type="checkbox" label="active or inactive" />
-              </FormGroup>
-
-              <FormGroup className="col-md-4 ">
-                <Form.Label> ssl </Form.Label>
-                <FormCheck type="checkbox" label="active or inactive" />
-              </FormGroup>
-
               <FormGroup className="col-md-12  text-center btn-page">
-                <Button variant="primary btn-rounded" type="submit">
+                <Button
+                  disabled={isLoading}
+                  variant="primary btn-rounded"
+                  type="submit"
+                >
                   Add Email Details
                 </Button>
               </FormGroup>

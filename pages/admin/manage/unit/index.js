@@ -19,7 +19,7 @@ const unit = () => {
     },
     {
       Header: "unit",
-      accessor: "unit",
+      accessor: "name",
     },
     {
       Header: "short name",
@@ -63,11 +63,9 @@ const unit = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteUnit/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteUnit/${s.row.original._id}`);
+
+                window.location.reload();
               }}
             >
               delete
@@ -78,13 +76,15 @@ const unit = () => {
     },
   ];
 
+  console.log(response.s);
+
   return (
     <WrapTable
       bText="add unit"
       title="manage unit"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      columnData={response.s}
     />
   );
 };
