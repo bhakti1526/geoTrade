@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const manageOffers = () => {
-  const { isLoading, response, error } = useFetchAxios("/getUnits");
+  const { isLoading, response, error } = useFetchAxios("/getOffer");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;

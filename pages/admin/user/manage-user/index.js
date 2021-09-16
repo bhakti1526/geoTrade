@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const manageUser = () => {
-  const { isLoading, response, error } = useFetchAxios("/getUnits");
+  const { isLoading, response, error } = useFetchAxios("/getUser");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
