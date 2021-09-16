@@ -2,15 +2,26 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const useFetchAxios = (url) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:4000${url}`)
-      .then((res) => setResponse(res.data))
-      .catch((err) => setError(err));
+    setIsLoading(true);
+
+    const getData = async () => {
+      console.log("sending request");
+      await axios
+        .get(`http://localhost:4000${url}`)
+        .then((res) => {
+          setResponse(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => setError(err))
+        .finally(() => setIsLoading(false));
+    };
+
+    getData();
   }, [url]);
 
   return { isLoading, response, error };

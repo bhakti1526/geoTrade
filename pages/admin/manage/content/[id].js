@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Editor } from "@tinymce/tinymce-react";
 import {
   Form,
@@ -9,32 +10,98 @@ import {
   Button,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import AppLoader from "../../../../src/components/admin/AppLoader";
 
 const update = () => {
+  const [pageData, setPageData] = useState({
+    _id: "",
+    pageName: "",
+    content: "",
+    isActive: true,
+  });
+
+  const {
+    query: { id },
+  } = useRouter();
+  const router = useRouter();
+
+  const { postData } = usePostAxios("/updateCms");
+
+  const { isLoading, response } = useFetchAxios(`/getCms?id=${id}`);
+
+  useEffect(() => {
+    if (response !== null) {
+      setPageData({
+        pageName: response.pageName,
+        content: response.content,
+        _id: response._id,
+        isActive: response.isActive,
+      });
+    }
+  }, [response]);
+
+  const handleSubmite = async (e) => {
+    await e.preventDefault();
+    const { pageName, content } = pageData;
+
+    if (pageName !== "" || content !== " ") {
+      await postData(pageData).then(() => router.push("/admin/manage/content"));
+    }
+  };
+
+  if (isLoading) return <AppLoader />;
+
   return (
     <WrapForm title="update content">
-      <Form className="row">
+      <Form className="row" onSubmit={handleSubmite}>
         <FormGroup className="col-md-12">
           <FormLabel> Email Template Name </FormLabel>
-          <FormControl type="text" className="form-control" placeholder=" " />
+          <FormControl
+            value={pageData.pageName}
+            onChange={(e) =>
+              setPageData((x) => ({ ...x, pageName: e.target.value }))
+            }
+            type="text"
+            className="form-control"
+            placeholder=" "
+          />
         </FormGroup>
 
         <FormGroup className="col-md-12">
           <div className="summernote">
-            <Editor />
+            <Editor
+              initialValue={pageData.content}
+              onChange={(e) =>
+                setPageData((x) => ({
+                  ...x,
+                  content: e.target.getContent(),
+                }))
+              }
+            />
           </div>
         </FormGroup>
 
         <FormGroup className="col-md-12 col-lg-12">
-          <FormCheck type="checkbox" label="make active or inactive" />
+          <FormCheck
+            type="checkbox"
+            checked={pageData.isActive}
+            onClick={() =>
+              setPageData((x) => ({ ...x, isActive: !x.isActive }))
+            }
+            label="make active or inactive"
+          />
         </FormGroup>
 
-        <FormGroup className="col-md-12  text-center">
-          <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
-              Update Page Content
-            </Button>
-          </div>
+        <FormGroup className="col-md-12  text-center btn-page">
+          <Button
+            onClick={handleSubmite}
+            variant="primary btn-rounded"
+            type="submit"
+          >
+            Update Page Content
+          </Button>
         </FormGroup>
       </Form>
     </WrapForm>

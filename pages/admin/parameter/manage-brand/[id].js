@@ -21,7 +21,6 @@ const id = () => {
   return (
     <WrapForm title="update brand">
       <Formik>
-        {" "}
         {() => {
           return (
             <Form className="row">

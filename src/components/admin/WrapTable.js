@@ -1,12 +1,14 @@
 import React, { useMemo } from "react";
-import { css } from "@emotion/css";
 import Link from "next/link";
-import { Button, Spinner } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useTable, useSortBy } from "react-table";
 
 const WrapTable = ({ isLoading, title, column, columnData, bText = null }) => {
   const columns = useMemo(() => column, []);
-  const data = useMemo(() => columnData, []);
+  const data = useMemo(
+    () => (columnData ? columnData.map((x, i) => ({ ...x, id: i + 1 })) : []),
+    []
+  );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
@@ -65,46 +67,21 @@ const WrapTable = ({ isLoading, title, column, columnData, bText = null }) => {
                   ))}
                 </thead>
 
-                {!isLoading && (
-                  <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
-                      prepareRow(row);
-                      return (
-                        <tr {...row.getRowProps()}>
-                          {row.cells.map((cell) => (
-                            <td {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </td>
-                          ))}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                )}
+                <tbody {...getTableBodyProps()}>
+                  {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map((cell) => (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </table>
-
-              {isLoading && (
-                <div
-                  className={
-                    css`
-                      display: flex !important;
-                      justify-content: center !important;
-                      align-items: center !important;
-                      height: 30vh !important;
-                      width: 100%;
-                      text-align: center;
-                    ` +
-                    " " +
-                    "row"
-                  }
-                >
-                  <div className="col-md-12">
-                    <Spinner animation="border" role="status">
-                      <span className="visually-hidden"></span>
-                    </Spinner>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
