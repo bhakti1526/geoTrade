@@ -14,7 +14,7 @@ import usePostAxios from "../../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().strict(),
+  name: Yup.string().required(),
   countryTelCode: Yup.string().required(),
   countryShortCode: Yup.string().required(),
 });
