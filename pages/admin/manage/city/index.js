@@ -66,7 +66,7 @@ const city = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteCms/${s.row.original._id}`).then(() =>
+                await deleteData(`/deleteCity/${s.row.original._id}`).then(() =>
                   window.location.reload()
                 );
               }}

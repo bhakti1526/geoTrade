@@ -58,7 +58,7 @@ const roles = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteUnit/${s.row.original._id}`).then(
+                await deleteData(`/deleteRoles/${s.row.original._id}`).then(
                   () => {
                     if (res !== null) window.location.reload();
                   }

@@ -61,17 +61,6 @@ const otp = () => {
             <Link href={`${window.location}/${s.row.original._id}`} passHref>
               <Dropdown.Item as="a">Edit</Dropdown.Item>
             </Link>
-            <Dropdown.Item
-              onClick={async () => {
-                await deleteData(`/deleteUnit/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
-              }}
-            >
-              delete
-            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ),

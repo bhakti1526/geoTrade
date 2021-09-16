@@ -63,8 +63,8 @@ const banner = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteCms/${s.row.original._id}`).then(() =>
-                  window.location.reload()
+                await deleteData(`/deleteBanner/${s.row.original._id}`).then(
+                  () => window.location.reload()
                 );
               }}
             >
