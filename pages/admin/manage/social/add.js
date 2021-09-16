@@ -1,4 +1,5 @@
 import React from "react";
+import * as Yup from "yup";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import {
   Form,
@@ -7,6 +8,15 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+
+const validationSchema = {
+  img: Yup.string().required(),
+  name: Yup.string().required(),
+  indexNo: Yup.number().required(),
+  isDisplay: Yup.bool().oneOf([true]).required(),
+  isRedirect: Yup.bool().oneOf([true]).required(),
+  redirectUrl: Yup.string().required(),
+};
 
 const add = () => {
   return (

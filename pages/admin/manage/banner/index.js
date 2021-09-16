@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 import WrapTable from "../../../../src/components/admin/WrapTable";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 
 const columnData = [
   {
@@ -87,8 +88,15 @@ const column = [
 ];
 
 const banner = () => {
+  const { isLoading, error, response } = useFetchAxios("/getBanner");
+
+  if (typeof window === "undefined") return <></>;
+
+  console.log(response);
+
   return (
     <WrapTable
+      isLoading={isLoading}
       title="manage banner"
       bText="add banner"
       column={column}

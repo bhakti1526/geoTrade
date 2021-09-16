@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -9,69 +10,160 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
-import WrapForm from "../../../../src/components/admin/WrapForm";
 
-const validationSchema = {
-  banner: Yup.string().required(),
-  redirectUrl: Yup.string().required(),
-  acceptTerms: Yup.bool().oneOf([true]),
+import WrapForm from "../../../../src/components/admin/WrapForm";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
+
+const initSchema = {
+  name: "",
+  img: "",
+  redirectUrl: "",
+  isDisplay: false,
+  isRedirect: false,
 };
 
-const NewPage = () => {
+const validationSchema = Yup.object().shape({
+  img: Yup.string().required("banner image is required"),
+  name: Yup.string().required("banner name is required"),
+  redirectUrl: Yup.string(),
+  isDisplay: Yup.bool().oneOf([true, false]),
+  isRedirect: Yup.bool().oneOf([true, false]),
+});
+
+const add = () => {
+  const [image, setImage] = useState(null);
+
+  const { isLoading, postData, response } = usePostAxios("/addBanner");
+
+  const handleSubmit = async (val) => {
+    const data = new FormData();
+    data.append("img", image);
+    let imgUrl;
+    await axios
+      .post("http://localhost:4000/api/img", data)
+      .then((res) => {
+        imgUrl = res?.data?.data?.img || "";
+      })
+      .catch((err) => {});
+    postData({ ...val, img: imgUrl });
+  };
+
+  const handleImageChange = (e) => setImage(e.target.files[0]);
+
   return (
-    <WrapForm title="new banner">
-      <Formik>
-        {({}) => (
-          <Form className="row">
-            <FormGroup className="col-md-6 col-lg-4">
-              <FormLabel> Banner Name </FormLabel>
-              <FormControl
-                name="banner"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </FormGroup>
+    <WrapForm title="add banner">
+      <Formik
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        initialValues={initSchema}
+        enableReinitialize
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          touched,
+          errors,
+          setFieldValue,
+          values,
+        }) => {
+          return (
+            <Form
+              className="row"
+              onSubmit={handleSubmit}
+              onChange={handleChange}
+            >
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Banner Name </FormLabel>
+                <FormControl
+                  name="name"
+                  type="text"
+                  value={values.name}
+                  className="form-control"
+                  isInvalid={!!errors.name}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
+              </FormGroup>
 
-            <FormGroup className="col-md-6 col-lg-4">
-              <FormLabel> Banner Image</FormLabel>
-              <FormControl type="file" className="form-control" />
-            </FormGroup>
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Banner Image</FormLabel>
+                <FormControl
+                  name="img"
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={handleImageChange}
+                  value={values.img}
+                  isInvalid={!!errors.img}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.img}
+                </Form.Control.Feedback>
+              </FormGroup>
 
-            <FormGroup className="col-md-6 col-lg-4">
-              <FormLabel> Redirect Url</FormLabel>
-              <FormControl
-                name="redirectUrl"
-                type="text"
-                className="form-control"
-                placeholder=""
-              />
-            </FormGroup>
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Redirect Url</FormLabel>
+                <FormControl
+                  name="redirectUrl"
+                  type="text"
+                  className="form-control"
+                  placeholder=""
+                  value={values.redirectUrl}
+                  isInvalid={!!errors.redirectUrl}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.redirectUrl}
+                </Form.Control.Feedback>
+              </FormGroup>
 
-            <FormGroup className="col-md-6 col-lg-4">
-              <FormLabel> Dispaly On Home</FormLabel>
-              <FormCheck
-                onChange={(e) => console.log(e.target)}
-                type="checkbox"
-                label="active or inactive"
-              />
-            </FormGroup>
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Dispaly On Home</FormLabel>
 
-            <FormGroup className="col-md-6 custom-checkbox col-lg-4">
-              <FormLabel> Is Redirectable</FormLabel>
-              <FormCheck type="checkbox" label="is Clickable" />
-            </FormGroup>
+                <Form.Check
+                  checked={values.isDisplay}
+                  name="isDisplay"
+                  onPress={() => setFieldValue("isDisplay", !values.isDisplay)}
+                  label="active or inactive"
+                  isInvalid={!!errors.isDisplay}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.isDisplay}
+                </Form.Control.Feedback>
+              </FormGroup>
 
-            <FormGroup className="col-md-12 btn-page  text-center">
-              <Button variant="primary btn-rounded" type="button">
-                Add Banner
-              </Button>
-            </FormGroup>
-          </Form>
-        )}
+              <FormGroup className="col-md-6 custom-checkbox col-lg-4">
+                <FormLabel> Is Redirectable</FormLabel>
+                <Form.Check
+                  checked={!!values.isRedirect}
+                  onPress={() =>
+                    setFieldValue("isRedirect", !values.isRedirect)
+                  }
+                  name="isRedirect"
+                  type="checkbox"
+                  label="is Clickable"
+                  isInvalid={!!errors.isRedirect}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.isRedirect}
+                </Form.Control.Feedback>
+              </FormGroup>
+
+              <FormGroup className="col-md-12 btn-page  text-center">
+                <Button
+                  disabled={isLoading}
+                  variant="primary btn-rounded"
+                  type="submit"
+                >
+                  Add Banner
+                </Button>
+              </FormGroup>
+            </Form>
+          );
+        }}
       </Formik>
     </WrapForm>
   );
 };
 
-export default NewPage;
+export default add;

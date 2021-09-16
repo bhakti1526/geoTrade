@@ -1,44 +1,104 @@
 import React from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
+const initValue = {
+  name: "",
+  email: "",
+  password: "",
+  isActive: false,
+};
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  email: Yup.string().email().required(),
+  password: Yup.string().min(6).max(12).required(),
+  isActive: Yup.bool().oneOf([true, false]),
+});
+
 const add = () => {
+  const handleSubmit = (val) => console.log(val);
+
   return (
     <WrapForm title="add user">
-      <Form>
-        <Row>
-          <Col md="4">
-            <Form.Group>
-              <Form.Label>user name</Form.Label>
-              <Form.Control />
-            </Form.Group>
-          </Col>
-          <Col md="4">
-            <Form.Group>
-              <Form.Label>user email</Form.Label>
-              <Form.Control />
-            </Form.Group>
-          </Col>
-          <Col md="4">
-            <Form.Group>
-              <Form.Label>user password</Form.Label>
-              <Form.Control />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Form.Group>
-          <Form.Label>user name</Form.Label>
-          <Form.Control />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>states</Form.Label>
-          <Form.Check label="active or inactive" />
-        </Form.Group>
-        <Form.Group>
-          <Button className="rounded-pill">add user</Button>
-        </Form.Group>
-      </Form>
+      <Formik
+        enableReinitialize
+        initialValues={initValue}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          touched,
+          errors,
+          values,
+          setFieldValue,
+        }) => {
+          return (
+            <Form onChange={handleChange} onSubmit={handleSubmit}>
+              <Row>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>user name</Form.Label>
+                    <Form.Control
+                      isInvalid={!!touched.name && !!errors.name}
+                      name="name"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.name}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>user email</Form.Label>
+                    <Form.Control
+                      isInvalid={!!touched.email && !!errors.email}
+                      name="email"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>user password</Form.Label>
+                    <Form.Control
+                      isInvalid={!!touched.password && !!errors.password}
+                      type="password"
+                      name="password"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Form.Group>
+                <Form.Label>states</Form.Label>
+                <Form.Check
+                  checked={!!values.isActive}
+                  isInvalid={!!errors.isActive}
+                  onClick={() => setFieldValue("isActive", !values.isActive)}
+                  label="active or inactive"
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.isActive}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Button type="submit" className="rounded-pill">
+                  add user
+                </Button>
+              </Form.Group>
+            </Form>
+          );
+        }}
+      </Formik>
     </WrapForm>
   );
 };

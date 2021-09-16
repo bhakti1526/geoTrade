@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as Yup from "yup";
 import Select from "react-select";
 import {
   Form,
@@ -9,6 +10,15 @@ import {
   Button,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+
+const validationSchema = {
+  img: Yup.string().required(),
+  name: Yup.string().required(),
+  indexNo: Yup.number().required(),
+  isDisplay: Yup.bool().oneOf([true]).required(),
+  isRedirect: Yup.bool().oneOf([true]).required(),
+  redirectUrl: Yup.string().required(),
+};
 
 const add = () => {
   const [selectOption, setSelectOption] = useState(null);

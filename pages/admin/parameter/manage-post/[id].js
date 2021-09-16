@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import * as Yup from "yup";
+import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
 import Select from "react-select";
 import {
@@ -11,6 +13,8 @@ import {
 } from "react-bootstrap";
 
 import WrapForm from "../../../../src/components/admin/WrapForm";
+
+const validationSchema = {};
 
 const id = () => {
   const [selectOption, setSelectOption] = useState(null);
