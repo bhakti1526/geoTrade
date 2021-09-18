@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Select from "react-select";
-import AppLoader from "../.../../../../../src/components/admin/AppLoader";
 import {
   Form,
   FormLabel,
@@ -12,6 +11,8 @@ import {
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
+import AppLoader from "../.../../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
   country: Yup.string().required(),
@@ -30,13 +31,20 @@ const add = () => {
 
   const { response, isLoading } = useFetchAxios(`/getCountry`);
 
+  const { isLoading: isLoad, postData } = usePostAxios("/addState");
+
+  const { push } = useRouter();
+
   useEffect(() => {
-    setCountryList(response?.coun);
+    setCountryList(response);
   }, [response]);
 
   if (isLoading === true) return <AppLoader />;
 
-  const handleSubmite = (val) => console.log(val);
+  const handleSubmite = async (val) => {
+    await postData(val);
+    push("/admin/manage/state");
+  };
 
   return (
     <WrapForm title="add state">
@@ -93,7 +101,11 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12  text-center btn-page">
-                <Button variant="primary btn-rounded" type="submit">
+                <Button
+                  disabled={isLoad}
+                  variant="primary btn-rounded"
+                  type="submit"
+                >
                   Add State
                 </Button>
               </FormGroup>

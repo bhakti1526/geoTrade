@@ -10,7 +10,6 @@ const usePostAxios = (url) => {
     await axios
       .post(`http://localhost:4000${url}`, data)
       .then((res) => setResponse(res.data.data))
-      .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   };
 

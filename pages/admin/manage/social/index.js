@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const social = () => {
-  const { isLoading, response, error } = useFetchAxios("/getSocial");
+  const { isLoading, response } = useFetchAxios("/getSocial");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -91,7 +91,7 @@ const social = () => {
       title="manage socials"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Select from "react-select";
-import AppLoader from "../.../../../../../src/components/admin/AppLoader";
 import {
   Form,
   FormLabel,
@@ -12,6 +11,8 @@ import {
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
+import AppLoader from "../.../../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
   country: Yup.string().required(),
@@ -19,8 +20,9 @@ const validationSchema = Yup.object().shape({
   shortStateName: Yup.string().required(),
 });
 
-const add = () => {
+const update = () => {
   const [initSchema, setInitSchema] = useState({
+    _id: "",
     country: "",
     name: "",
     shortStateName: "",
@@ -30,15 +32,38 @@ const add = () => {
 
   const { response, isLoading } = useFetchAxios(`/getCountry`);
 
+  const { isLoading: isLoad, postData } = usePostAxios(`/updateState/${id}`);
+
+  const {
+    query: { id },
+  } = useRouter();
+
+  const { response: res, isLoading: stateLoad } = useFetchAxios(
+    `/getState?id=${id}`
+  );
+
+  const { push } = useRouter();
+
   useEffect(() => {
-    setCountryList(response?.coun);
+    setCountryList(response);
   }, [response]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setInitSchema({
+      _id: res?._id,
+      name: res?.name,
+      shortStateName: res?.shortStateName,
+      country: "",
+    });
+  }, [res]);
 
   if (isLoading === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
 
-  const handleSubmite = (val) => console.log(val);
+  const handleSubmite = async (val) => {
+    await postData({ ...val, _id: initSchema._id });
+    push("/admin/manage/state");
+  };
 
   return (
     <WrapForm title="add state">
@@ -77,6 +102,7 @@ const add = () => {
                   className="form-control"
                   placeholder=" "
                   name="name"
+                  value={values.name}
                   isInvalid={!!touched.name && !!errors.name}
                 />
               </FormGroup>
@@ -88,6 +114,7 @@ const add = () => {
                   className="form-control"
                   placeholder=" "
                   name="shortStateName"
+                  value={values.shortStateName}
                   isInvalid={
                     !!touched.shortStateName && !!errors.shortStateName
                   }
@@ -95,7 +122,11 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12  text-center btn-page">
-                <Button variant="primary btn-rounded" type="submit">
+                <Button
+                  disabled={isLoad}
+                  variant="primary btn-rounded"
+                  type="submit"
+                >
                   Add State
                 </Button>
               </FormGroup>
@@ -107,4 +138,4 @@ const add = () => {
   );
 };
 
-export default add;
+export default update;
