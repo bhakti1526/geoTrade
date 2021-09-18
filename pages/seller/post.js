@@ -98,10 +98,7 @@ const post = () => {
     }
 
     useEffect(()=>{
-
       getReqDatas();
-
-
     },[])
 
     const options = [
