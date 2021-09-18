@@ -29,7 +29,11 @@ const brand = () => {
   const addBrand=async(e)=>{
     e.preventDefault();
     console.log(desc)
-    const adds = await axios.post(`${url}/addBrand`,{b,desc});
+    const adds = await axios.post(`${url}/addBrand`,{b,desc},{
+      headers:{
+        authorization:localStorage.getItem("jwt")
+      }
+    });
 
     if(adds.status===201){
       console.log("Brand Added");

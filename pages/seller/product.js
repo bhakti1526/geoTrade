@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
 import {
@@ -10,9 +10,35 @@ import {
   Button,
 } from "react-bootstrap";
 
+import axios from 'axios';
+
 import { Link } from "@material-ui/core";
 
+
+const productDetails={
+    name:"",
+    slug:""
+};
+
 const product = () => {
+    const url = "http://localhost:4000";
+    const [products,setProducts] = useState(productDetails);
+    const[desc,setDesc] = useState("");
+    const[price,setPrice]=useState("");
+
+    const onInputChange=(e)=>{
+        setProducts({...products,[e.target.name]:e.target.value})
+      }
+
+    const addProduct=async(e)=>{
+        e.preventDefault();
+        const product = await axios.post(`${url}/addProduct`,{
+            products,desc,price:parseInt(price)
+        },{headers:{
+            // authorization:localStorage.getItem("jwt")
+        }});
+    }
+
     return (
         <div>
            
@@ -90,31 +116,35 @@ const product = () => {
         <Form className="row align-items-center mt-4 mt-md-0" >
         <FormGroup className="form-group col-md-12">
             <FormLabel>Product/Service Name</FormLabel>
-            <FormControl type="text" className="form-control" placeholder="" />
+            <FormControl name="name" onChange={(e)=>onInputChange(e)}  type="text" className="form-control" placeholder="" />
             </FormGroup>
 <FormGroup className="form-group col-md-5 tag-price mt-2">
     <FormLabel>Price</FormLabel>
     <i className="fas fa-rupee-sign"></i>
-    <FormControl type="text" className="form-control" placeholder="" /></FormGroup>
+    <FormControl type="text" className="form-control" placeholder="" name="price" onChange={(e)=>setPrice(e.target.value)}  /></FormGroup>
 <FormGroup className="form-group col-md-2">
     <FormLabel className="d-none d-md-block">&nbsp;</FormLabel>
     <p className="mb-0 text-center">-per-</p>
 </FormGroup>
 <FormGroup className="form-group col-md-5">
     <FormLabel className="d-none d-md-block">&nbsp;</FormLabel>
-    <FormControl type="text" className="form-control" placeholder="Ex - Pair, Piece etc" />
+    <FormControl type="text" name="slug" onChange={(e)=>onInputChange(e)}  className="form-control" placeholder="Ex - Pair, Piece etc" />
     </FormGroup>
 <FormGroup className="form-group col-md-12 mt-3">
-    <FormLabel className="d-block">Product/Service Description<small className="text-right text-secondary float-right">Uses, Details, Benefits, etc.</small></FormLabel>
+    <FormLabel className="d-block">Product/Service Description
+    <small className="text-right text-secondary float-right">Uses, Details, Benefits, etc.</small></FormLabel>
     <div className="summernote">
-                          <Editor />
+                          <Editor onEditorChange={(newValue, editor) => {
+        
+        setDesc(editor.getContent({format: 'text'}));
+      }}  value={desc}/>
                         </div>
     <small className="d-block mt-2 text-right float-right text-secondary">0 character (maximum of 4000) including formatting.</small>
 </FormGroup>
 
             <FormGroup className="form-group col-md-12 mt-3">
                 <div className="float-right">
-                    <Button className="btn btn-success">Save and Continue 
+                    <Button className="btn btn-success" onClick={(e)=>addProduct(e)}>Save and Continue 
                     <i class="fas fa-arrow-right pl-1"></i>
                     </Button>
                 </div>
