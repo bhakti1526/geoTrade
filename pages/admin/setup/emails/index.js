@@ -66,11 +66,8 @@ const emails = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(
-                  `/deleteEmailTemplate/${s.row.original._id}`
-                ).then(() => {
-                  if (res !== null) window.location.reload();
-                });
+                await deleteData(`/deleteEmailTemplate/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete

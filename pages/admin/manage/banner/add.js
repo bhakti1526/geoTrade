@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -33,6 +34,8 @@ const validationSchema = Yup.object().shape({
 const add = () => {
   const [image, setImage] = useState(null);
 
+  const { push } = useRouter();
+
   const { isLoading, postData, response } = usePostAxios("/addBanner");
 
   const handleSubmit = async (val) => {
@@ -45,7 +48,8 @@ const add = () => {
         imgUrl = res?.data?.data?.img || "";
       })
       .catch((err) => {});
-    postData({ ...val, img: imgUrl });
+    await postData({ ...val, img: imgUrl });
+    push("/admin/manage/");
   };
 
   const handleImageChange = (e) => setImage(e.target.files[0]);

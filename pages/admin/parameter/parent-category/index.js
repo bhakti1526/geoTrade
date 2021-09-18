@@ -89,7 +89,7 @@ const parentCategory = () => {
       title="manage parent category"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

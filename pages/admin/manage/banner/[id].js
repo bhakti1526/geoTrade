@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -11,6 +12,7 @@ import {
   Button,
 } from "react-bootstrap";
 
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 
 const validationSchema = Yup.object().shape({
@@ -31,6 +33,13 @@ const update = () => {
     isDisplay: false,
     isRedirect: false,
   });
+
+  const {
+    query: { id },
+  } = useRouter();
+
+  const { response } = useFetchAxios(`/getbanner?${id}`);
+  console.log(response?.allBanner);
 
   const handleImg = (e, setFieldValue) => {
     const file = e.target.files[0];

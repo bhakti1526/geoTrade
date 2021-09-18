@@ -83,7 +83,7 @@ const manageBrand = () => {
       title="manage parent category"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

@@ -95,7 +95,7 @@ const manageProduct = () => {
       title="manage user product"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

@@ -83,7 +83,7 @@ const user = () => {
       title="manage admin user"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

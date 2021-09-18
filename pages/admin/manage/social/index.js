@@ -91,7 +91,7 @@ const social = () => {
       title="manage socials"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

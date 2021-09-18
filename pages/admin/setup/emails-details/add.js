@@ -121,7 +121,7 @@ const id = () => {
                 />
               </FormGroup>
 
-              <FormGroup className="col-md-4 col-lg-4">
+              {/* <FormGroup className="col-md-4 col-lg-4">
                 <FormLabel> Outgoing Port </FormLabel>
                 <FormControl
                   type="text"
@@ -133,7 +133,7 @@ const id = () => {
                     !!touched.outGoingServerPort && !!errors.outGoingServerPort
                   }
                 />
-              </FormGroup>
+              </FormGroup> */}
 
               <FormGroup className="col-md-12  text-center btn-page">
                 <Button
