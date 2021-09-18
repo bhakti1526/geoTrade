@@ -3,7 +3,30 @@ import { connect } from "react-redux";
 import swal from "sweetalert";
 import { loginUser } from "../../redux/action/auth";
 import { siginSchema } from "./Schema";
+import axios from 'axios';
+import { useState } from "react";
+const loginDetails={
+  email:"",
+  password:""
+};
 const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
+
+  const[userLogin,setUserLogin]=useState(loginDetails);
+
+  const onInputChange=(e)=>{
+    setUserLogin({...userLogin,[e.target.name]:e.target.value})
+  }
+
+  const loginToAccount = async() =>{
+    const url ="http://localhost:4000";
+    const loginUsers = await axios.post(`${url}/signin`,userLogin);
+    if(loginUsers.status===201){
+      localStorage.setItem("jwt",loginUsers.token);
+      console.log(loginUsers);
+    }
+  }
+
+
   const msg = () => {
     swal({
       title: !errorMsg.auth ? "error" : "success",
@@ -18,10 +41,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
     }).then();
   };
   return (
-    <div
-      id="sign-in"
-      className="auth-form tab-pane fade show active form-validation"
-    >
+    <div id="sign-in" className="auth-form tab-pane fade show active form-validation">
       {errorMsg && msg()}
       <Formik
         initialValues={{ password: "user123", email: "user@user.com" }}
@@ -57,7 +77,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
                   id="val-email"
                   name="email"
                   placeholder="hello@example.com"
-                  onChange={handleChange}
+                  onChange={(e)=>setUserLogin(e)}
                   onBlur={handleBlur}
                   value={values.email}
                 />
@@ -81,7 +101,7 @@ const SignIn = ({ onClick, onClick1, loginUser, errorMsg }) => {
                   id="val-password"
                   name="password"
                   defaultValue="Password"
-                  onChange={handleChange}
+                  onChange={(e)=>setUserLogin(e)}
                   onBlur={handleBlur}
                   value={values.password}
                 />
