@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import {
@@ -29,7 +30,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const city = () => {
-  const { postData } = usePostAxios();
+  const { postData } = usePostAxios("/addCity");
+
+  const { push } = useRouter();
 
   const [countryList, setCountryList] = useState([]);
   const [stateList, setStateList] = useState([]);
@@ -47,8 +50,9 @@ const city = () => {
     setStateList(stateRed);
   }, [stateRed]);
 
-  const handleSubmit = (val) => {
-    console.log(val);
+  const handleSubmit = async (val) => {
+    await postData(val);
+    push("/admin/manage/city");
   };
 
   if (countryLoad === true) return <AppLoader />;
@@ -61,7 +65,14 @@ const city = () => {
         initialValues={initValue}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => {
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          setFieldValue,
+          touched,
+          errors,
+        }) => {
           return (
             <Form
               onSubmit={handleSubmit}
@@ -70,7 +81,11 @@ const city = () => {
             >
               <FormGroup className="col-md-6 col-lg-3">
                 <FormLabel> Choose Country</FormLabel>
-                <Form.Control name="country" as="select">
+                <Form.Control
+                  name="country"
+                  as="select"
+                  isInvalid={!!touched.country && !!errors.country}
+                >
                   <option>option</option>
                   {countryList.map((x) => (
                     <option value={x._id}>{x.name}</option>
@@ -80,7 +95,11 @@ const city = () => {
 
               <FormGroup className="col-md-6 col-lg-3">
                 <FormLabel name="state"> Choose State</FormLabel>
-                <Form.Control name="state" as="select">
+                <Form.Control
+                  name="state"
+                  as="select"
+                  isInvalid={!!touched.state && !!errors.state}
+                >
                   <option>option </option>
                   {stateList.map((x) => (
                     <option value={x._id}>{x.name}</option>
@@ -96,6 +115,7 @@ const city = () => {
                   className="form-control"
                   placeholder=" "
                   name="name"
+                  isInvalid={!!touched.name && !!errors.name}
                 />
               </FormGroup>
 
@@ -106,6 +126,7 @@ const city = () => {
                   className="form-control"
                   placeholder=" "
                   name="shortCityCode"
+                  isInvalid={!!touched.shortCityCode && !!errors.shortCityCode}
                 />
               </FormGroup>
 

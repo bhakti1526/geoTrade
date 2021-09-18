@@ -37,7 +37,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const post = () => {
-<<<<<<< HEAD
 
     const [selectOption, setSelectOption] = useState(null);
     const[pstData,setPstData]=useState(postingData);
@@ -149,7 +148,7 @@ const post = () => {
 
 
     return (
-            <div>  
+             
             <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card">
@@ -164,53 +163,6 @@ const post = () => {
                       <FormGroup className="col-md-12 col-lg-6">
                         <FormLabel> Product name</FormLabel>
                         <FormControl
-=======
-  const [initValue, setInitValue] = useState({
-    name: "",
-    description: "",
-    sellerType: "",
-    parentType: "",
-    parentCategory: "",
-    brand: "",
-    unit: "",
-  });
-
-  // const { response: res } = useFetchAxios("/getseller");
-
-  // useEffect(() => {
-  //   setInitValue({
-  //     name: res.name,
-  //     description: res.description,
-  //     sellerType: res.sellerType,
-  //     parentType: res.parentType,
-  //     parentCategory: res.parentCategory,
-  //     brand: res.brand,
-  //     unit: res.unit,
-  //   });
-  // }, [res]);
-
-  return (
-    <WrapFrom title="add post">
-      <Formik
-        enableReinitialize
-        //above line enable them to state update so form can re-render
-        initialValues={initValue}
-        validationSchema={validationSchema}
-      >
-        {({ handleSubmit, handleChange, values, setFieldValue }) => {
-          return (
-            <>
-              <Form
-                className="row"
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-              >
-                <div className="col-md-8">
-                  <div className="row">
-                    <FormGroup className="col-md-12 col-lg-6">
-                      <FormLabel> Product name</FormLabel>
-                      <FormControl
->>>>>>> 7d4c7162dab2ce8bd354a41dbca3744dbaea6755
                         name="name"
                         type="text"
                         className="form-control"

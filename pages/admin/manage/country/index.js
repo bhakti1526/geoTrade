@@ -87,7 +87,7 @@ const country = () => {
       title="manage country"
       column={column}
       isLoading={isLoading}
-      columnData={response?.coun}
+      columnData={response}
     />
   );
 };

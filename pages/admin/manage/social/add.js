@@ -17,7 +17,7 @@ const initValue = {
   name: "",
   classs: "",
   url: "",
-  isActive: "",
+  isActive: true,
 };
 
 const validationSchema = Yup.object().shape({

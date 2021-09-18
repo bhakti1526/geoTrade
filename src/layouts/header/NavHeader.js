@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+
 const NavHeader = () => {
   const [active, setActive] = useState(false);
   const toggleFun = () => {
@@ -13,7 +14,7 @@ const NavHeader = () => {
         <a className="brand-logo">
           <img
             style={{ width: "100px" }}
-            src="https://geotrade.org.in/static/media/logo.0bf9f979.png"
+            src="https://i.ibb.co/q5j82YX/geotrade-logo.png"
           />
 
           {/* <svg

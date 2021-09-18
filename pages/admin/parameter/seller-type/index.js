@@ -24,7 +24,13 @@ const sellerType = () => {
     {
       Header: "seller image",
       accessor: "sellerTypeImg",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
+      Cell: (e) => (
+        <img
+          src={`http://localhost:4000/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "status",
@@ -84,7 +90,7 @@ const sellerType = () => {
       title="manage seller type"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

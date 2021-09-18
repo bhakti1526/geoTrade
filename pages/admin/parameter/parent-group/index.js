@@ -29,7 +29,13 @@ const parentGroup = () => {
     {
       Header: "group image",
       accessor: "parentGroupImg",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
+      Cell: (e) => (
+        <img
+          src={`http://localhost:4000/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "status",
@@ -83,13 +89,15 @@ const parentGroup = () => {
     },
   ];
 
+  console.log(response);
+
   return (
     <WrapTable
       bText="add parent group"
       title="manage parent group"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

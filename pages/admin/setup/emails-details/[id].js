@@ -54,9 +54,7 @@ const id = () => {
 
   const handleSubmit = async (val) => {
     await postData({ ...val, _id: initialValues._id });
-    if (response !== null) {
-      push(`/admin/setup/emails-details`);
-    }
+    push(`/admin/setup/emails-details`);
   };
 
   return (

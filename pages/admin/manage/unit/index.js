@@ -84,7 +84,7 @@ const unit = () => {
       title="manage unit"
       column={column}
       isLoading={isLoading}
-      columnData={response.s}
+      columnData={response}
     />
   );
 };
