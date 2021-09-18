@@ -18,6 +18,7 @@ const brands={
   email:"",
   website:"",
   userType:"",
+  description:"",
   isApproved:false
 };
 
@@ -29,7 +30,7 @@ const brand = () => {
   const addBrand=async(e)=>{
     e.preventDefault();
     console.log(desc)
-    const adds = await axios.post(`${url}/addBrand`,{b,desc},{
+    const adds = await axios.post(`${url}/addBrand`,b,{
       headers:{
         authorization:localStorage.getItem("jwt")
       }
@@ -106,10 +107,10 @@ const brand = () => {
                       <FormGroup className="col-md-12 col-lg-12">
                         <FormLabel>Brand Info</FormLabel>
                         <div className="summernote">
-                          <Editor onEditorChange={(newValue, editor) => {
-        
-        setDesc(editor.getContent({format: 'text'}));
-      }}  value={desc}/>
+                          <Editor  onEditorChange={(newValue, editor) => {
+                          // setText(editor.getContent({format: 'text'}));
+                          setB({...initValue,['description']:editor.getContent({format:'text'})})
+                        }}/>
                         </div>
                       </FormGroup>
                     </div>

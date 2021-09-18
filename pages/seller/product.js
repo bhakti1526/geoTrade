@@ -17,14 +17,14 @@ import { Link } from "@material-ui/core";
 
 const productDetails={
     name:"",
-    slug:""
+    slug:"",
+    price:0,
+    description:""
 };
 
 const product = () => {
     const url = "http://localhost:4000";
     const [products,setProducts] = useState(productDetails);
-    const[desc,setDesc] = useState("");
-    const[price,setPrice]=useState("");
 
     const onInputChange=(e)=>{
         setProducts({...products,[e.target.name]:e.target.value})
@@ -32,11 +32,14 @@ const product = () => {
 
     const addProduct=async(e)=>{
         e.preventDefault();
-        const product = await axios.post(`${url}/addProduct`,{
-            products,desc,price:parseInt(price)
-        },{headers:{
-            // authorization:localStorage.getItem("jwt")
+        const product = await axios.post(`${url}/addProduct`,productDetails,{headers:{
+            authorization:localStorage.getItem("jwt")
         }});
+
+        if(product.status==201){
+            console.log("Product Added");
+            window.location.reload();
+        }
     }
 
     return (
@@ -121,7 +124,7 @@ const product = () => {
 <FormGroup className="form-group col-md-5 tag-price mt-2">
     <FormLabel>Price</FormLabel>
     <i className="fas fa-rupee-sign"></i>
-    <FormControl type="text" className="form-control" placeholder="" name="price" onChange={(e)=>setPrice(e.target.value)}  /></FormGroup>
+    <FormControl type="text" className="form-control" placeholder="" name="price" onChange={(e)=>onInputChange(e)}  /></FormGroup>
 <FormGroup className="form-group col-md-2">
     <FormLabel className="d-none d-md-block">&nbsp;</FormLabel>
     <p className="mb-0 text-center">-per-</p>
@@ -135,9 +138,8 @@ const product = () => {
     <small className="text-right text-secondary float-right">Uses, Details, Benefits, etc.</small></FormLabel>
     <div className="summernote">
                           <Editor onEditorChange={(newValue, editor) => {
-        
-        setDesc(editor.getContent({format: 'text'}));
-      }}  value={desc}/>
+                                setProducts({...products,['description']:editor.getContent({format:'text'})})
+      }}/>
                         </div>
     <small className="d-block mt-2 text-right float-right text-secondary">0 character (maximum of 4000) including formatting.</small>
 </FormGroup>

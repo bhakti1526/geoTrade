@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
-
+import axios from "axios";
 import { css } from "@emotion/css";
 import {
   Form,
@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import WrapFrom from "../../src/components/admin/WrapForm";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
+import { set } from "date-fns";
 
 const imgStyle = css`
   display: flex;
@@ -37,136 +38,131 @@ const validationSchema = Yup.object().shape({
 });
 
 const post = () => {
+  const initData = {
+    name: "",
+    description: "",
+    sellerType: "",
+    parentType: "",
+    parentCategory: "",
+    brand: "",
+    unit: "",
+    price: 0,
+  };
+  const [parentGroup, setParentGroup] = useState([]);
+  const [parentCategory, setParentCategory] = useState([]);
+  const [sellerTypes, setSellerType] = useState([]);
+  const [brand, setBrand] = useState([]);
+  const [unit, setUnit] = useState([]);
+  const [initValue, setInitValue] = useState(initData);
+  const [initialOpt, setInitialOpt] = useState();
 
-    const [selectOption, setSelectOption] = useState(null);
-    const[pstData,setPstData]=useState(postingData);
-    const[parentCategory,setParentCategory]=useState([]);
-    const[parentGroup,setParentGroup]=useState([]);
-    const[sellerType,setSellerType]=useState([]);
-    const[units,setUnits]=useState([]);
-    const[price,setPrice]=useState("");
-    const[desc,setDesc] = useState("");
-    const options1 = [];
-    const unitOptions = [];
-    const parentCategoryOptions = [];
-    const parentGroupOptions = [];
+  const onInputChange = (e) => {
+    setInitValue({ ...initValue, [e.target.name]: e.target.value });
+  };
 
-    
+  const url = "http://localhost:4000";
 
-    const onInputChange=(e)=>{
-      console.log(pstData);
-      setPstData({...pstData,[e.target.name]:e.target.value})
+  const getReqData = async () => {
+    const pc = await axios.get(`${url}/getParentCategory`);
+    if (pc.status === 201) {
+      console.log(pc.data.data);
+      setParentCategory(pc.data.data);
     }
 
-    const addPost = async(e) =>{
-      e.preventDefault();
-      const posting = await axios.post(`${url}/addPost`,{
-        pstData,price,desc
-      },{
-        headers:{
-          // authorization:localStorage.getItem("jwt")
-        }
-      });
-
-      if(posting.status===201){
-        console.log("Data Added");
-        window.location.reload();
-      }
+    const st = await axios.get(`${url}/getSellerType`);
+    if (st.status === 201) {
+      console.log(st.data.data);
+      setSellerType(st.data.data);
+      setInitialOpt(st.data.data[0]._id);
     }
 
-
-
-    const getReqDatas=async()=>{
-
-      const url = "http://localhost:4000";
-      const pc = await axios.get(`${url}/getParentCategory`);
-      if(pc.status===201){
-        setParentCategory(pc.data.data);
-        console.log("Parent Cat")
-        console.log(pc.data.data);
-      }
-
-      const pg = await axios.get(`${url}/getParentGroup`);
-
-      if(pg.status===201){
-        setParentGroup(pg.data.data);
-        console.log("Parent Group");
-        console.log(pg.data.data);
-      }
-
-
-      const st = await axios.get(`${url}/getSellerType`);
-      if(st.status===201){
-        setSellerType(st.data.data);
-        console.log(st.data.data[0].sellerTypeName);
-        console.log(sellerType);
-        sellerType.map((p)=>(
-         options1.push({value:p.sellerTypeName,label:p.sellerTypeName})
-        ))
-      }
-
-      
-      const ut = await axios.get(`${url}/getUnits`);
-      if(ut.status==201){
-        setUnits(ut.data.data);
-        units.map((p)=>(
-          unitOptions.push({value:p.name,label:p.name})
-         ))
-        console.log(ut.data.data);
-      }
+    const pg = await axios.get(`${url}/getParentGroup`);
+    if (pg.status === 201) {
+      console.log(pg.data.data);
+      setParentGroup(pg.data.data);
+      // setInitValue({...initValue,['parentCategory']:pg.data.data[0]._id})
     }
 
-    useEffect(()=>{
-      getReqDatas();
-    },[])
+    const b = await axios.get(`${url}/getBrands`);
+    if (b.status === 201) {
+      console.log(b.data.data);
+      setBrand(b.data.data);
+    }
 
-    const options = [
-      { value: "Traders & Suppliers", label: "Traders & Suppliers" },
-      { value: "Manufacturer", label: "Manufacturer" },
-    ];
+    const u = await axios.get(`${url}/getUnits`);
+    if (u.status === 201) {
+      console.log(u.data.data);
+      setUnit(u.data.data);
+    }
 
-    const [selectOption1, setSelectOption1] = useState(null);
-    
+    // console.log(sellerTypes);
+  };
 
-    const [selectOption2, setSelectOption2] = useState(null);
-    const options2 = [
-      { value: "Sand and Gravel", label: "Sand and Gravel" },
-    ];
+  const addPost = async (e) => {
+    e.preventDefault();
+    const ap = await axios.post(`${url}/addPost`, initValue, {
+      headers: {
+        authorization: localStorage.getItem("jwt"),
+      },
+    });
 
-    
+    if (ap.status === 201) {
+      window.location.reload();
+      console.log("Post Added");
+    }
+  };
 
-    const [selectOption3, setSelectOption3] = useState(null);
-    // const[currentUnitOption,selectCurrentUnitOption]=useState(null);
+  useEffect(() => {
+    getReqData();
+  }, []);
 
-    const[onOptionChange,setOptionChange]=useState(null);
+  // const { response: res } = useFetchAxios("/getseller");
 
-    const options3 = [
-        { value: "kg", label: "kg" },
-        { value: "cm", label: "cm" },
-        { value: "ton", label: "ton" },
-    ];
+  // useEffect(() => {
+  //   setInitValue({
+  //     name: res.name,
+  //     description: res.description,
+  //     sellerType: res.sellerType,
+  //     parentType: res.parentType,
+  //     parentCategory: res.parentCategory,
+  //     brand: res.brand,
+  //     unit: res.unit,
+  //   });
+  // }, [res]);
 
-
-    return (
-             
-            <div className="row">
-        <div className="col-xl-12 col-lg-12">
-          <div className="card">
-            <div className="card-header">
-              <h4 className="card-title">Add Post</h4>
-            </div>
-            <div className="card-body">
-              <div className="basic-form">
-                <Form className="row">
-                  <div className="col-md-8">
-                    <div className="row">
-                      <FormGroup className="col-md-12 col-lg-6">
-                        <FormLabel> Product name</FormLabel>
-                        <FormControl
+  return (
+    <WrapFrom title="add post">
+      <Formik
+        enableReinitialize
+        //above line enable them to state update so form can re-render
+        initialValues={initValue}
+        validationSchema={validationSchema}
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          setFieldValue,
+          errors,
+          touched,
+        }) => {
+          return (
+            <>
+              <Form
+                className="row"
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+              >
+                <div className="col-md-8">
+                  <div className="row">
+                    <FormGroup className="col-md-12 col-lg-6">
+                      <FormLabel> Product Name</FormLabel>
+                      <FormControl
                         name="name"
                         type="text"
                         className="form-control"
                         placeholder=""
+                        onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
@@ -174,9 +170,19 @@ const post = () => {
                       <FormLabel> Brand Info </FormLabel>
                       <div className="summernote">
                         <Editor
-                          onChange={(e) =>
-                            setFieldValue("description", e.target.getContent())
-                          }
+                          onEditorChange={(newValue, editor) => {
+                            // setText(editor.getContent({format: 'text'}));
+                            setInitValue({
+                              ...initValue,
+                              ["description"]: editor.getContent({
+                                format: "text",
+                              }),
+                            });
+                          }}
+                          // onChange={(e) =>
+                          //   // setFieldValue("description", e.target.getContent())
+
+                          // }
                         />
                       </div>
                     </FormGroup>
@@ -184,48 +190,74 @@ const post = () => {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Seller Type</FormLabel>
                       <Form.Control
+                        isInvalid={!!touched.sellerType && !!errors.sellerType}
                         as="select"
                         name="sellerType"
-                        defaultValue="Choose..."
+                        onChange={(e) => onInputChange(e)}
                       >
-                        <option>Choose...</option>
-                        <option>...</option>
+                        <option>Choosee....</option>
+
+                        {sellerTypes.map((s) => (
+                          <option key={s._id} value={s._id}>
+                            {s.sellerTypeName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent type</FormLabel>
                       <Form.Control
+                        isInvalid={!!touched.parentType && !!errors.parentType}
                         name="parentType"
                         as="select"
                         defaultValue="Choose..."
+                        onChange={(e) => onInputChange(e)}
                       >
-                        <option>Choose...</option>
-                        <option>...</option>
+                        <option>Choosee....</option>
+                        {parentGroup.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.parentGroupName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent Category</FormLabel>
                       <Form.Control
+                        isInvalid={
+                          !!touched.parentCategory && !!errors.parentCategory
+                        }
                         as="select"
                         name="parentCategory"
                         defaultValue="Choose..."
+                        onChange={(e) => onInputChange(e)}
                       >
-                        <option>Choose...</option>
-                        <option>...</option>
+                        <option>Choosee....</option>
+                        {parentCategory.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.parentCategoryName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
-                      <FormLabel> brnad</FormLabel>
+                      <FormLabel>Brand</FormLabel>
                       <Form.Control
+                        isInvalid={!!touched.brand && !!errors.brand}
                         as="select"
                         name="brand"
-                        defaultValue="Choose..."
+                        defaultValue={(e) => e.target.value}
+                        onChange={(e) => onInputChange(e)}
                       >
-                        <option>Choose...</option>
-                        <option>...</option>
+                        <option>Choosee....</option>
+                        {brand.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.name}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -235,18 +267,26 @@ const post = () => {
                         type="text"
                         className="form-control"
                         placeholder=""
+                        name="price"
+                        onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Unit</FormLabel>
                       <Form.Control
+                        isInvalid={!!touched.unit && !!errors.unit}
                         as="select"
                         name="unit"
                         defaultValue="Choose..."
+                        onChange={(e) => onInputChange(e)}
                       >
-                        <option>Choose...</option>
-                        <option>...</option>
+                        <option>Choosee....</option>
+                        {unit.map((ui) => (
+                          <option key={ui._id} value={ui._id}>
+                            {ui.name}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
                   </div>
@@ -263,7 +303,11 @@ const post = () => {
 
                 <FormGroup className="col-md-12  text-center">
                   <div className="btn-page mt-5">
-                    <Button variant="primary btn-rounded" type="submit">
+                    <Button
+                      variant="primary btn-rounded"
+                      type="submit"
+                      onClick={(e) => addPost(e)}
+                    >
                       Add Post
                     </Button>
                   </div>
@@ -285,7 +329,7 @@ export default post;
 
 //for formik
 // go to this url u will get implementation of react-bootstrap and formik
-//https://react-bootstrap.netlify.app/components/forms/#forms-validation-libraries
+//`https://react-bootstrap.netlify.app/components/forms/#forms-validation-libraries`
 
 //for dropdown
 // use formcontrol with as="select" and it will automatically get the value
