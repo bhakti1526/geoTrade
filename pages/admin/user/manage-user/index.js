@@ -99,7 +99,7 @@ const manageUser = () => {
       title="manage user"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

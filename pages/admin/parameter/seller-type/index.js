@@ -84,7 +84,7 @@ const sellerType = () => {
       title="manage seller type"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

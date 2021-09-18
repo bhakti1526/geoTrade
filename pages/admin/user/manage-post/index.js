@@ -95,7 +95,7 @@ const managePost = () => {
       title="manage user post"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

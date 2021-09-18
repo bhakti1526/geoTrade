@@ -69,7 +69,7 @@ const managePackage = () => {
               onClick={async () => {
                 await deleteData(`/deleteUnit/${s.row.original._id}`).then(
                   () => {
-                    if (res !== null) window.location.reload();
+                    window.location.reload();
                   }
                 );
               }}
@@ -88,7 +88,7 @@ const managePackage = () => {
       title="manage user package"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };

@@ -43,7 +43,7 @@ const add = () => {
     <WrapForm title="add content">
       <Form className="row" onSubmit={handleSubmite}>
         <FormGroup className="col-md-12">
-          <FormLabel> Email Template Name </FormLabel>
+          <FormLabel> content page name </FormLabel>
           <FormControl
             onChange={(e) =>
               setPageData((x) => ({ ...x, pageName: e.target.value }))

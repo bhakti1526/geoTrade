@@ -89,7 +89,7 @@ const parentGroup = () => {
       title="manage parent group"
       column={column}
       isLoading={isLoading}
-      columnData={response}
+      // columnData={response}
     />
   );
 };
