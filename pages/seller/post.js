@@ -37,6 +37,134 @@ const validationSchema = Yup.object().shape({
 });
 
 const post = () => {
+<<<<<<< HEAD
+
+    const [selectOption, setSelectOption] = useState(null);
+    const[pstData,setPstData]=useState(postingData);
+    const[parentCategory,setParentCategory]=useState([]);
+    const[parentGroup,setParentGroup]=useState([]);
+    const[sellerType,setSellerType]=useState([]);
+    const[units,setUnits]=useState([]);
+    const[price,setPrice]=useState("");
+    const[desc,setDesc] = useState("");
+    const options1 = [];
+    const unitOptions = [];
+    const parentCategoryOptions = [];
+    const parentGroupOptions = [];
+
+    
+
+    const onInputChange=(e)=>{
+      console.log(pstData);
+      setPstData({...pstData,[e.target.name]:e.target.value})
+    }
+
+    const addPost = async(e) =>{
+      e.preventDefault();
+      const posting = await axios.post(`${url}/addPost`,{
+        pstData,price,desc
+      },{
+        headers:{
+          // authorization:localStorage.getItem("jwt")
+        }
+      });
+
+      if(posting.status===201){
+        console.log("Data Added");
+        window.location.reload();
+      }
+    }
+
+
+
+    const getReqDatas=async()=>{
+
+      const url = "http://localhost:4000";
+      const pc = await axios.get(`${url}/getParentCategory`);
+      if(pc.status===201){
+        setParentCategory(pc.data.data);
+        console.log("Parent Cat")
+        console.log(pc.data.data);
+      }
+
+      const pg = await axios.get(`${url}/getParentGroup`);
+
+      if(pg.status===201){
+        setParentGroup(pg.data.data);
+        console.log("Parent Group");
+        console.log(pg.data.data);
+      }
+
+
+      const st = await axios.get(`${url}/getSellerType`);
+      if(st.status===201){
+        setSellerType(st.data.data);
+        console.log(st.data.data[0].sellerTypeName);
+        console.log(sellerType);
+        sellerType.map((p)=>(
+         options1.push({value:p.sellerTypeName,label:p.sellerTypeName})
+        ))
+      }
+
+      
+      const ut = await axios.get(`${url}/getUnits`);
+      if(ut.status==201){
+        setUnits(ut.data.data);
+        units.map((p)=>(
+          unitOptions.push({value:p.name,label:p.name})
+         ))
+        console.log(ut.data.data);
+      }
+    }
+
+    useEffect(()=>{
+      getReqDatas();
+    },[])
+
+    const options = [
+      { value: "Traders & Suppliers", label: "Traders & Suppliers" },
+      { value: "Manufacturer", label: "Manufacturer" },
+    ];
+
+    const [selectOption1, setSelectOption1] = useState(null);
+    
+
+    const [selectOption2, setSelectOption2] = useState(null);
+    const options2 = [
+      { value: "Sand and Gravel", label: "Sand and Gravel" },
+    ];
+
+    
+
+    const [selectOption3, setSelectOption3] = useState(null);
+    // const[currentUnitOption,selectCurrentUnitOption]=useState(null);
+
+    const[onOptionChange,setOptionChange]=useState(null);
+
+    const options3 = [
+        { value: "kg", label: "kg" },
+        { value: "cm", label: "cm" },
+        { value: "ton", label: "ton" },
+    ];
+
+
+    return (
+            <div>  
+            <div className="row">
+        <div className="col-xl-12 col-lg-12">
+          <div className="card">
+            <div className="card-header">
+              <h4 className="card-title">Add Post</h4>
+            </div>
+            <div className="card-body">
+              <div className="basic-form">
+                <Form className="row">
+                  <div className="col-md-8">
+                    <div className="row">
+                      <FormGroup className="col-md-12 col-lg-6">
+                        <FormLabel> Product name</FormLabel>
+                        <FormControl
+=======
   const [initValue, setInitValue] = useState({
     name: "",
     description: "",
@@ -82,6 +210,7 @@ const post = () => {
                     <FormGroup className="col-md-12 col-lg-6">
                       <FormLabel> Product name</FormLabel>
                       <FormControl
+>>>>>>> 7d4c7162dab2ce8bd354a41dbca3744dbaea6755
                         name="name"
                         type="text"
                         className="form-control"
