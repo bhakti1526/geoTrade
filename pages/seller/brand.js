@@ -31,7 +31,7 @@ const brand = () => {
     console.log(desc)
     const adds = await axios.post(`${url}/addBrand`,{b,desc},{
       headers:{
-        authorization:localStorage.getItem("jwt")
+        // authorization:localStorage.getItem("jwt")
       }
     });
 

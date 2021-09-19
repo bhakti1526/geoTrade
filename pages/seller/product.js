@@ -37,6 +37,11 @@ const product = () => {
         },{headers:{
             // authorization:localStorage.getItem("jwt")
         }});
+
+        if(product.status==201){
+            console.log("Product Added");
+            window.location.reload();
+        }
     }
 
     return (
