@@ -13,7 +13,6 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
-import axios from "axios";
 import WrapFrom from "../../src/components/admin/WrapForm";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
 import { set } from "date-fns";

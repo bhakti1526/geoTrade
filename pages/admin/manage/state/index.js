@@ -19,16 +19,16 @@ const state = () => {
     },
     {
       Header: "country name",
-      accessor: "name",
+      accessor: "country.name",
     },
     {
       Header: "state name",
-      accessor: "stateName",
+      accessor: "name",
     },
 
     {
-      Header: "state code",
-      accessor: "shortCode",
+      Header: "short state name",
+      accessor: "shortStateName",
     },
 
     {
@@ -68,11 +68,8 @@ const state = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteState/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteState/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete
@@ -89,7 +86,7 @@ const state = () => {
       title="manage state"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };
