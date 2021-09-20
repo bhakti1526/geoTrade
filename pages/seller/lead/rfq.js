@@ -258,13 +258,13 @@ const inquiry = () => {
         </div>
         <div className="col-md-12 col-lg-6">
             <div className="lead-right-desc">
-
+{/* 
             <div class="mb-3">
                 <Link class="text-secondary mr-2" href="#"><i class="fas fa-paste mr-1 "></i>View Similar</Link>
                 <Link class="text-secondary mr-2" href="#"><i class="far fa-star mr-1"></i> Shortlist</Link>
                 <Link class="text-secondary mr-2" href="#"><i class="far fa-eye-slash mr-1"></i> Hide</Link>
                 <Link class="text-secondary" href="#"><i class="far fa-trash-alt mr-1"></i> Not Relevant</Link>
-            </div>
+            </div> */}
 
                 <div className="table table-responsive mb-lg-0">
                     <table className="table table-lead-post mb-0">

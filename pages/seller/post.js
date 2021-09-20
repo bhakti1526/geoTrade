@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
-
-
+import axios from 'axios';
 import { css } from "@emotion/css";
 import {
   Form,
@@ -174,9 +173,14 @@ const initData = {
                       <FormLabel> Brand Info </FormLabel>
                       <div className="summernote">
                         <Editor
-                          onChange={(e) =>
-                            setFieldValue("description", e.target.getContent())
-                          }
+                         onEditorChange={(newValue, editor) => {
+                          // setText(editor.getContent({format: 'text'}));
+                          setInitValue({...initValue,['description']:editor.getContent({format:'text'})})
+                        }}
+                          // onChange={(e) =>
+                          //   // setFieldValue("description", e.target.getContent())
+                            
+                          // }
                         />
                       </div>
                     </FormGroup>
@@ -184,14 +188,9 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Seller Type</FormLabel>
                       <Form.Control
-                      isInvalid={
-                        !touched.sellerType && errors.sellerType
-                      }
+                      isInvalid={!!touched.sellerType && !!errors.sellerType}
                         as="select"
                         name="sellerType"
-                        inititalValue
-                        defaultValue={""}
-                        // defaultValue={sellerTypes[0]._id}
                         onChange={(e)=>onInputChange(e)}
                       >
  
@@ -209,9 +208,7 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent type</FormLabel>
                       <Form.Control
-                      isInvalid={
-                        !touched.parentType && errors.parentType
-                      }
+                      isInvalid={!!touched.parentType && !!errors.parentType}
                         name="parentType"
                         as="select"
                         defaultValue="Choose..."
@@ -230,9 +227,7 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent Category</FormLabel>
                       <Form.Control
-                      isInvalid={
-                        !touched.parentCategory && errors.parentCategory
-                      }
+                       isInvalid={!!touched.parentCategory && !!errors.parentCategory}
                         as="select"
                         name="parentCategory"
                         defaultValue="Choose..."
@@ -251,9 +246,7 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel>Brand</FormLabel>
                       <Form.Control
-                      isInvalid={
-                        !touched.brand && errors.brand
-                      }
+                        isInvalid={!!touched.brand && !!errors.brand}
                         as="select"
                         name="brand"
                         defaultValue={(e)=>e.target.value}
@@ -273,11 +266,8 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Price</FormLabel>
                       <FormControl
-                      isInvalid={
-                        !touched.price && errors.price
-                      }
+                    
                         type="text"
-                        as="select"
                         className="form-control"
                         placeholder=""
                         name="price"
@@ -288,9 +278,7 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Unit</FormLabel>
                       <Form.Control
-                      isInvalid={
-                        !touched.unit && errors.unit
-                      }
+                      isInvalid={!!touched.unit && !!errors.unit}
                         as="select"
                         name="unit"
                         defaultValue="Choose..."
