@@ -1,5 +1,4 @@
 import Head from "next/head";
-import axios from "axios";
 import "nouislider/distribute/nouislider.css";
 import { useEffect, useState } from "react";
 // redux
@@ -40,12 +39,9 @@ function MyApp({ Component, pageProps }) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, [pages]);
 
-  const { pathname } = useRouter();
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQyY2JlYzA5NDRhMDU1MmMyNTYyM2QiLCJpYXQiOjE2MzE3Njc4MzR9.VYTEOXZCEVJIh-pvdXC5XUMeBgpRplsD0Bmqm6DRE24";
-  }, []);
+  const { pathname } = useRouter();
 
   if (typeof window === "undefined") return <></>;
 

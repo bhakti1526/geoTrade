@@ -1,9 +1,21 @@
 import Image from "next/image";
+import { useContext } from "react";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/action/auth";
+
+import { AppContext, Dispatch } from "../../../component/context/app.context";
+
 const Profile = ({ logoutUser }) => {
+  const dispatch = useContext(Dispatch);
+
+  const {
+    user: { firstName, email },
+  } = useContext(AppContext);
+
+  const handleLogOut = () => dispatch({ type: "LOG-OUT" });
+
   return (
     <Dropdown as="li" className="nav-item dropdown header-profile">
       <Dropdown.Toggle
@@ -19,8 +31,8 @@ const Profile = ({ logoutUser }) => {
           alt=""
         />
         <div className="header-info">
-          <span className="fs-20 font-w500">Harshal Shah</span>
-          <small>Super Admin</small>
+          <span className="fs-20 font-w500">{firstName}</span>
+          <small>{email}</small>
         </div>
       </Dropdown.Toggle>
       <Dropdown.Menu
@@ -71,7 +83,7 @@ const Profile = ({ logoutUser }) => {
           </a>
         </Link>
         <Link href="">
-          <a onClick={() => logoutUser()} className="dropdown-item ai-icon">
+          <a onClick={handleLogOut} className="dropdown-item ai-icon">
             <svg
               id="icon-logout"
               xmlns="http://www.w3.org/2000/svg"

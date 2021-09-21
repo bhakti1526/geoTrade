@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form } from "react-bootstrap";
+import { Dispatch } from "../../component/context/app.context";
+import { useRouter } from "next/router";
 
 const initSchema = {
   email: "",
@@ -14,6 +17,25 @@ const validationSchema = Yup.object().shape({
 });
 
 const index = () => {
+  const dispatch = useContext(Dispatch);
+  const { push } = useRouter();
+
+  const handleSubmit = (val) => {
+    try {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/signin`, {
+          ...val,
+          url: true,
+        })
+        .then((x) => {
+          dispatch({ type: "AUTH-ADMIN", data: x });
+        })
+        .then(() => push("/admin/dashboard"));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div className="authincation d-flex flex-column flex-lg-row flex-column-fluid">
@@ -43,7 +65,7 @@ const index = () => {
                     className="auth-form tab-pane fade show active form-validation"
                   >
                     <Formik
-                      onSubmit={(val) => console.log(val)}
+                      onSubmit={handleSubmit}
                       initialValues={initSchema}
                       validationSchema={validationSchema}
                     >
