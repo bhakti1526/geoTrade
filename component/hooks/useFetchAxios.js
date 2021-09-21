@@ -14,6 +14,7 @@ const useFetchAxios = (url) => {
       await axios
         .get(`http://localhost:4000${url}`)
         .then((res) => {
+          console.log(res.data.data);
           setResponse(res.data.data);
         })
         .catch((err) => setError(err))
