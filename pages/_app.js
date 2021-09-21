@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }) {
               rel="icon"
               type="image/png"
               sizes="16x16"
-              href="https://geotrade.org.in/static/media/logo.0bf9f979.png"
+              href="https://i.ibb.co/q5j82YX/geotrade-logo.png"
             />
             <link
               rel="stylesheet"
@@ -72,12 +72,12 @@ function MyApp({ Component, pageProps }) {
             />
           </Head>
 
-          {pathname == "/login" ? (
-            <Component {...pageProps} />
-          ) : (
+          {pathname.startsWith("/admin/") || pathname.startsWith("/seller") ? (
             <Layout>
               <Component {...pageProps} />
             </Layout>
+          ) : (
+            <Component {...pageProps} />
           )}
         </SimpleReactLightbox>
       </AppProvider>

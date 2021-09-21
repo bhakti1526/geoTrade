@@ -11,6 +11,8 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+import axios from "axios";
+
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
@@ -66,16 +68,7 @@ const update = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
-    img: Yup.mixed()
-      .required("A file is required")
-      .test("fileFormat", "image only", () => {
-        if (img === null || img === undefined) return false;
-        return img.type === "image/png"
-          ? true
-          : img.type === "image/jpeg"
-          ? true
-          : false;
-      }),
+    img: Yup.string().required(),
     price: Yup.number().min(1).required(),
     tax: Yup.string().required(),
     sellCost: Yup.number().min(1).required(),
@@ -94,30 +87,34 @@ const update = () => {
   });
 
   const handleSubmit = async (val) => {
-    const formData = new FormData();
-
-    formData.append("name", val.name);
-    formData.append("img", img);
-    formData.append("price", val.price);
-    formData.append("name", val.name);
-    formData.append("tax", val.tax);
-    formData.append("sellCost", val.sellCost);
-    formData.append("note", val.note);
-    formData.append("duration", val.duration);
-    formData.append("description", val.description);
-    formData.append("isPost", val.isPost);
-    formData.append("postCount", val.postCount);
-    formData.append("isLead", val.isLead);
-    formData.append("leadCount", val.leadCount);
-    formData.append("canAddBrand", val.canAddBrand);
-    formData.append("isCategoryPriority", val.isCategoryPriority);
-    formData.append("vcnFeature", val.vcnFeature);
-    formData.append("vssFeature", val.vssFeature);
-    formData.append("isActive", val.isActive);
-
-    await postData(formData);
-
-    push("/admin/subscription/manage-package");
+    try {
+      if (img !== null && img !== undefined) {
+        const formData = new FormData();
+        formData.append("img", img);
+        axios
+          .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+          .then((res) => {
+            axios
+              .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePackage/${id}`, {
+                ...val,
+                img: res.data.data,
+              })
+              .then((res) => {
+                push("/admin/subscription/manage-package");
+              });
+          });
+      } else {
+        axios
+          .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePackage/${id}`, {
+            ...val,
+          })
+          .then((res) => {
+            push("/admin/subscription/manage-package");
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

@@ -119,7 +119,7 @@ const Sidebar = () => {
       {doc && (
         <PerfectScrollbar className="deznav-scroll">
           <MetisMenu className="metismenu" id="menu">
-            {!pathname.startsWith("/seller") ? (
+            {pathname.startsWith("/admin/") ? (
               <>
                 <li
                   className={`${dashboard.includes(path) ? "mm-active" : ""}`}
@@ -139,15 +139,6 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    {/* <li>
-                  <Link href="/admin/setup/menu" passHref>
-                    <a
-                      className={`${path === "index-dark" ? "mm-active" : ""}`}
-                    >
-                      Menu
-                    </a>
-                  </Link>
-                </li> */}
                     <li>
                       <Link href="/admin/setup/roles" passHref>
                         <a
@@ -549,7 +540,7 @@ const Sidebar = () => {
                   </ul>
                 </li>
               </>
-            ) : (
+            ) : pathname.startsWith("/seller") ? (
               <>
                 <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
                   <a
@@ -640,15 +631,29 @@ const Sidebar = () => {
                   </ul>
                 </li>
               </>
-            )}
+            ) : undefined}
           </MetisMenu>
-          <div className="copyright">
-            <p>
-              <strong>GEO Trade Admin Dashboard</strong> ©
-              {new Date().getFullYear()} All Rights Reserved
-            </p>
-            <p>Design &#38; Devlopment by Barodaweb</p>
-          </div>
+          {pathname.startsWith("/admin/") ? (
+            <>
+              <div className="copyright">
+                <p>
+                  <strong>GEO Trade Admin Dashboard</strong> ©
+                  {new Date().getFullYear()} All Rights Reserved
+                </p>
+                <p>Design &#38; Devlopment by Barodaweb</p>
+              </div>
+            </>
+          ) : pathname.startsWith("/seller") ? (
+            <>
+              <div className="copyright">
+                <p>
+                  <strong>GEO Trade Admin Dashboard</strong> ©
+                  {new Date().getFullYear()} All Rights Reserved
+                </p>
+                <p>Design &#38; Devlopment by Barodaweb</p>
+              </div>
+            </>
+          ) : undefined}
         </PerfectScrollbar>
       )}
     </div>

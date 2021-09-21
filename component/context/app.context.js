@@ -5,7 +5,11 @@ export const AppContext = createContext();
 export const Dispatch = createContext();
 
 const initState = {
-  isAuth: false,
+  auth: {
+    isAuth: true,
+    isAdmin: true,
+    isSeller: true,
+  },
 };
 
 const appProvider = ({ children }) => {

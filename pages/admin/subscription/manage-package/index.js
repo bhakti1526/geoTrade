@@ -30,6 +30,17 @@ const managePackages = () => {
       accessor: "duration",
     },
     {
+      Header: "offer image",
+      accessor: "img",
+      Cell: (e) => (
+        <img
+          src={`http://localhost:4000/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
+    },
+    {
       Header: "status",
       accessor: "isActive",
       Cell: (e) => (
@@ -80,6 +91,8 @@ const managePackages = () => {
       ),
     },
   ];
+
+  console.log(response);
 
   return (
     <WrapTable

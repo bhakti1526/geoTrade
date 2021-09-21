@@ -24,3 +24,8 @@
 .deznav .metismenu ul a {
   padding-left: 3rem;
 }
+
+.form-control.is-invalid {
+  border-color: #f72b50 !important;
+  border: 1px solid #f72b50 !important;
+}

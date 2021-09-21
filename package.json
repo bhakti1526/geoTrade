@@ -20,6 +20,7 @@
     "@y0c/react-datepicker": "^1.0.4",
     "apexcharts": "^3.27.1",
     "axios": "^0.21.4",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "bootstrap": "^5.0.2",
     "chart.js": "^2.9.4",
     "chartist": "^0.11.4",
