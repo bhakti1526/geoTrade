@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
-import axios from 'axios';
+import axios from "axios";
 import { css } from "@emotion/css";
 import {
   Form,
@@ -27,7 +27,6 @@ const imgStyle = css`
 
 // do not post image because it is not implemented so this will be ignored
 
-
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   description: Yup.string().required(),
@@ -38,38 +37,32 @@ const validationSchema = Yup.object().shape({
   unit: Yup.string().required(),
 });
 
-
 const post = () => {
-  
-const initData = {
-  name: "",
-  description: "",
-  sellerType: "",
-  parentType: "",
-  parentCategory: "",
-  brand: "",
-  unit: "",
-  price:0,
-};
+  const initData = {
+    name: "",
+    description: "",
+    sellerType: "",
+    parentType: "",
+    parentCategory: "",
+    brand: "",
+    unit: "",
+    price: 0,
+  };
   const [parentGroup, setParentGroup] = useState([]);
   const [parentCategory, setParentCategory] = useState([]);
   const [sellerTypes, setSellerType] = useState([]);
   const [brand, setBrand] = useState([]);
   const [unit, setUnit] = useState([]);
   const [initValue, setInitValue] = useState(initData);
-  const [initialOpt,setInitialOpt] = useState();
+  const [initialOpt, setInitialOpt] = useState();
 
-  const onInputChange=(e)=>{
-    setInitValue({...initValue,[e.target.name]:e.target.value})
-  }
-
-
+  const onInputChange = (e) => {
+    setInitValue({ ...initValue, [e.target.name]: e.target.value });
+  };
 
   const url = "http://localhost:4000";
 
-
   const getReqData = async () => {
-
     const pc = await axios.get(`${url}/getParentCategory`);
     if (pc.status === 201) {
       console.log(pc.data.data);
@@ -81,7 +74,6 @@ const initData = {
       console.log(st.data.data);
       setSellerType(st.data.data);
       setInitialOpt(st.data.data[0]._id);
-      
     }
 
     const pg = await axios.get(`${url}/getParentGroup`);
@@ -104,27 +96,25 @@ const initData = {
     }
 
     // console.log(sellerTypes);
+  };
 
-
-  }
-
-  const addPost=async(e)=>{
+  const addPost = async (e) => {
     e.preventDefault();
-    const ap = await axios.post(`${url}/addPost`,initValue,{
-      headers:{
-        authorization:localStorage.getItem("jwt")
-      }
+    const ap = await axios.post(`${url}/addPost`, initValue, {
+      headers: {
+        authorization: localStorage.getItem("jwt"),
+      },
     });
 
-    if(ap.status===201){
+    if (ap.status === 201) {
       window.location.reload();
-      console.log("Post Added")
+      console.log("Post Added");
     }
-  }
+  };
 
   useEffect(() => {
     getReqData();
-  },[]);
+  }, []);
 
   // const { response: res } = useFetchAxios("/getseller");
 
@@ -148,7 +138,14 @@ const initData = {
         initialValues={initValue}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit, handleChange, values, setFieldValue ,errors, touched }) => {
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          setFieldValue,
+          errors,
+          touched,
+        }) => {
           return (
             <>
               <Form
@@ -165,7 +162,7 @@ const initData = {
                         type="text"
                         className="form-control"
                         placeholder=""
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
@@ -173,13 +170,18 @@ const initData = {
                       <FormLabel> Brand Info </FormLabel>
                       <div className="summernote">
                         <Editor
-                         onEditorChange={(newValue, editor) => {
-                          // setText(editor.getContent({format: 'text'}));
-                          setInitValue({...initValue,['description']:editor.getContent({format:'text'})})
-                        }}
+                          onEditorChange={(newValue, editor) => {
+                            // setText(editor.getContent({format: 'text'}));
+                            setInitValue({
+                              ...initValue,
+                              ["description"]: editor.getContent({
+                                format: "text",
+                              }),
+                            });
+                          }}
                           // onChange={(e) =>
                           //   // setFieldValue("description", e.target.getContent())
-                            
+
                           // }
                         />
                       </div>
@@ -188,58 +190,56 @@ const initData = {
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Seller Type</FormLabel>
                       <Form.Control
-                      isInvalid={!!touched.sellerType && !!errors.sellerType}
+                        isInvalid={!!touched.sellerType && !!errors.sellerType}
                         as="select"
                         name="sellerType"
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       >
- 
                         <option>Choosee....</option>
 
-                        {
-                          sellerTypes.map((s) => (
-                            <option key={s._id} value={s._id}>{s.sellerTypeName}</option>
-                          ))
-                        }
-
+                        {sellerTypes.map((s) => (
+                          <option key={s._id} value={s._id}>
+                            {s.sellerTypeName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent type</FormLabel>
                       <Form.Control
-                      isInvalid={!!touched.parentType && !!errors.parentType}
+                        isInvalid={!!touched.parentType && !!errors.parentType}
                         name="parentType"
                         as="select"
                         defaultValue="Choose..."
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       >
-                         <option>Choosee....</option>
-                        {
-                          parentGroup.map((p) => (
-                            <option key={p._id} value={p._id}>{p.parentGroupName}</option>
-                          ))
-                        }
-
+                        <option>Choosee....</option>
+                        {parentGroup.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.parentGroupName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Parent Category</FormLabel>
                       <Form.Control
-                       isInvalid={!!touched.parentCategory && !!errors.parentCategory}
+                        isInvalid={
+                          !!touched.parentCategory && !!errors.parentCategory
+                        }
                         as="select"
                         name="parentCategory"
                         defaultValue="Choose..."
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       >
                         <option>Choosee....</option>
-                        {
-                          parentCategory.map((p) => (
-                            <option key={p._id} value={p._id}>{p.parentCategoryName}</option>
-                          ))
-                        }
-
+                        {parentCategory.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.parentCategoryName}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -249,48 +249,44 @@ const initData = {
                         isInvalid={!!touched.brand && !!errors.brand}
                         as="select"
                         name="brand"
-                        defaultValue={(e)=>e.target.value}
-                        
-                        onChange={(e)=>onInputChange(e)}
+                        defaultValue={(e) => e.target.value}
+                        onChange={(e) => onInputChange(e)}
                       >
-                         <option>Choosee....</option>
-                        {
-                          brand.map((p) => (
-                            <option key={p._id} value={p._id}>{p.name}</option>
-                          ))
-                        }
-
+                        <option>Choosee....</option>
+                        {brand.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.name}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Price</FormLabel>
                       <FormControl
-                    
                         type="text"
                         className="form-control"
                         placeholder=""
                         name="price"
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Unit</FormLabel>
                       <Form.Control
-                      isInvalid={!!touched.unit && !!errors.unit}
+                        isInvalid={!!touched.unit && !!errors.unit}
                         as="select"
                         name="unit"
                         defaultValue="Choose..."
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={(e) => onInputChange(e)}
                       >
-                         <option>Choosee....</option>
-                        {
-                          unit.map((ui) => (
-                            <option key={ui._id} value={ui._id}>{ui.name}</option>
-                          ))
-                        }
-
+                        <option>Choosee....</option>
+                        {unit.map((ui) => (
+                          <option key={ui._id} value={ui._id}>
+                            {ui.name}
+                          </option>
+                        ))}
                       </Form.Control>
                     </FormGroup>
                   </div>
@@ -307,7 +303,11 @@ const initData = {
 
                 <FormGroup className="col-md-12  text-center">
                   <div className="btn-page mt-5">
-                    <Button variant="primary btn-rounded" type="submit" onClick={(e)=>addPost(e)}>
+                    <Button
+                      variant="primary btn-rounded"
+                      type="submit"
+                      onClick={(e) => addPost(e)}
+                    >
                       Add Post
                     </Button>
                   </div>

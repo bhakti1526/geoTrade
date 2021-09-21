@@ -74,13 +74,12 @@ const content = () => {
   ];
 
   return (
-    // <></>
     <WrapTable
       bText="add content"
       title="manage content"
       column={column}
       isLoading={isLoading}
-      columnData={response.cms}
+      columnData={response}
     />
   );
 };

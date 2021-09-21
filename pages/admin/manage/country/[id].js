@@ -45,10 +45,10 @@ const add = () => {
 
   useEffect(() => {
     setInitValue({
-      _id: res?.coun?._id,
-      name: res?.coun?.name,
-      countryTelCode: res?.coun?.countryTelCode,
-      countryShortCode: res?.coun?.countryShortCode,
+      _id: res?._id,
+      name: res?.name,
+      countryTelCode: res?.countryTelCode,
+      countryShortCode: res?.countryShortCode,
     });
   }, [res]);
 

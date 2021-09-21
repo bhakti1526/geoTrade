@@ -85,7 +85,7 @@ const city = () => {
       title="manage city"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

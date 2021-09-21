@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 import WrapTable from "../../../../src/components/admin/WrapTable";
@@ -7,6 +8,8 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const parentCategory = () => {
+  const { push, reload } = useRouter();
+
   const { isLoading, response, error } = useFetchAxios("/getParentCategory");
   const { deleteData, response: res } = useDeleteAxios();
 
@@ -23,13 +26,19 @@ const parentCategory = () => {
     },
     {
       Header: "category name",
-      accessor: "parentCategoryName",
+      accessor: "parentCatagoryName",
     },
 
     {
       Header: "category image",
-      accessor: "parentCategoryImg",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
+      accessor: "parentCatagoryImg",
+      Cell: (e) => (
+        <img
+          src={`http://localhost:4000/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "status",
@@ -66,15 +75,12 @@ const parentCategory = () => {
             <Link href={`${window.location}/${s.row.original._id}`} passHref>
               <Dropdown.Item>Edit</Dropdown.Item>
             </Link>
-            <Dropdown.Item>
-              onClick=
-              {async () => {
-                await deleteData(
-                  `/deleteParentCategory/${s.row.original._id}`
-                ).then(() => {
-                  if (res !== null) window.location.reload();
-                });
+            <Dropdown.Item
+              onClick={async () => {
+                await deleteData(`/deleteParentCategory/${s.row.original._id}`);
+                reload("/admin/parameter/parent-category");
               }}
+            >
               delete
             </Dropdown.Item>
           </Dropdown.Menu>
@@ -89,7 +95,7 @@ const parentCategory = () => {
       title="manage parent category"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

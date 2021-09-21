@@ -34,10 +34,10 @@ const update = () => {
   useEffect(() => {
     if (response !== null) {
       setPageData({
-        pageName: response.cms.pageName,
-        content: response.cms.content,
-        _id: response.cms._id,
-        isActive: response.cms.isActive,
+        pageName: response.pageName,
+        content: response.content,
+        _id: response._id,
+        isActive: response.isActive,
       });
     }
   }, [response]);

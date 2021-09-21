@@ -37,9 +37,9 @@ const add = () => {
 
   useEffect(() => {
     setInitSchema({
-      _id: res?.s?._id,
-      name: res?.s?.name,
-      shortName: res?.s?.shortName,
+      _id: res?._id,
+      name: res?.name,
+      shortName: res?.shortName,
     });
   }, [res]);
 
