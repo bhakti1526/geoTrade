@@ -287,7 +287,7 @@ const column = [
 return (
   <WrapTableLead
   //   bText="add city"
-    title="Profile Leads"
+    title="Inquiry sLeads"
     column={column}
     isLoading={isLoading}
     columnData={response}

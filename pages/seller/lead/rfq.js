@@ -224,31 +224,31 @@ const inquiry = () => {
                         alt="india"
                         class="col-1 p-1"
                     />
-                    <p className="col-10 p-1 mb-0">Rewa, Madhya Pradesh</p>
+                    <p className="col-10 p-1 mb-0">{r.city.name},{r.state.name}</p>
                 </div>
-                <div className="duration-post mb-3"><i className="far fa-clock pr-1"></i><span className="pl-1">21 hrs ago</span></div>
+                <div className="duration-post mb-3"><i className="far fa-clock pr-1"></i><span className="pl-1">{new Date(r.createdAt).toDateString()}</span></div>
                 <div className="desc-post">
-                    <p className="mb-2">Text will be coming soon...Text will be coming soon...Text will be coming soon...Text will be coming soon... Text will be coming soon...</p>
-                    <p className="mb-2">Text will be coming soon...Text will be coming soon...Text will be coming soon...</p>
+                  
+                    <p className="mb-2">{r.message}</p>
                 </div>
                 <div className="table table-responsive mb-lg-0">
     <table className="table table-lead-post mb-0">
         <tbody>
             <tr>
-                <td>Name</td>
+                <td>{r.buyer.firstName}</td>
                 <td style={{width: "10px"}}>:</td>
-                <th>Desc</th>
+                <th>{r.buyer.email}</th>
             </tr>
             <tr>
+                <td>{r.sellerType.sellerTypeName}</td>
+                <td style={{width: "10px"}}>:</td>
+                <th>{r.sellerType.sellerTypeTitle}</th>
+            </tr>
+            {/* <tr>
                 <td>Name</td>
                 <td style={{width: "10px"}}>:</td>
                 <th>Desc</th>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td style={{width: "10px"}}>:</td>
-                <th>Desc</th>
-            </tr>
+            </tr> */}
         </tbody>
     </table>
 </div>
@@ -298,11 +298,11 @@ const inquiry = () => {
                                     <div className="d-flex text-center">
                                         <Link className="text-secondary mr-2" href="#">
                                             <i className="fas fa-mobile-alt text-success"></i><br />
-                                            Mobile
+                                            {r.buyer.mobile}
                                         </Link>
                                         <Link className="text-secondary" href="#">
                                             <i className="far fa-envelope-open text-success"></i><br />
-                                            Email
+                                            {r.buyer.email}
                                         </Link>
                                     </div>
                                 </th>

@@ -222,7 +222,7 @@ const column = [
 return (
   <WrapTableLead
   //   bText="add city"
-    title="Profile Leads"
+    title="Contact Leads"
     column={column}
     isLoading={isLoading}
     columnData={response}
