@@ -79,11 +79,8 @@ const manageUser = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteUser/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteUser/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete

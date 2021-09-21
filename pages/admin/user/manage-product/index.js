@@ -75,11 +75,8 @@ const manageProduct = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteProduct/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteProduct/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete
