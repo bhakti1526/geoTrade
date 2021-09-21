@@ -4,13 +4,14 @@ export const Reducer = (state, action) => {
   console.log(action);
   switch (action.type) {
     case "AUTH-ADMIN":
-      axios.defaults.headers.common["Authorization"] = action.data.token;
+      axios.defaults.headers.common["Authorization"] = action.data.data.token;
       return {
         auth: {
           isAuth: true,
           isAdmin: true,
           isSeller: false,
         },
+        token: action.data.data.token,
         user: {
           email: action.data.data.user.email,
           firstName: action.data.data.user.firstName,

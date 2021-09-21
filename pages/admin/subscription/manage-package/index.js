@@ -77,8 +77,9 @@ const managePackages = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
+                console.log(s.row.original._id);
                 await deleteData(`/deletePackage/${s.row.original._id}`);
-                window.location.reload();
+                // window.location.reload();
               }}
             >
               delete
