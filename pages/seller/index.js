@@ -16,6 +16,7 @@ const DailyTarget = dynamic(() => import("../../src/uena/home/DailyTarget"), {
 const OrderChart = dynamic(() => import("../../src/uena/home/OrderChart"), {
   ssr: false,
 });
+
 const CustomersChart = dynamic(
   () => import("../../src/uena/home/CustomersChart"),
   {
