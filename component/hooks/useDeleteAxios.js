@@ -9,7 +9,7 @@ const useDeleteAxios = () => {
   const deleteData = async (url) => {
     setIsLoading(true);
     await axios
-      .delete(`http://localhost:4000${url}`)
+      .delete(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
       .then((res) => {
         setResponse(res.data);
       })

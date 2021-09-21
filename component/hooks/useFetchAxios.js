@@ -12,7 +12,7 @@ const useFetchAxios = (url) => {
     const getData = async () => {
       console.log("sending request");
       await axios
-        .get(`http://localhost:4000${url}`)
+        .get(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
         .then((res) => {
           setResponse(res.data.data);
         })

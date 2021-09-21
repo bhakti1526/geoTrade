@@ -62,11 +62,8 @@ const manageOffers = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteOffer/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteOffer/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete
@@ -81,6 +78,7 @@ const manageOffers = () => {
     <WrapTable
       title="manage offers"
       column={column}
+      bText="add offers"
       isLoading={isLoading}
       columnData={response}
     />

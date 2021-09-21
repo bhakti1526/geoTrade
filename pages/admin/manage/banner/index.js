@@ -82,7 +82,7 @@ const banner = () => {
       title="manage banner"
       bText="add banner"
       column={column}
-      columnData={response.allBanner}
+      columnData={response}
     />
   );
 };
