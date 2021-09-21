@@ -26,7 +26,7 @@ const sellerType = () => {
       accessor: "sellerTypeImg",
       Cell: (e) => (
         <img
-          src={`http://localhost:4000/api/img/${e.value}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
           alt="product"
           width="56"
         />

@@ -7,7 +7,7 @@ export const imgPost = async (img) => {
 
   let imgUrl = null;
   await axios
-    .post("http://localhost:4000/api/img/upload", formData)
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
     .then((res) => {
       imgUrl = res.data.data;
     });

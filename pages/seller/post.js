@@ -60,7 +60,7 @@ const post = () => {
     setInitValue({ ...initValue, [e.target.name]: e.target.value });
   };
 
-  const url = "http://localhost:4000";
+  const url = process.env.NEXT_PUBLIC_API_URL;
 
   const getReqData = async () => {
     const pc = await axios.get(`${url}/getParentCategory`);

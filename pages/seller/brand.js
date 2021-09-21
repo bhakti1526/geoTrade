@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
-import axios from 'axios';
+import axios from "axios";
 import {
   Form,
   FormGroup,
@@ -11,41 +11,41 @@ import {
   Button,
 } from "react-bootstrap";
 
-const brands={
-  name:"",
-  img:"",
-  contact:"",
-  email:"",
-  website:"",
-  userType:"",
-  description:"",
-  isApproved:false
+const brands = {
+  name: "",
+  img: "",
+  contact: "",
+  email: "",
+  website: "",
+  userType: "",
+  description: "",
+  isApproved: false,
 };
 
 const brand = () => {
-  const url ="http://localhost:4000";
-  const [b,setB] = useState(brands);
-  const[desc,setDesc] = useState("");
+  const url = process.env.NEXT_PUBLIC_API_URL;
+  const [b, setB] = useState(brands);
+  const [desc, setDesc] = useState("");
 
-  const addBrand=async(e)=>{
+  const addBrand = async (e) => {
     e.preventDefault();
-    console.log(desc)
-    const adds = await axios.post(`${url}/addBrand`,b,{
-      headers:{
-        authorization:localStorage.getItem("jwt")
-      }
+    console.log(desc);
+    const adds = await axios.post(`${url}/addBrand`, b, {
+      headers: {
+        authorization: localStorage.getItem("jwt"),
+      },
     });
 
-    if(adds.status===201){
+    if (adds.status === 201) {
       console.log("Brand Added");
       window.location.reload();
     }
-  }
+  };
 
-  const onInputChange=(e)=>{
+  const onInputChange = (e) => {
     console.log(b);
-    setB({...b,[e.target.name]:e.target.value})
-  }
+    setB({ ...b, [e.target.name]: e.target.value });
+  };
 
   return (
     <div>
@@ -67,7 +67,7 @@ const brand = () => {
                           className="form-control"
                           name="name"
                           placeholder=""
-                          onChange={(e)=>onInputChange(e)}
+                          onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
 
@@ -78,7 +78,7 @@ const brand = () => {
                           type="text"
                           className="form-control"
                           placeholder=""
-                          onChange={(e)=>onInputChange(e)}
+                          onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
 
@@ -89,7 +89,7 @@ const brand = () => {
                           type="text"
                           className="form-control"
                           placeholder=""
-                          onChange={(e)=>onInputChange(e)}
+                          onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
 
@@ -100,17 +100,24 @@ const brand = () => {
                           className="form-control"
                           placeholder=""
                           name="email"
-                          onChange={(e)=>onInputChange(e)}
+                          onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
 
                       <FormGroup className="col-md-12 col-lg-12">
                         <FormLabel>Brand Info</FormLabel>
                         <div className="summernote">
-                          <Editor  onEditorChange={(newValue, editor) => {
-                          // setText(editor.getContent({format: 'text'}));
-                          setB({...initValue,['description']:editor.getContent({format:'text'})})
-                        }}/>
+                          <Editor
+                            onEditorChange={(newValue, editor) => {
+                              // setText(editor.getContent({format: 'text'}));
+                              setB({
+                                ...initValue,
+                                ["description"]: editor.getContent({
+                                  format: "text",
+                                }),
+                              });
+                            }}
+                          />
                         </div>
                       </FormGroup>
                     </div>
@@ -136,7 +143,11 @@ const brand = () => {
 
                   <FormGroup className="col-md-12  text-center">
                     <div className="btn-page mt-5">
-                      <Button variant="primary btn-rounded" type="button" onClick={(e)=>addBrand(e)}>
+                      <Button
+                        variant="primary btn-rounded"
+                        type="button"
+                        onClick={(e) => addBrand(e)}
+                      >
                         Update Brand
                       </Button>
                     </div>

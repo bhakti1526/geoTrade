@@ -43,7 +43,7 @@ const add = () => {
     data.append("img", image);
     let imgUrl;
     await axios
-      .post("http://localhost:4000/api/img", data)
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img`, data)
       .then((res) => {
         imgUrl = res?.data?.data?.img || "";
       })
