@@ -119,6 +119,7 @@ const add = () => {
                     name="parentGroupImg"
                     type="file"
                     className="form-control"
+                    accept="image/*"
                     onChange={(e) => setImg(e.target.files[0])}
                     isInvalid={
                       !!touched.parentGroupImg && !!errors.parentGroupImg

@@ -8,7 +8,7 @@ const usePostAxios = (url) => {
   const postData = async (data) => {
     setIsLoading(true);
     await axios
-      .post(`http://localhost:4000${url}`, data)
+      .post(`${process.env.NEXT_PUBLIC_API_URL}${url}`, data)
       .then((res) => setResponse(res.data.data))
       .finally(() => setIsLoading(false));
   };

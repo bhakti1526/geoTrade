@@ -1,138 +1,348 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Editor } from "@tinymce/tinymce-react";
-import Select from "react-select";
 import {
   Form,
   FormGroup,
   FormLabel,
   FormControl,
-  FormCheck,
   Button,
 } from "react-bootstrap";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import moment from "moment";
+
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
+import AppLoader from "../../../../src/components/admin/AppLoader";
+
+const initValue = {
+  title: "",
+  img: "",
+  description: "",
+  stateDate: "",
+  endDate: "",
+  offerCode: "",
+  offerUseCount: "",
+  terms: "",
+  offerOnCountry: "",
+  offerOnState: "",
+  offerOnCity: "",
+
+  offerAmountType: "",
+  offerPercentage: "",
+  offerMinAmmount: "",
+
+  MinOfferApplicableOn: "",
+  MaxOfferApplicableOn: "",
+  IsMinApplicableOn: true,
+  isActive: true,
+};
 
 const add = () => {
-  const [selectOption, setSelectOption] = useState(null);
-  const options = [
-    { value: "India", label: "India" },
-    { value: "USA", label: "USA" },
-  ];
+  const [img, setImg] = useState(null);
 
-  const [selectOption1, setSelectOption1] = useState(null);
-  const options1 = [
-    { value: "Gujarat", label: "Gujarat" },
-    { value: "Delhi", label: "Delhi" },
-  ];
+  const { push } = useRouter();
 
-  const [selectOption2, setSelectOption2] = useState(null);
-  const options2 = [
-    { value: "Vadodara", label: "Vadodara" },
-    { value: "Surat", label: "Surat" },
-  ];
+  const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+  const [cityList, setCityList] = useState([]);
+
+  const { isLoading: countryLoad, response: contryRes } =
+    useFetchAxios("/getCountry");
+  const { isLoading: stateLoad, response: stateRes } =
+    useFetchAxios("/getState");
+  const { isLoading: cityLoad, response: cityRes } = useFetchAxios("/getCity");
+
+  const { isLoading, postData } = usePostAxios("/addOffer");
+
+  useEffect(() => {
+    setCountryList(contryRes);
+  }, [contryRes]);
+
+  useEffect(() => {
+    setStateList(stateRes);
+  }, [stateRes]);
+
+  useEffect(() => {
+    setCityList(cityRes);
+  }, [cityRes]);
+
+  if (countryLoad === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
+  if (cityLoad === true) return <AppLoader />;
+
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required(),
+    img: Yup.mixed()
+      .required("A file is required")
+      .test("fileFormat", "image only", () => {
+        if (img === null || img === undefined) return false;
+        return img.type === "image/png"
+          ? true
+          : img.type === "image/jpeg"
+          ? true
+          : false;
+      }),
+    description: Yup.string().required(),
+    stateDate: Yup.string().required(),
+    endDate: Yup.string().required(),
+    offerCode: Yup.string().required(),
+    offerUseCount: Yup.number().min(1).required(),
+    terms: Yup.string().required(),
+
+    offerOnCountry: Yup.string().required(),
+    offerOnState: Yup.string().required(),
+    offerOnCity: Yup.string().required(),
+
+    offerAmountType: Yup.number().oneOf([1, 2]).required(),
+    offerPercentage: Yup.number().required(),
+    offerMinAmmount: Yup.number().required(),
+
+    MinOfferApplicableOn: Yup.number().required(),
+    MaxOfferApplicableOn: Yup.number().required(),
+    IsMinApplicableOn: Yup.bool().oneOf([true, false]),
+    isActive: Yup.bool().oneOf([true, false]),
+  });
+
+  const handleSubmit = async (val) => {
+    const formData = new FormData();
+    formData.append("title", val.title);
+    formData.append("img", img);
+    formData.append("description", val.description);
+    formData.append("stateDate", val.stateDate);
+    formData.append("endDate", val.endDate);
+    formData.append("offerCode", val.offerCode);
+    formData.append("offerUseCount", val.offerUseCount);
+    formData.append("terms", val.terms);
+    formData.append("offerOnCountry", val.offerOnCountry);
+    formData.append("offerOnState", val.offerOnState);
+    formData.append("offerOnCity", val.offerOnCity);
+    formData.append("offerAmountType", val.offerAmountType);
+    formData.append("offerPercentage", val.offerPercentage);
+    formData.append("offerMinAmmount", val.offerMinAmmount);
+    formData.append("MinOfferApplicableOn", val.MinOfferApplicableOn);
+    formData.append("MaxOfferApplicableOn", val.MaxOfferApplicableOn);
+    formData.append("IsMinApplicableOn", val.IsMinApplicableOn);
+    formData.append("isActive", val.isActive);
+
+    await postData(formData);
+    push("/admin/subscription/manage-offer");
+  };
 
   return (
-    <WrapForm title="add offer">
-      <Form className="row">
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Brand Name</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+    <WrapForm title="update offer">
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initValue}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit, handleChange, values, setFieldValue }) => {
+          return (
+            <>
+              <Form
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                className="row"
+              >
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer Name</FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="title"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Brand Image</FormLabel>
-          <FormControl type="file" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer Name</FormLabel>
+                  <FormControl
+                    type="file"
+                    className="form-control"
+                    placeholder=""
+                    accept="image/*"
+                    name="img"
+                    onChange={(e) => setImg(e.target.files[0])}
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-12">
-          <FormLabel> Offer Description </FormLabel>
-          <div className="summernote">
-            <Editor />
-          </div>
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-12">
+                  <FormLabel> Offer Description </FormLabel>
+                  <div className="summernote">
+                    <Editor
+                      name="description"
+                      onChange={(e) =>
+                        setFieldValue("description", e.target.getContent())
+                      }
+                    />
+                  </div>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Start Date</FormLabel>
-          <FormControl type="date" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Start Date</FormLabel>
+                  <FormControl
+                    type="date"
+                    className="form-control"
+                    onChange={(e) => {
+                      const date = moment(e.target.value).toISOString();
+                      setFieldValue("stateDate", date);
+                    }}
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> End Date</FormLabel>
-          <FormControl type="date" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> End Date</FormLabel>
+                  <FormControl
+                    type="date"
+                    className="form-control"
+                    onChange={(e) =>
+                      setFieldValue(
+                        "endDate",
+                        moment(e.target.value).toISOString()
+                      )
+                    }
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Offer Code </FormLabel>
-          <FormControl type="text" className="form-control" value="CltPLf" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer Code </FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="offerCode"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Offer Terms </FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer User Count </FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="offerUseCount"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Offer User Count </FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-12">
+                  <FormLabel> Offer Terms </FormLabel>
+                  <div className="summernote">
+                    <Editor
+                      name="terms"
+                      onChange={(e) =>
+                        setFieldValue("terms", e.target.getContent())
+                      }
+                    />
+                  </div>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel>Country</FormLabel>
-          <Select
-            placeholder="Choose Country"
-            defaultValue={selectOption}
-            onChange={setSelectOption}
-            options={options}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel>Country</FormLabel>
+                  <FormControl name="offerOnCountry" as="select">
+                    <option>select</option>
+                    {countryList.map((x) => (
+                      <option value={x._id}>{x.name}</option>
+                    ))}
+                  </FormControl>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> State</FormLabel>
-          <Select
-            placeholder="Choose State"
-            defaultValue={selectOption1}
-            onChange={setSelectOption1}
-            options={options1}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel>state</FormLabel>
+                  <FormControl name="offerOnState" as="select">
+                    <option>select</option>
+                    {stateList.map((x) => (
+                      <option value={x._id}>{x.name}</option>
+                    ))}
+                  </FormControl>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> City</FormLabel>
-          <Select
-            placeholder="Choose State"
-            defaultValue={selectOption1}
-            onChange={setSelectOption1}
-            options={options1}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> City</FormLabel>
+                  <FormControl name="offerOnCity" as="select">
+                    <option>select</option>
+                    {cityList.map((x) => (
+                      <option value={x._id}>{x.name}</option>
+                    ))}
+                  </FormControl>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Offer Minimum Ammount </FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer ammount Type</FormLabel>
+                  <FormControl name="offerAmountType" as="select">
+                    <option>select</option>
+                    <option value="1">Percentage</option>
+                    <option value="2">Total Ammount</option>
+                  </FormControl>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Product Minimum Ammount </FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer Percentage/Ammount </FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="offerPercentage"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Minimum Offer Ammount</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel>Offer Minimum Ammount </FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="offerMinAmmount"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Offer Percentage </FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Offer Maximum Applicable On </FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="MinOfferApplicableOn"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-12  text-center">
-          <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
-              Add Offers
-            </Button>
-          </div>
-        </FormGroup>
-      </Form>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Maximum Offer Applicable On</FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    name="MaxOfferApplicableOn"
+                  />
+                </FormGroup>
+
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel>Is Min Applicable On</FormLabel>
+                  <Form.Check
+                    checked={values.IsMinApplicableOn}
+                    onClick={() =>
+                      setFieldValue(
+                        "IsMinApplicableOn",
+                        !values.IsMinApplicableOn
+                      )
+                    }
+                    label="active or inactive"
+                  />
+                </FormGroup>
+
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel>Status</FormLabel>
+                  <Form.Check
+                    checked={values.isActive}
+                    onClick={() => setFieldValue("isActive", !values.isActive)}
+                    label="active or inactive"
+                  />
+                </FormGroup>
+
+                <FormGroup className="col-md-12 btn-page text-center">
+                  <Button variant="primary btn-rounded" type="submit">
+                    Add Offers
+                  </Button>
+                </FormGroup>
+              </Form>
+            </>
+          );
+        }}
+      </Formik>
     </WrapForm>
   );
 };

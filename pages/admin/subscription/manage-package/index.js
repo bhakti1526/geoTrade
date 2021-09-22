@@ -85,6 +85,7 @@ const managePackages = () => {
     <WrapTable
       title="manage packages"
       column={column}
+      bText="add packages"
       isLoading={isLoading}
       columnData={response}
     />

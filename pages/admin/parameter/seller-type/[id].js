@@ -15,7 +15,6 @@ import usePostAxios from "../../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 import axios from "axios";
-import { imgPost } from "../../../../component/hooks/imgPost";
 
 const add = () => {
   const [initSchema, setInitSchema] = useState({
@@ -50,16 +49,30 @@ const add = () => {
   });
 
   const handleSubmite = async (val) => {
-    let url;
-
     if (img !== null && img !== undefined) {
-      url = await imgPost(img);
+      const formData = new FormData();
+      formData.append("img", img);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+        .then((res) => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateSellerType`, {
+              ...val,
+              sellerTypeImg: res.data.data,
+            })
+            .then((res) => {
+              push("/admin/parameter/seller-type/");
+            });
+        });
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateSellerType`, {
+          ...val,
+        })
+        .then((res) => {
+          push("/admin/parameter/seller-type/");
+        });
     }
-
-    console.log(url);
-
-    // await postData(val);
-    // push("/admin/parameter/seller-type");
   };
 
   useEffect(() => {
@@ -115,6 +128,7 @@ const add = () => {
                   name="sellerTypeImg"
                   className="form-control"
                   accept="image/*"
+                  onChange={(e) => setImg(e.target.files[0])}
                   isInvalid={!!touched.sellerTypeImg && !!errors.sellerTypeImg}
                 />
               </FormGroup>
