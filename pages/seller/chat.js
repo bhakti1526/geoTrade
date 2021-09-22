@@ -66,7 +66,7 @@ const chat = () => {
 {
     chats.map((c)=>(
 
-            <div className="chat-person" onClick={""}>
+            <div className="chat-person" onClick={()=>setCurrentUser(c)}>
                 <h5>{c.buyer.firstName} <small>{c.buyer.mobile}</small></h5>
                 <p>{c.buyer.city.name}, {c.buyer.state.name},{c.buyer.country.name}</p>
                 <p> <i className="fas fa-cart-plus"></i>{c.visitOn}</p>
