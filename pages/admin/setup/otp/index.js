@@ -24,7 +24,7 @@ const otp = () => {
     },
     {
       Header: "re-send limit",
-      accessor: "reSendLimit",
+      accessor: "reSendingLimit",
     },
 
     {

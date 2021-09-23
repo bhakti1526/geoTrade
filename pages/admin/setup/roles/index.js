@@ -70,8 +70,6 @@ const roles = () => {
     },
   ];
 
-  console.log(response);
-
   return (
     <WrapTable
       bText="add role"

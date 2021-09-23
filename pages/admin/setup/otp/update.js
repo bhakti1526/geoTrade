@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,6 +11,7 @@ import {
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
@@ -17,22 +19,36 @@ const validationSchema = Yup.object().shape({
   reSendingLimit: Yup.number().min(1).required(),
 });
 
-const initialValues = {
-  sendingLimit: 0,
-  reSendingLimit: 0,
-};
-
 const add = () => {
+  const { push } = useRouter();
+
+  const [initialValues, setInitialValues] = useState({
+    sendingLimit: 0,
+    reSendingLimit: 0,
+  });
+
   const { isLoading, response } = useFetchAxios("/getOtp");
+
+  const { isLoading: optPostLoad, postData } = usePostAxios(`/updateOtp`);
+
+  useEffect(() => {
+    if (response) {
+      setInitialValues(response[0]);
+    }
+  }, [response]);
 
   if (isLoading === true) return <AppLoader />;
 
-  const handleSubmit = (val) => console.log(val);
+  const handleSubmit = async (val) => {
+    await postData(val);
+    push("/admin/setup/otp");
+  };
 
   return (
     <WrapForm title="add roles">
       <Formik
-        handleSubmit={handleSubmit}
+        enableReinitialize
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
         initialValues={initialValues}
       >
@@ -67,7 +83,7 @@ const add = () => {
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> resend Limit ( count )</FormLabel>
                 <FormControl
-                  name="reSendLimit"
+                  name="reSendingLimit"
                   value={values.reSendingLimit}
                   type="text"
                   className="form-control"

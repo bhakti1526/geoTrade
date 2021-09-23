@@ -11,6 +11,7 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+import axios from "axios";
 
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import WrapForm from "../../../../src/components/admin/WrapForm";
@@ -54,6 +55,7 @@ const id = () => {
 
   const {
     query: { id },
+    push,
   } = useRouter();
 
   const { isLoading: productLoad, response: productRes } = useFetchAxios(
@@ -67,6 +69,8 @@ const id = () => {
     useFetchAxios("/getParentCategory");
   const { isLoading: parentGroupLoad, response: groupRes } =
     useFetchAxios("/getParentGroup");
+  const { isLoading: brandLoad, response: brandRes } =
+    useFetchAxios("/getBrands");
 
   useEffect(() => {
     setInitSchema({
@@ -94,11 +98,18 @@ const id = () => {
     setParentGroupList(groupRes);
   }, [groupRes]);
 
+  useEffect(() => {
+    setBrandList(brandRes);
+  }, [brandRes]);
+
+  console.log(initSchema);
+
   if (productLoad === true) return <AppLoader />;
   if (unitLoad === true) return <AppLoader />;
   if (sellerLoad === true) return <AppLoader />;
   if (parentLoad === true) return <AppLoader />;
   if (parentGroupLoad === true) return <AppLoader />;
+  if (brandLoad === true) return <AppLoader />;
 
   const handleSubmit = async (val) => {
     if (img !== null && img !== undefined) {
@@ -110,7 +121,7 @@ const id = () => {
           axios
             .post(`${process.env.NEXT_PUBLIC_API_URL}/updateProduct`, {
               ...val,
-              parentGroupImg: res.data.data,
+              img: res.data.data,
             })
             .then((res) => {
               push("/admin/user/manage-product");
@@ -119,6 +130,7 @@ const id = () => {
     } else {
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/updateProduct`, {
+          _id: id,
           ...val,
         })
         .then((res) => {
@@ -198,7 +210,7 @@ const id = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Choose Unit</FormLabel>
-                  <Form.Control value={values.unit} as="select">
+                  <Form.Control name="unit" value={values.unit} as="select">
                     <option>select</option>
                     {unitList.map((x) => (
                       <option key={x._id} value={x._id}>
@@ -208,9 +220,9 @@ const id = () => {
                   </Form.Control>
                 </FormGroup>
 
-                {/* <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Choose Brand</FormLabel>
-                  <Form.Control as="select">
+                  <Form.Control name="brand" value={values.brand} as="select">
                     <option>select</option>
                     {brandList.map((x) => (
                       <option key={x._id} value={x._id}>
@@ -218,11 +230,15 @@ const id = () => {
                       </option>
                     ))}
                   </Form.Control>
-                </FormGroup> */}
+                </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Choose Seller Type</FormLabel>
-                  <Form.Control value={values.sellerType} as="select">
+                  <Form.Control
+                    name="sellerType"
+                    value={values.sellerType}
+                    as="select"
+                  >
                     <option>select</option>
                     {sellerTypeList.map((x) => (
                       <option key={x._id} value={x._id}>
@@ -234,7 +250,11 @@ const id = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Parent Group</FormLabel>
-                  <Form.Control value={values.parentGroup} as="select">
+                  <Form.Control
+                    name="parentGroup"
+                    value={values.parentGroup}
+                    as="select"
+                  >
                     <option>select</option>
                     {parentGroupList.map((x) => (
                       <option key={x._id} value={x._id}>
@@ -246,7 +266,11 @@ const id = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Parent Category</FormLabel>
-                  <Form.Control value={values.parentCategory} as="select">
+                  <Form.Control
+                    name="parentCategory"
+                    value={values.parentCategory}
+                    as="select"
+                  >
                     <option>select</option>
                     {parentCategoryList.map((x) => (
                       <option key={x._id} value={x._id}>

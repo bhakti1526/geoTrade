@@ -35,10 +35,10 @@ const emailsDetails = () => {
       Cell: (e) => (
         <span
           className={
-            !e.value ? "badge light badge-success" : "badge light badge-danger"
+            e.value ? "badge light badge-success" : "badge light badge-danger"
           }
         >
-          {!e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
+          {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
         </span>
       ),
     },

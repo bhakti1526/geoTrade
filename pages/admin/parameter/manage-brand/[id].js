@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
@@ -32,6 +33,7 @@ const id = () => {
   const [img, setImg] = useState(null);
   const {
     query: { id },
+    push,
   } = useRouter();
 
   const { isLoading, response } = useFetchAxios(`/getbrands?id=${id}`);
@@ -56,13 +58,40 @@ const id = () => {
       contact: response?.contact,
       website: response?.website,
       isApproved: response?.isApproved,
-      isActive: response?.isActive,
+      isActive: response?.isActive || true,
     });
   }, [response]);
 
   if (isLoading === true) return <AppLoading />;
 
-  const handleSubmit = (val) => console.log(val);
+  const handleSubmit = (val) => {
+    if (img !== null && img !== undefined) {
+      const formData = new FormData();
+      formData.append("img", img);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+        .then((res) => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateBrands/${id}`, {
+              ...val,
+              _id: id,
+              img: res.data.data,
+            })
+            .then((res) => {
+              push("/admin/parameter/manage-brand");
+            });
+        });
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateBrands/${id}`, {
+          ...val,
+          _id: id,
+        })
+        .then((res) => {
+          push("/admin/parameter/manage-brand");
+        });
+    }
+  };
 
   return (
     <WrapForm title="update brand">
@@ -98,7 +127,7 @@ const id = () => {
                       <FormControl
                         type="text"
                         className="form-control"
-                        name="name"
+                        name="img"
                         type="file"
                         accept="image/*"
                         onChange={(e) => setImg(e.target.files[0])}
