@@ -63,11 +63,8 @@ const manageBrand = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteBrands/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deleteBrands/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete

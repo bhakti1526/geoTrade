@@ -1,5 +1,4 @@
 import Head from "next/head";
-import axios from "axios";
 import "nouislider/distribute/nouislider.css";
 import { useEffect, useState } from "react";
 // redux
@@ -40,12 +39,9 @@ function MyApp({ Component, pageProps }) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, [pages]);
 
-  const { pathname } = useRouter();
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQyY2JlYzA5NDRhMDU1MmMyNTYyM2QiLCJpYXQiOjE2MzE3Njc4MzR9.VYTEOXZCEVJIh-pvdXC5XUMeBgpRplsD0Bmqm6DRE24";
-  }, []);
+  const { pathname } = useRouter();
 
   if (typeof window === "undefined") return <></>;
 
@@ -61,7 +57,7 @@ function MyApp({ Component, pageProps }) {
               rel="icon"
               type="image/png"
               sizes="16x16"
-              href="https://geotrade.org.in/static/media/logo.0bf9f979.png"
+              href="https://i.ibb.co/q5j82YX/geotrade-logo.png"
             />
             <link
               rel="stylesheet"
@@ -72,12 +68,12 @@ function MyApp({ Component, pageProps }) {
             />
           </Head>
 
-          {pathname == "/login" ? (
-            <Component {...pageProps} />
-          ) : (
+          {pathname.startsWith("/admin/") || pathname.startsWith("/seller") ? (
             <Layout>
               <Component {...pageProps} />
             </Layout>
+          ) : (
+            <Component {...pageProps} />
           )}
         </SimpleReactLightbox>
       </AppProvider>

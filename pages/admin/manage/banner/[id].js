@@ -49,10 +49,12 @@ const update = () => {
     data.append("img", file);
 
     try {
-      axios.post("http://localhost:4000/api/img", data).then((res) => {
-        const imgUrl = res?.data?.data?.img || "";
-        setFieldValue("img", imgUrl);
-      });
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img`, data)
+        .then((res) => {
+          const imgUrl = res?.data?.data?.img || "";
+          setFieldValue("img", imgUrl);
+        });
     } catch (err) {
       console.log(err);
     }

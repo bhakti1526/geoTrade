@@ -22,7 +22,7 @@ const Login1 = ({ getUser, users }) => {
           <div className="text-center mb-4 pt-5">
             <img
               style={{ width: "100px" }}
-              src="https://geotrade.org.in/static/media/logo.0bf9f979.png"
+              src="https://i.ibb.co/q5j82YX/geotrade-logo.png"
               alt=""
             />
           </div>

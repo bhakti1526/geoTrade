@@ -3,7 +3,7 @@ const Footer = () => {
     <div className="footer">
       <div className="copyright">
         <p>
-          Copyright © 2021 Designed &amp; Developed by
+          Copyright © 2021 Designed &amp; Developed by{" "}
           <a href="https://barodaweb.com/" target="_blank">
             Barodaweb The E-Catalogue Designer
           </a>

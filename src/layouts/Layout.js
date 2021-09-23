@@ -1,13 +1,11 @@
-import Router from "next/router";
 import { Fragment, useEffect, useState, useContext } from "react";
 import { connect } from "react-redux";
 import { AppContext } from "../../component/context/app.context";
 import { getUser } from "../redux/action/auth";
 import Footer from "./Footer";
-import ChatBox from "./header/chatbox/ChatBox";
+
 import Header from "./header/Header";
 import NavHeader from "./header/NavHeader";
-import PreLoader from "./PreLoader";
 
 import Sidebar from "./Sidebar";
 
@@ -26,7 +24,7 @@ const Layout = ({ children, getUser, user }) => {
     <Fragment>
       <div id="main-wrapper" className="show">
         <NavHeader />
-        <ChatBox />
+        {/* <ChatBox /> */}
         <Header />
         <Sidebar />
         <div className="content-body" style={{ minHeight: height }}>

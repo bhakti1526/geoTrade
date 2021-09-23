@@ -30,6 +30,17 @@ const managePackages = () => {
       accessor: "duration",
     },
     {
+      Header: "offer image",
+      accessor: "img",
+      Cell: (e) => (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
+    },
+    {
       Header: "status",
       accessor: "isActive",
       Cell: (e) => (
@@ -66,11 +77,9 @@ const managePackages = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deletePackage/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                console.log(s.row.original._id);
+                await deleteData(`/deletePackage/${s.row.original._id}`);
+                // window.location.reload();
               }}
             >
               delete
@@ -80,6 +89,8 @@ const managePackages = () => {
       ),
     },
   ];
+
+  console.log(response);
 
   return (
     <WrapTable

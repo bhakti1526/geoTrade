@@ -29,8 +29,6 @@ const id = () => {
 
   const { isLoading, response, postData } = usePostAxios("/signup");
 
-  const { push } = useRouter();
-
   const handleSubmit = async (val) => {
     await postData(val);
 

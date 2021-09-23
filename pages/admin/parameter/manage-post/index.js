@@ -75,11 +75,8 @@ const managePost = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deletePost/${s.row.original._id}`).then(
-                  () => {
-                    if (res !== null) window.location.reload();
-                  }
-                );
+                await deleteData(`/deletePost/${s.row.original._id}`);
+                window.location.reload();
               }}
             >
               delete
