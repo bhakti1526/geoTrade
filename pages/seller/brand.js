@@ -11,29 +11,44 @@ import {
   Button,
 } from "react-bootstrap";
 
-const brands = {
-  name: "",
-  img: "",
-  contact: "",
-  email: "",
-  website: "",
-  userType: "",
-  description: "",
-  isApproved: false,
+
+// {
+//   auth: {
+//     isAuth: false,
+//     isAdmin: false,
+//     isSeller: false,
+//   },
+//   token: "",
+//   user: { email: "", firstName: "" },
+//   error: {
+//     isError: false,
+//     msg: "SOMETHING WENT WRONG",
+//   },
+// };
+
+const brands={
+  name:"",
+  img:"",
+  contact:"",
+  email:"",
+  website:"",
+  userType:"",
+  description:"",
+  isApproved:false
 };
 
 const brand = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
-  const [b, setB] = useState(brands);
-  const [desc, setDesc] = useState("");
-
-  const addBrand = async (e) => {
+  const url ="http://localhost:4000";
+  const [b,setB] = useState(brands);
+  const[desc,setDesc] = useState("");
+  const addBrand=async(e)=>{
     e.preventDefault();
-    console.log(desc);
-    const adds = await axios.post(`${url}/addBrand`, b, {
-      headers: {
-        authorization: localStorage.getItem("jwt"),
-      },
+    console.log(desc)
+    const adds = await axios.post(`${url}/addBrand`,b,{
+      headers:{
+        // authorization:localStorage.getItem("jwt")
+        authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+      }
     });
 
     if (adds.status === 201) {

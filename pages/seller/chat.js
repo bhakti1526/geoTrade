@@ -109,16 +109,70 @@ const chat = () => {
                       </div>
                     </div>
 
+<<<<<<< HEAD
+        </div>
+
+    </div>
+
+    <div className="col-md-8 p-0">
+
+
+        <div className="chat-desc d-none d-md-block" style={{}}>
+
+            <div className="number-person text-center">
+
+                <i className="fas fa-arrow-left d-block d-md-none"></i>
+
+                <h5>{currentUser.buyer.firstName}<small>{currentUser.buyer.mobile}</small></h5>
+
+            </div>
+
+            <div className="chat-start">
+
+                <div className="row">
+{
+    currentUser===null || currentUser.buyer ===  null ?
+    <div>
+        No Chat Selected
+        </div>
+:
+                    <div className="col-md-12">
+                        {
+                            currentUser.map((ch)=>(
+
+
+                                ch.chat.user === "BUYER" ?
+                        <div className="reply-chat">
+                            <h6> <span className="text-success">{currentUser.buyer.mobile}</span> <small>~{currentUser.buyer.firstName}</small></h6>
+                            <p>
+                                {ch.message}
+                            </p>
+                            <small className="d-block float-right">{new Date(ch.sentOn).toLocaleDateString()}</small>
+                        </div>
+
+                        :
+=======
                     <div className="col-md-8 p-0">
                       <div className="chat-desc d-none d-md-block" style={{}}>
                         <div className="number-person text-center">
                           <i className="fas fa-arrow-left d-block d-md-none"></i>
+>>>>>>> c623735a13aa2647050f0c2f7903b1071bbcb3a6
 
                           <h5>
                             {currentUser.buyer.firstName}
                             <small>{currentUser.buyer.mobile}</small>
                           </h5>
                         </div>
+<<<<<<< HEAD
+                 
+                 ))
+                        }
+                    </div>
+        
+    }
+
+                        {/* <div className="reply-chat">
+=======
 
                         <div className="chat-start">
                           <div className="row">
@@ -170,6 +224,7 @@ const chat = () => {
                             )}
 
                             {/* <div className="reply-chat">
+>>>>>>> c623735a13aa2647050f0c2f7903b1071bbcb3a6
                             <h6> <span className="text-success">+91 9824281021</span> <small>~ Barodaweb</small></h6>
                             <p>
                                 Hello, Rushil Patel
@@ -243,9 +298,19 @@ const chat = () => {
                             </div>
                           </div>
                         </div>
+<<<<<<< HEAD
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+=======
                       </div>
                     </div>
                   </div>
+>>>>>>> c623735a13aa2647050f0c2f7903b1071bbcb3a6
                 </div>
               </div>
             </div>

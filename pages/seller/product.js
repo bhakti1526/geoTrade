@@ -22,26 +22,25 @@ const productDetails = {
 };
 
 const product = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
-  const [products, setProducts] = useState(productDetails);
+    const url = "http://localhost:4000";
+    const [products,setProducts] = useState(productDetails);
 
-  const onInputChange = (e) => {
-    setProducts({ ...products, [e.target.name]: e.target.value });
-  };
+    const onInputChange=(e)=>{
+        setProducts({...products,[e.target.name]:e.target.value})
+      }
 
-  const addProduct = async (e) => {
-    e.preventDefault();
-    const product = await axios.post(`${url}/addProduct`, productDetails, {
-      headers: {
-        authorization: localStorage.getItem("jwt"),
-      },
-    });
+    const addProduct=async(e)=>{
+        e.preventDefault();
+        const product = await axios.post(`${url}/addProduct`,productDetails,{headers:{
+            // authorization:localStorage.getItem("jwt")
+            authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+        }});
 
-    if (product.status == 201) {
-      console.log("Product Added");
-      window.location.reload();
+        if(product.status===201){
+            console.log("Product Added");
+            window.location.reload();
+        }
     }
-  };
 
   return (
     <div>
