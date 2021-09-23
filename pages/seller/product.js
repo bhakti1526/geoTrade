@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
 import {
@@ -9,6 +9,9 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
+
+import {AppContext} from '../../component/context/app.context';
+
 
 import axios from "axios";
 
@@ -22,6 +25,14 @@ const productDetails = {
 };
 
 const product = () => {
+
+  let tokens;
+
+  useEffect(()=>{
+    const {token} = useContext(AppContext);
+    tokens = token;
+  },[]);
+
     const url = "http://localhost:4000";
     const [products,setProducts] = useState(productDetails);
 
@@ -32,8 +43,7 @@ const product = () => {
     const addProduct=async(e)=>{
         e.preventDefault();
         const product = await axios.post(`${url}/addProduct`,productDetails,{headers:{
-            // authorization:localStorage.getItem("jwt")
-            authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+            authorization:tokens
         }});
 
         if(product.status===201){
