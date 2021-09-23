@@ -33,10 +33,11 @@ const product = () => {
     const addProduct=async(e)=>{
         e.preventDefault();
         const product = await axios.post(`${url}/addProduct`,productDetails,{headers:{
-            authorization:localStorage.getItem("jwt")
+            // authorization:localStorage.getItem("jwt")
+            authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
         }});
 
-        if(product.status==201){
+        if(product.status===201){
             console.log("Product Added");
             window.location.reload();
         }
@@ -53,7 +54,6 @@ const product = () => {
             </div>
             <div className="card-body">
               <div className="basic-form">
-
               <div className="row">
     <div className="col-md-6">
         <div className="row m-0">

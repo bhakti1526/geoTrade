@@ -102,7 +102,8 @@ const post = () => {
     e.preventDefault();
     const ap = await axios.post(`${url}/addPost`, initValue, {
       headers: {
-        authorization: localStorage.getItem("jwt"),
+        // authorization: localStorage.getItem("jwt"),
+      authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
       },
     });
 
