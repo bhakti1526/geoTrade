@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const emailsDetails = () => {
-  const { isLoading, response, error } = useFetchAxios("/getEmail");
+  const { isLoading, response, error, getData } = useFetchAxios("/getEmail");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -67,7 +67,7 @@ const emailsDetails = () => {
             <Dropdown.Item
               onClick={async () => {
                 await deleteData(`/deleteEmail/${s.row.original._id}`);
-                window.location.reload();
+                getData();
               }}
             >
               delete

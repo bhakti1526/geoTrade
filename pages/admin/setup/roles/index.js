@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const roles = () => {
-  const { isLoading, response, error } = useFetchAxios("/getRoles");
+  const { isLoading, response, error, getData } = useFetchAxios("/getRoles");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -59,7 +59,7 @@ const roles = () => {
             <Dropdown.Item
               onClick={async () => {
                 await deleteData(`/deleteRoles/${s.row.original._id}`);
-                window.location.reload();
+                getData();
               }}
             >
               delete

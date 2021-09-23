@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const managePackages = () => {
-  const { isLoading, response, error } = useFetchAxios("/getPackage");
+  const { isLoading, response, error, getData } = useFetchAxios("/getPackage");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -79,7 +79,7 @@ const managePackages = () => {
               onClick={async () => {
                 console.log(s.row.original._id);
                 await deleteData(`/deletePackage/${s.row.original._id}`);
-                // window.location.reload();
+                getData();
               }}
             >
               delete

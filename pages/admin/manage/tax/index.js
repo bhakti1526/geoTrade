@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const tax = () => {
-  const { isLoading, response, error } = useFetchAxios("/getTax");
+  const { isLoading, response, error, getData } = useFetchAxios("/getTax");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -63,7 +63,7 @@ const tax = () => {
             <Dropdown.Item
               onClick={async () => {
                 await deleteData(`/deleteTax/${s.row.original._id}`);
-                window.location.reload();
+                getData();
               }}
             >
               delete

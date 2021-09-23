@@ -6,25 +6,24 @@ const useFetchAxios = (url) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
+  const getData = async () => {
+    setIsLoading(true);
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
+      .then((res) => {
+        console.log(res.data.data);
+        setResponse(res.data.data);
+      })
+      .catch((err) => setError(err))
+      .finally(() => setIsLoading(false));
+  };
+
   useEffect(() => {
     setIsLoading(true);
-
-    const getData = async () => {
-      console.log("sending request");
-      await axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}${url}`)
-        .then((res) => {
-          console.log(res.data.data);
-          setResponse(res.data.data);
-        })
-        .catch((err) => setError(err))
-        .finally(() => setIsLoading(false));
-    };
-
     getData();
   }, [url]);
 
-  return { isLoading, response, error };
+  return { isLoading, response, error, getData };
 };
 
 export default useFetchAxios;

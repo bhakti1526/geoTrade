@@ -10,7 +10,8 @@ import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 const parentCategory = () => {
   const { push, reload } = useRouter();
 
-  const { isLoading, response, error } = useFetchAxios("/getParentCategory");
+  const { isLoading, response, error, getData } =
+    useFetchAxios("/getParentCategory");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -78,7 +79,7 @@ const parentCategory = () => {
             <Dropdown.Item
               onClick={async () => {
                 await deleteData(`/deleteParentCategory/${s.row.original._id}`);
-                reload("/admin/parameter/parent-category");
+                getData();
               }}
             >
               delete

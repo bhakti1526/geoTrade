@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const social = () => {
-  const { isLoading, response } = useFetchAxios("/getSocial");
+  const { isLoading, response, getData } = useFetchAxios("/getSocial");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -72,9 +72,8 @@ const social = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteSocial/${s.row.original._id}`).then(
-                  () => window.location.reload()
-                );
+                await deleteData(`/deleteSocial/${s.row.original._id}`);
+                getData();
               }}
             >
               delete
