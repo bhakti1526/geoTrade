@@ -31,7 +31,7 @@ const Header = () => {
         <nav className="navbar navbar-expand">
           <div className="collapse navbar-collapse justify-content-end mr-3">
             <ul className="navbar-nav header-right">
-              <Notification />
+              {/* <Notification /> */}
               <Profile />
             </ul>
           </div>

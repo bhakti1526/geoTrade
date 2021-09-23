@@ -348,7 +348,7 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/admin/parameter/manage-post" passHref>
                         <a
                           className={`${
@@ -358,7 +358,7 @@ const Sidebar = () => {
                           Manage Post
                         </a>
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
                 <li
@@ -526,7 +526,7 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/admin/subscription/manage-offers" passHref>
                         <a
                           className={`${
@@ -536,7 +536,7 @@ const Sidebar = () => {
                           notification
                         </a>
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
               </>
