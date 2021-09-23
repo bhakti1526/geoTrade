@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Dropdown } from "react-bootstrap";
 import WrapTable from "../../../../src/components/admin/WrapTable";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
@@ -7,7 +8,14 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const managePost = () => {
-  const { isLoading, response, error, getData } = useFetchAxios("/getPost");
+  const {
+    query: { id },
+  } = useRouter();
+
+  const { isLoading, response, error, getData } = useFetchAxios(
+    `/api/admin/userdata?data=post&id=${id}`
+  );
+
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;

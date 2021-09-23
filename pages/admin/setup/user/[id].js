@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { css } from "@emotion/css";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
 import usePostAxios from "../../../../component/hooks/usePostAxios";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import AppLoader from "../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required(),
@@ -21,21 +24,27 @@ const id = () => {
 
   const [initValue, setInitValue] = useState({
     _id: "",
-    name: "",
     email: "",
     password: "",
     isActive: false,
   });
 
-  const { isLoading, response, postData } = usePostAxios("/signup");
+  const { isLoading, response, postData } = useFetchAxios(
+    `/api/admin/user?id=${id}`
+  );
 
-  const handleSubmit = async (val) => {
-    await postData(val);
+  useEffect(() => {
+    setInitValue({
+      _id: response?._id,
+      email: response?.email,
+      password: response?.password,
+      isActive: response?.isActive,
+    });
+  }, [response]);
 
-    if (response !== null) {
-      push("/admin/setup/user");
-    }
-  };
+  const handleSubmit = async (val) => {};
+
+  if (isLoading === true) return <AppLoader />;
 
   return (
     <WrapForm title="add user">
@@ -58,22 +67,11 @@ const id = () => {
               <Row>
                 <Col md="4">
                   <Form.Group>
-                    <Form.Label>user name</Form.Label>
-                    <Form.Control
-                      isInvalid={!!touched.name && !!errors.name}
-                      name="firstName"
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.name}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col md="4">
-                  <Form.Group>
                     <Form.Label>user email</Form.Label>
                     <Form.Control
                       isInvalid={!!touched.email && !!errors.email}
                       name="email"
+                      value={values.email}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.email}
@@ -87,6 +85,7 @@ const id = () => {
                       isInvalid={!!touched.password && !!errors.password}
                       type="password"
                       name="password"
+                      value={values.password}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.password}

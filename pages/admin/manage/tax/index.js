@@ -78,7 +78,7 @@ const tax = () => {
 
   return (
     <WrapTable
-      bText="add tex"
+      bText="add tax"
       title="manage tax"
       column={column}
       isLoading={isLoading}

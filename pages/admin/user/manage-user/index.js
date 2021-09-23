@@ -7,7 +7,8 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const manageUser = () => {
-  const { isLoading, response, error, getData } = useFetchAxios("/getUser");
+  const { isLoading, response, error, getData } =
+    useFetchAxios("/api/admin/alluser");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -77,14 +78,23 @@ const manageUser = () => {
             <Link href={`${window.location}/${s.row.original._id}`} passHref>
               <Dropdown.Item as="a">Edit</Dropdown.Item>
             </Link>
-            <Dropdown.Item
-              onClick={async () => {
-                await deleteData(`/deleteUser/${s.row.original._id}`);
-                getData();
-              }}
-            >
-              delete
-            </Dropdown.Item>
+
+            {s.row.original.isSeller ? (
+              <>
+                <Link
+                  href={`/admin/user/manage-product?id=${s.row.original._id}`}
+                  passHref
+                >
+                  <Dropdown.Item as="a">all products</Dropdown.Item>
+                </Link>
+                <Link
+                  href={`/admin/user/manage-post?id=${s.row.original._id}`}
+                  passHref
+                >
+                  <Dropdown.Item as="a">all post</Dropdown.Item>
+                </Link>
+              </>
+            ) : undefined}
           </Dropdown.Menu>
         </Dropdown>
       ),

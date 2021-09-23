@@ -7,7 +7,8 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const user = () => {
-  const { isLoading, response, error, getData } = useFetchAxios("/getUser");
+  const { isLoading, response, error, getData } =
+    useFetchAxios("/api/admin/user");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -18,16 +19,12 @@ const user = () => {
       accessor: "id",
     },
     {
-      Header: "username",
-      accessor: "name",
-    },
-    {
       Header: "email",
       accessor: "email",
     },
     {
       Header: "status",
-      accessor: "status",
+      accessor: "isActive",
       Cell: (e) => (
         <span
           className={
@@ -80,7 +77,7 @@ const user = () => {
       title="manage admin user"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };
