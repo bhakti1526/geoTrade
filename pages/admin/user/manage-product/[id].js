@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
-import Select from "react-select";
 import {
   Form,
   FormLabel,
@@ -10,129 +12,282 @@ import {
   Button,
 } from "react-bootstrap";
 
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import AppLoader from "../../../../src/components/admin/AppLoader";
+
+const validatinSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  img: Yup.string().required(),
+  description: Yup.string().required(),
+  price: Yup.number().min(1).required(),
+  unit: Yup.string().required(),
+  brand: Yup.string().required(),
+  sellerType: Yup.string().required(),
+  parentCategory: Yup.string().required(),
+  parentGroup: Yup.string().required(),
+  isAdminApproved: Yup.bool().oneOf([true, false]).required(),
+  isActive: Yup.bool().oneOf([true, false]).required(),
+});
 
 const id = () => {
-  const [selectOption, setSelectOption] = useState(null);
-  const options = [
-    { value: "kg", label: "kg" },
-    { value: "cm", label: "cm" },
-    { value: "ton", label: "ton" },
-  ];
+  const [img, setImg] = useState(null);
+  const [unitList, setUnitList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
+  const [sellerTypeList, setSellerTypeList] = useState([]);
+  const [parentGroupList, setParentGroupList] = useState([]);
+  const [parentCategoryList, setParentCategoryList] = useState([]);
 
-  const [selectOption1, setSelectOption1] = useState(null);
-  const options1 = [{ value: "Ambuja Cements", label: "Ambuja Cements" }];
+  const [initSchema, setInitSchema] = useState({
+    name: "",
+    img: "",
+    description: "",
+    price: "",
+    unit: "",
+    brand: "",
+    sellerType: "",
+    parentCategory: "",
+    parentGroup: "",
+    isAdminApproved: false,
+    isActive: true,
+  });
 
-  const [selectOption2, setSelectOption2] = useState(null);
-  const options2 = [
-    { value: "Mining", label: "Mining" },
-    { value: "Traders & Suppliers", label: "Traders & Suppliers" },
-  ];
+  const {
+    query: { id },
+  } = useRouter();
 
-  const [selectOption3, setSelectOption3] = useState(null);
-  const options3 = [{ value: "Sand & Gravel", label: "Sand & Gravel" }];
+  const { isLoading: productLoad, response: productRes } = useFetchAxios(
+    `/getProduct?id=${id}`
+  );
 
-  const [selectOption4, setSelectOption4] = useState(null);
-  const options4 = [{ value: " BlackTrap ", label: " BlackTrap " }];
+  const { isLoading: unitLoad, response: unitRes } = useFetchAxios("/getUnits");
+  const { isLoading: sellerLoad, response: sellerRes } =
+    useFetchAxios("/getSellerType");
+  const { isLoading: parentLoad, response: categoryRes } =
+    useFetchAxios("/getParentCategory");
+  const { isLoading: parentGroupLoad, response: groupRes } =
+    useFetchAxios("/getParentGroup");
+
+  useEffect(() => {
+    setInitSchema({
+      ...productRes,
+      parentCategory: productRes?.parentCategory?._id,
+      parentGroup: productRes?.parentGroup?._id,
+      sellerType: productRes?.sellerType?._id,
+      unit: productRes?.unit?._id,
+    });
+  }, [productRes]);
+
+  useEffect(() => {
+    setUnitList(unitRes);
+  }, [unitRes]);
+
+  useEffect(() => {
+    setSellerTypeList(sellerRes);
+  }, [sellerRes]);
+
+  useEffect(() => {
+    setParentCategoryList(categoryRes);
+  }, [categoryRes]);
+
+  useEffect(() => {
+    setParentGroupList(groupRes);
+  }, [groupRes]);
+
+  if (productLoad === true) return <AppLoader />;
+  if (unitLoad === true) return <AppLoader />;
+  if (sellerLoad === true) return <AppLoader />;
+  if (parentLoad === true) return <AppLoader />;
+  if (parentGroupLoad === true) return <AppLoader />;
+
+  const handleSubmit = async (val) => {
+    if (img !== null && img !== undefined) {
+      const formData = new FormData();
+      formData.append("img", img);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+        .then((res) => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateProduct`, {
+              ...val,
+              parentGroupImg: res.data.data,
+            })
+            .then((res) => {
+              push("/admin/user/manage-product");
+            });
+        });
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateProduct`, {
+          ...val,
+        })
+        .then((res) => {
+          push("/admin/user/manage-product");
+        });
+    }
+  };
 
   return (
     <WrapForm title="update product">
-      <Form className="row">
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Product Name</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+      <Formik
+        enableReinitialize
+        onSubmit={handleSubmit}
+        validationSchema={validatinSchema}
+        initialValues={initSchema}
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+          touched,
+          errors,
+          setFieldValue,
+        }) => {
+          return (
+            <>
+              <Form
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+                className="row"
+              >
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Product Name</FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    name="name"
+                    value={values.name}
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Product Image</FormLabel>
-          <FormControl type="file" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Product Image</FormLabel>
+                  <FormControl
+                    name="img"
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    onChange={(e) => setImg(e.target.files[0])}
+                    isInvalid={!!touched.img && !!errors.img}
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-12 col-lg-12">
-          <FormLabel> Post Description</FormLabel>
-          <div className="summernote">
-            <Editor />
-          </div>
-        </FormGroup>
+                <FormGroup className="col-md-12 col-lg-12">
+                  <FormLabel> Post Description</FormLabel>
+                  <div className="summernote">
+                    <Editor
+                      initialValue={values.description}
+                      onChange={(e) =>
+                        setFieldValue("description", e.target.getContent())
+                      }
+                    />
+                  </div>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Price</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Price</FormLabel>
+                  <FormControl
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    name="price"
+                    value={values.price}
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Choose Unit</FormLabel>
-          <Select
-            placeholder=""
-            className=""
-            defaultValue={selectOption}
-            onChange={setSelectOption}
-            options={options1}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Choose Unit</FormLabel>
+                  <Form.Control value={values.unit} as="select">
+                    <option>select</option>
+                    {unitList.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Choose Brand</FormLabel>
-          <Select
-            placeholder=""
-            className=""
-            defaultValue={selectOption1}
-            onChange={setSelectOption1}
-            options={options1}
-          />
-        </FormGroup>
+                {/* <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Choose Brand</FormLabel>
+                  <Form.Control as="select">
+                    <option>select</option>
+                    {brandList.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </FormGroup> */}
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Choose Seller Type</FormLabel>
-          <Select
-            placeholder=""
-            className=""
-            defaultValue={selectOption2}
-            onChange={setSelectOption2}
-            options={options2}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Choose Seller Type</FormLabel>
+                  <Form.Control value={values.sellerType} as="select">
+                    <option>select</option>
+                    {sellerTypeList.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.sellerTypeName}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Parent Group</FormLabel>
-          <Select
-            placeholder=""
-            className=""
-            defaultValue={selectOption3}
-            onChange={setSelectOption3}
-            options={options3}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Parent Group</FormLabel>
+                  <Form.Control value={values.parentGroup} as="select">
+                    <option>select</option>
+                    {parentGroupList.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.parentGroupName}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Parent Category</FormLabel>
-          <Select
-            placeholder=""
-            className=""
-            defaultValue={selectOption4}
-            onChange={setSelectOption4}
-            options={options4}
-          />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Parent Category</FormLabel>
+                  <Form.Control value={values.parentCategory} as="select">
+                    <option>select</option>
+                    {parentCategoryList.map((x) => (
+                      <option key={x._id} value={x._id}>
+                        {x.parentCatagoryName}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Admin Approved</FormLabel>
-          <FormCheck type="checkbox" label="active or inactive" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Admin Approved</FormLabel>
+                  <FormCheck
+                    checked={values.isAdminApproved}
+                    onClick={() =>
+                      setFieldValue("isAdminApproved", !values.isAdminApproved)
+                    }
+                    type="checkbox"
+                    label="active or inactive"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Status</FormLabel>
-          <FormCheck type="checkbox" label="active or inactive" />
-        </FormGroup>
+                <FormGroup className="col-md-6 col-lg-4">
+                  <FormLabel> Status</FormLabel>
+                  <FormCheck
+                    checked={values.isActive}
+                    onClick={() => setFieldValue("isActive", !values.isActive)}
+                    type="checkbox"
+                    label="active or inactive"
+                  />
+                </FormGroup>
 
-        <FormGroup className="col-md-12  text-center">
-          <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
-              Update Product
-            </Button>
-          </div>
-        </FormGroup>
-      </Form>
+                <FormGroup className="col-md-12 btn-page text-center">
+                  <Button variant="primary btn-rounded" type="submit">
+                    Update Product
+                  </Button>
+                </FormGroup>
+              </Form>
+            </>
+          );
+        }}
+      </Formik>
     </WrapForm>
   );
 };

@@ -23,12 +23,14 @@ const managePost = () => {
     },
     {
       Header: "image",
-      accessor: "image",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
-    },
-    {
-      Header: "username",
-      accessor: "username",
+      accessor: "img",
+      Cell: (e) => (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "price",
@@ -36,7 +38,7 @@ const managePost = () => {
     },
     {
       Header: "unit",
-      accessor: "unit",
+      accessor: "unit.name",
     },
     {
       Header: "approved",
@@ -75,7 +77,7 @@ const managePost = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deletePost/${s.row.original._id}`);
+                await deleteData(`/deleteProduct/${s.row.original._id}`);
                 window.location.reload();
               }}
             >
@@ -92,7 +94,7 @@ const managePost = () => {
       title="manage user post"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

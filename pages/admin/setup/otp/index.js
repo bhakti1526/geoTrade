@@ -26,19 +26,7 @@ const otp = () => {
       Header: "re-send limit",
       accessor: "reSendLimit",
     },
-    {
-      Header: "status",
-      accessor: "status",
-      Cell: (e) => (
-        <span
-          className={
-            !e.value ? "badge light badge-success" : "badge light badge-danger"
-          }
-        >
-          {!e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
-        </span>
-      ),
-    },
+
     {
       Header: "action",
       Cell: (s) => (
@@ -58,7 +46,7 @@ const otp = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
-            <Link href={`${window.location}/${s.row.original._id}`} passHref>
+            <Link href={`${window.location}/update`} passHref>
               <Dropdown.Item as="a">Edit</Dropdown.Item>
             </Link>
           </Dropdown.Menu>

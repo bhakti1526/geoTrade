@@ -24,7 +24,13 @@ const manageBrand = () => {
     {
       Header: "brand image",
       accessor: "img",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
+      Cell: (e) => (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "status",
@@ -75,12 +81,14 @@ const manageBrand = () => {
     },
   ];
 
+  console.log(response);
+
   return (
     <WrapTable
       title="manage parent category"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

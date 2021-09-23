@@ -23,12 +23,14 @@ const manageProduct = () => {
     },
     {
       Header: "image",
-      accessor: "image",
-      Cell: (e) => <img src={e.value} alt="product" width="56" />,
-    },
-    {
-      Header: "username",
-      accessor: "username",
+      accessor: "img",
+      Cell: (e) => (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
+          alt="product"
+          width="56"
+        />
+      ),
     },
     {
       Header: "price",
@@ -36,7 +38,7 @@ const manageProduct = () => {
     },
     {
       Header: "unit",
-      accessor: "unit",
+      accessor: "unit.name",
     },
     {
       Header: "approved",
@@ -92,7 +94,7 @@ const manageProduct = () => {
       title="manage user product"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

@@ -19,7 +19,7 @@ const manageUser = () => {
     },
     {
       Header: "user info",
-      accessor: "username",
+      accessor: "firstName",
     },
     {
       Header: "email",
@@ -96,7 +96,7 @@ const manageUser = () => {
       title="manage user"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

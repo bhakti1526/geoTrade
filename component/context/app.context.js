@@ -40,16 +40,12 @@ const getState = () => {
 
 const initState = getState();
 
-console.log(initState);
 const appProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initState);
 
   useEffect(() => {
     window.localStorage.setItem("USERINFO", JSON.stringify(state));
   }, [state]);
-
-  console.log(state);
-  console.log(axios.defaults.headers.common["Authorization"]);
 
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = state.token;

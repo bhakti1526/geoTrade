@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import Select from "react-select";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   FormLabel,
@@ -10,32 +8,36 @@ import {
   Button,
 } from "react-bootstrap";
 
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import AppLoader from "../../../../src/components/admin/AppLoader";
 
 const id = () => {
-  const [selectOption, setSelectOption] = useState(null);
-  const options = [
-    { value: "India", label: "India" },
-    { value: "Canade", label: "Canade" },
-    { value: "USA", label: "USA" },
-  ];
+  const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+  const [cityList, setCityList] = useState([]);
 
-  const [selectOption1, setSelectOption1] = useState(null);
-  const options1 = [{ value: "Gujarat", label: "Gujarat" }];
+  const { isLoading: countryLoad, response: countryRes } =
+    useFetchAxios("/getCountry");
+  const { isLoading: cityLoad, response: cityRes } = useFetchAxios("/getCity");
+  const { isLoading: stateLoad, response: stateRes } =
+    useFetchAxios("/getState");
 
-  const [selectOption2, setSelectOption2] = useState(null);
-  const options2 = [
-    { value: "Vadodara", label: "Vadodara" },
-    { value: "Surat", label: "Surat" },
-  ];
+  useEffect(() => {
+    setCountryList(countryRes);
+  }, [countryRes]);
 
-  const [selectOption3, setSelectOption3] = useState(null);
-  const options3 = [
-    { value: "mining", label: "mining" },
-    { value: "trade & suppliers", label: "trade & suppliers" },
-    { value: "menufacture", label: "menufacture" },
-    { value: "service provider", label: "service provider" },
-  ];
+  useEffect(() => {
+    setStateList(stateRes);
+  }, [stateRes]);
+
+  useEffect(() => {
+    setCityList(cityRes);
+  }, [cityRes]);
+
+  if (countryLoad === true) return <AppLoader />;
+  if (cityLoad === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
 
   return (
     <WrapForm title="update user">
@@ -57,51 +59,26 @@ const id = () => {
 
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> Country</FormLabel>
-          <Select
-            placeholder="Country"
-            className=""
-            defaultValue={selectOption}
-            onChange={setSelectOption}
-            options={options}
-          />
+          <Form.Control as="select">
+            <option>option</option>
+            {countryList.map((x) => (
+              <option key={x._id} value={x._id}>
+                {x.name}
+              </option>
+            ))}
+          </Form.Control>
         </FormGroup>
 
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> State</FormLabel>
-          <Select
-            placeholder="State"
-            className=""
-            defaultValue={selectOption1}
-            onChange={setSelectOption1}
-            options={options1}
-          />
         </FormGroup>
 
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> City</FormLabel>
-          <Select
-            placeholder="City"
-            className=""
-            defaultValue={selectOption2}
-            onChange={setSelectOption2}
-            options={options2}
-          />
         </FormGroup>
 
         <FormGroup className="col-md-6 col-lg-4">
           <FormLabel> Seller Type</FormLabel>
-          <Select
-            placeholder="City"
-            className=""
-            defaultValue={selectOption3}
-            onChange={setSelectOption3}
-            options={options3}
-          />
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Admin Approved</FormLabel>
-          <FormCheck type="checkbox" label="active or inactive" />
         </FormGroup>
 
         <FormGroup className="col-md-6 col-lg-4">
@@ -109,12 +86,10 @@ const id = () => {
           <FormCheck type="checkbox" label="active or inactive" />
         </FormGroup>
 
-        <FormGroup className="col-md-12  text-center">
-          <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
-              Update User
-            </Button>
-          </div>
+        <FormGroup className="col-md-12 btn-page text-center">
+          <Button variant="primary btn-rounded" type="button">
+            Update User
+          </Button>
         </FormGroup>
       </Form>
     </WrapForm>
