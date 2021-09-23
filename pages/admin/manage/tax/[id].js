@@ -51,7 +51,7 @@ const update = () => {
     setInitSchema({
       _id: getTax?._id,
       taxValue: getTax?.taxValue,
-      country: getTax?.country,
+      country: getTax?.country?._id,
       isActive: getTax?.isActive,
     });
   }, [getTax]);
@@ -90,6 +90,7 @@ const update = () => {
                 <FormLabel> Choose Country</FormLabel>
                 <Form.Control
                   name="country"
+                  value={values.country}
                   isInvalid={!!touched.country && !!errors.country}
                   as="select"
                 >

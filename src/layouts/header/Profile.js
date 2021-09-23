@@ -39,7 +39,7 @@ const Profile = ({ logoutUser }) => {
         alignRight={true}
         className="dropdown-menu dropdown-menu-right mt-4"
       >
-        <Link href="/apps/profile">
+        {/* <Link href="/apps/profile">
           <a className="dropdown-item ai-icon">
             <svg
               id="icon-user1"
@@ -81,7 +81,7 @@ const Profile = ({ logoutUser }) => {
             </svg>
             <span className="ml-2">Inbox </span>
           </a>
-        </Link>
+        </Link> */}
         <Link href="">
           <a onClick={handleLogOut} className="dropdown-item ai-icon">
             <svg

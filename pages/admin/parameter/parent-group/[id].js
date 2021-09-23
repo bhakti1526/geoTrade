@@ -46,7 +46,7 @@ const update = () => {
     console.log(parentRes);
     setInitValue({
       _id: parentRes?._id,
-      sellerType: parentRes?.sellerType,
+      sellerType: parentRes?.sellerType?._id,
       parentGroupName: parentRes?.parentGroupName,
       parentGroupImg: parentRes?.parentGroupImg,
       isActive: true,

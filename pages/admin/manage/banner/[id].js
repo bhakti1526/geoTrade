@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Formik } from "formik";
@@ -11,57 +11,82 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
-
-import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import AppLoader from "../../../../src/components/admin/AppLoader";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  img: Yup.string().required(),
-  redirectUrl: Yup.string(),
-  isDisplay: Yup.bool().oneOf([true, false]),
-  isRedirect: Yup.bool().oneOf([true, false]),
-});
+const id = () => {
+  const [img, setImg] = useState(null);
 
-const handleSubmit = (val) => {};
-
-const update = () => {
   const [initSchema, setInitSchema] = useState({
     name: "",
     img: "",
     redirectUrl: "",
-    isDisplay: false,
+    isDisplay: true,
     isRedirect: false,
   });
 
   const {
+    push,
     query: { id },
   } = useRouter();
 
-  const { response } = useFetchAxios(`/getbanner?${id}`);
-  console.log(response?.allBanner);
+  const { response: bannerRes, isLoading: bannerLoad } = useFetchAxios(
+    `/getBanner?id=${id}`
+  );
 
-  const handleImg = (e, setFieldValue) => {
-    const file = e.target.files[0];
+  useEffect(() => {
+    if (bannerRes) {
+      setInitSchema({
+        _id: bannerRes._id,
+        name: bannerRes.name,
+        img: bannerRes.img,
+        redirectUrl: bannerRes.redirectUrl,
+        isDisplay: bannerRes.isDisplay,
+        isRedirect: bannerRes.isRedirect,
+      });
+    }
+  }, [bannerRes]);
 
-    const data = new FormData();
+  const validationSchema = Yup.object().shape({
+    img: Yup.string().required("A image is required"),
+    name: Yup.string().required("banner name is required"),
+    redirectUrl: Yup.string().url(),
+    isDisplay: Yup.bool().oneOf([true, false]),
+    isRedirect: Yup.bool().oneOf([true, false]),
+  });
 
-    data.append("img", file);
-
-    try {
+  const handleSubmit = async (val) => {
+    if (img !== null && img !== undefined) {
+      const formData = new FormData();
+      formData.append("img", img);
       axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img`, data)
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
         .then((res) => {
-          const imgUrl = res?.data?.data?.img || "";
-          setFieldValue("img", imgUrl);
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateBanner/${id}`, {
+              ...val,
+              img: res.data.data,
+            })
+            .then((res) => {
+              push("/admin/manage/banner/");
+            });
         });
-    } catch (err) {
-      console.log(err);
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateBanner/${id}`, {
+          ...val,
+        })
+        .then((res) => {
+          push("/admin/manage/banner/");
+        });
     }
   };
 
+  if (bannerLoad === true) return <AppLoader />;
+
   return (
-    <WrapForm title="update banner">
+    <WrapForm title="add banner">
       <Formik
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
@@ -89,7 +114,7 @@ const update = () => {
                   type="text"
                   value={values.name}
                   className="form-control"
-                  isInvalid={!!errors.name}
+                  isInvalid={!!touched.name && !!errors.name}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.name}
@@ -103,9 +128,8 @@ const update = () => {
                   type="file"
                   accept="image/*"
                   className="form-control"
-                  onChange={(e) => handleImg(e, setFieldValue)}
-                  value={values.img}
-                  isInvalid={!!errors.img}
+                  onChange={(e) => setImg(e.target.files[0])}
+                  isInvalid={!!touched.img && !!errors.img}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.img}
@@ -172,4 +196,4 @@ const update = () => {
   );
 };
 
-export default update;
+export default id;

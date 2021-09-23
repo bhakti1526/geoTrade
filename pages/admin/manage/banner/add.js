@@ -19,40 +19,46 @@ const initSchema = {
   name: "",
   img: "",
   redirectUrl: "",
-  isDisplay: false,
+  isDisplay: true,
   isRedirect: false,
 };
 
-const validationSchema = Yup.object().shape({
-  img: Yup.string().required("banner image is required"),
-  name: Yup.string().required("banner name is required"),
-  redirectUrl: Yup.string(),
-  isDisplay: Yup.bool().oneOf([true, false]),
-  isRedirect: Yup.bool().oneOf([true, false]),
-});
-
 const add = () => {
-  const [image, setImage] = useState(null);
+  const [img, setImg] = useState(null);
 
   const { push } = useRouter();
 
   const { isLoading, postData, response } = usePostAxios("/addBanner");
 
-  const handleSubmit = async (val) => {
-    const data = new FormData();
-    data.append("img", image);
-    let imgUrl;
-    await axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img`, data)
-      .then((res) => {
-        imgUrl = res?.data?.data?.img || "";
-      })
-      .catch((err) => {});
-    await postData({ ...val, img: imgUrl });
-    push("/admin/manage/");
-  };
+  const validationSchema = Yup.object().shape({
+    img: Yup.mixed()
+      .required("A file is required")
+      .test("fileFormat", "image only", () => {
+        if (img === null || img === undefined) return false;
+        return img.type === "image/png"
+          ? true
+          : img.type === "image/jpeg"
+          ? true
+          : false;
+      }),
+    name: Yup.string().required("banner name is required"),
+    redirectUrl: Yup.string().url(),
+    isDisplay: Yup.bool().oneOf([true, false]),
+    isRedirect: Yup.bool().oneOf([true, false]),
+  });
 
-  const handleImageChange = (e) => setImage(e.target.files[0]);
+  const handleSubmit = async (val) => {
+    let formData = new FormData();
+    formData.append("name", val.name);
+    formData.append("img", img);
+    formData.append("isRedirect", val.isRedirect);
+    formData.append("redirectUrl", val.redirectUrl || "");
+    formData.append("isDisplay", val.isDisplay);
+
+    await postData(formData);
+
+    push("/admin/manage/banner");
+  };
 
   return (
     <WrapForm title="add banner">
@@ -83,7 +89,7 @@ const add = () => {
                   type="text"
                   value={values.name}
                   className="form-control"
-                  isInvalid={!!errors.name}
+                  isInvalid={!!touched.name && !!errors.name}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.name}
@@ -97,9 +103,9 @@ const add = () => {
                   type="file"
                   accept="image/*"
                   className="form-control"
-                  onChange={handleImageChange}
+                  onChange={(e) => setImg(e.target.files[0])}
                   value={values.img}
-                  isInvalid={!!errors.img}
+                  isInvalid={!!touched.img && !!errors.img}
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.img}

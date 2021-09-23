@@ -62,8 +62,8 @@ const update = () => {
     setInitValue({
       _id: cityRes?._id,
       name: cityRes?.name,
-      state: cityRes?.state?.name,
-      country: cityRes?.country?.name,
+      state: cityRes?.state?._id,
+      country: cityRes?.country?._id,
       shortCityCode: cityRes?.shortCityCode,
       isActive: true,
     });
@@ -105,6 +105,7 @@ const update = () => {
                 <Form.Control
                   name="country"
                   as="select"
+                  value={values.country}
                   isInvalid={!!touched.country && !!errors.country}
                 >
                   <option>option</option>
@@ -119,6 +120,7 @@ const update = () => {
                 <Form.Control
                   name="state"
                   as="select"
+                  value={values.state}
                   isInvalid={!!touched.state && !!errors.state}
                 >
                   <option>option </option>

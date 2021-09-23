@@ -139,7 +139,7 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/admin/setup/roles" passHref>
                         <a
                           className={`${
@@ -149,7 +149,7 @@ const Sidebar = () => {
                           Roles
                         </a>
                       </Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link href="/admin/setup/otp" passHref>
                         <a

@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const NavHeader = () => {
   const [active, setActive] = useState(false);
@@ -8,9 +9,14 @@ const NavHeader = () => {
     aaa.classList.toggle("menu-toggle");
     setActive(!active);
   };
+
+  const { pathname } = useRouter();
+
+  const url = pathname.startsWith("/admin/") ? "/admin/dashboard" : "/";
+
   return (
     <div className="nav-header">
-      <Link href="/">
+      <Link href={url} passHref>
         <a className="brand-logo">
           <img
             style={{ width: "100px" }}

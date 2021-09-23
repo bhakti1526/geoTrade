@@ -49,11 +49,12 @@ const update = () => {
   }, [response]);
 
   useEffect(() => {
+    console.log(res);
     setInitSchema({
       _id: res?._id,
       name: res?.name,
       shortStateName: res?.shortStateName,
-      country: "",
+      country: res?.country?._id,
     });
   }, [res]);
 
@@ -84,6 +85,7 @@ const update = () => {
                 <Form.Control
                   name="country"
                   as="select"
+                  value={values.country}
                   isInvalid={!!touched.country && !!errors.country}
                 >
                   <option>select</option>
