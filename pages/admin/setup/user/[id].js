@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { css } from "@emotion/css";
+
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -10,9 +10,8 @@ import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required(),
   email: Yup.string().email().required(),
-  password: Yup.string().min(6).max(12).required(),
+  password: Yup.string().min(6).max(24).required(),
   isActive: Yup.bool().oneOf([true, false]),
 });
 
@@ -29,9 +28,9 @@ const id = () => {
     isActive: false,
   });
 
-  const { isLoading, response, postData } = useFetchAxios(
-    `/api/admin/user?id=${id}`
-  );
+  const { isLoading, response } = useFetchAxios(`/api/admin/user?id=${id}`);
+
+  const { postData } = usePostAxios(`/api/admin/user?id=${id}`);
 
   useEffect(() => {
     setInitValue({
@@ -42,7 +41,11 @@ const id = () => {
     });
   }, [response]);
 
-  const handleSubmit = async (val) => {};
+  const handleSubmit = async (val) => {
+    await postData(val);
+
+    push("/admin/setup/user/");
+  };
 
   if (isLoading === true) return <AppLoader />;
 
