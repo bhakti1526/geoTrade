@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useContext,useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
@@ -15,6 +15,12 @@ import {
 import WrapFrom from "../../src/components/admin/WrapForm";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
 import { set } from "date-fns";
+import {AppContext} from '../../component/context/app.context';
+
+
+// const {token} = useContext(AppContext);
+
+
 
 const imgStyle = css`
   display: flex;
@@ -55,6 +61,10 @@ const post = () => {
   const [unit, setUnit] = useState([]);
   const [initValue, setInitValue] = useState(initData);
   const [initialOpt, setInitialOpt] = useState();
+
+
+  let tokens;
+
 
   const onInputChange = (e) => {
     setInitValue({ ...initValue, [e.target.name]: e.target.value });
@@ -98,12 +108,22 @@ const post = () => {
     // console.log(sellerTypes);
   };
 
+
+  useEffect(()=>{
+    getReqData();
+    const {token} = useContext(AppContext);
+    tokens = token;
+  },[]);
+
+
   const addPost = async (e) => {
+    if(tokens){
     e.preventDefault();
     const ap = await axios.post(`${url}/addPost`, initValue, {
       headers: {
         // authorization: localStorage.getItem("jwt"),
-      authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+      // authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+      authorization:tokens
       },
     });
 
@@ -111,11 +131,11 @@ const post = () => {
       window.location.reload();
       console.log("Post Added");
     }
+  }
   };
 
-  useEffect(() => {
-    getReqData();
-  }, []);
+
+
 
   // const { response: res } = useFetchAxios("/getseller");
 
