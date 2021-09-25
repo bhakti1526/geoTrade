@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
+import { Formik } from "formik";
+import { useRouter } from "next/router";
 import axios from "axios";
 import {
   Form,
@@ -10,26 +12,10 @@ import {
   FormCheck,
   Button,
 } from "react-bootstrap";
-
+import * as Yup from "yup";
+import usePostAxios from "../../component/hooks/usePostAxios";
 import {AppContext} from '../../component/context/app.context';
 
-
-// {
-//   auth: {
-//     isAuth: false,
-//     isAdmin: false,
-//     isSeller: false,
-//   },
-//   token: "",
-//   user: { email: "", firstName: "" },
-//   error: {
-//     isError: false,
-//     msg: "SOMETHING WENT WRONG",
-//   },
-// };
-
-
-const {token} = useContext(AppContext);
 
 const brands={
   name:"",
@@ -39,78 +25,77 @@ const brands={
   userType:"",
   description:"",
   isApproved:false,
-  isActive:false
+  isActive:false,
+  img:""
 };
 
-// "title":"New Title",
-// "message":"New message",
-// "img":"fr",
-// "qty":2,
-// "unit":"6135b8db590c5a0389788d9c",
-// "buyer":"613850ac884ea6aeb9c7a187",
-// "city":"613871d3eee75a8d2b93ab68",
-// "state":"61386ee9f6b146bd2add71b9",
-// "country":"61386717acf6d47a9e924940",
-// "sellerType":"6144ba1e60d63c513571f4e4",
-// "parentType":"6144ba1e60d63c513571f4e4",
-// "parentCatagory":"6144ba1e60d63c513571f4e4"
 
 
 const brand = () => {
   let tokens;
-  const url ="http://localhost:4000";
+  const url =process.env.NEXT_PUBLIC_API_URL;
   const [b,setB] = useState(brands);
-  const[img,setImg] = useState("");
-
-  const { isLoading: sendLoad, postData } = usePostAxios("/addBrand");
-
-  useEffect(()=>{
-    const {token} = useContext(AppContext);
-    tokens = token;
-  },[])
+  const[imgs,setImgs] = useState("");
 
   
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  emailAddress: Yup.string().email().required(),
+  password: Yup.string().required().min(3).max(12),
+  outGoingServer: Yup.string().required(),
+  outGoingServerPort: Yup.number().required(),
+  sslTypes: Yup.string().required(),
+  img: Yup.mixed()
+  .required("A file is required")
+  .test("fileFormat", "image only", () => {
+    if (imgs === null || imgs === undefined) return false;
+    return imgs.type === "image/png"
+      ? true
+      : imgs.type === "image/jpeg"
+      ? true
+      : false;
+  })
+});
+
+  
+
+
+  const { response, postData, isLoading } = usePostAxios("/addBrand");
+
+  const { push } = useRouter();
+
+
+// const setToken=()=>{
+//   // const {token} = useContext(AppContext);
+//   // tokens = token;
+// }
+
+//   useEffect(()=>{
+//     // setToken();
+//   },[])
+
+
   const handleSubmit = async (val) => {
+    // if(tokens){
+      console.log("xD")
+      const data = new FormData();
+  
+      data.append("name", val.name);
+      data.append("img", img);
+      data.append("contact", val.contact);
+      data.append("isActive", val.isActive);
+      data.append("isApproved",val.isApproved);
+      data.append("website",val.website);
+      data.append("email",val.email);
+      data.append("userType",val.userType);
+      data.append("description",val.description);
 
-    // push("/admin/parameter/parent-group");
-  };
+  
+      await postData(data);
+  
+    // }
 
-  const addBrand=async(e)=>{
-    if(tokens){
-    // e.preventDefault();
-    // console.log(desc)
-    // const adds = await axios.post(`${url}/addBrand`,b,{
-    //   headers:{
-    //     authorization: token
-    //   }
-    // });
-
-    const data = new FormData();
-
-    data.append("name", b.name);
-    data.append("img", img);
-    data.append("contact", b.contact);
-    data.append("isActive", b.isActive);
-    data.append("isApproved",b.isApproved);
-    data.append("website",b.website);
-    data.append("email",b.email);
-    data.append("userType",b.userType);
-    data.append("description",b.description);
-
-
-    await postData(data);
-
-  }
-
-    if (adds.status === 201) {
-      console.log("Brand Added");
-      window.location.reload();
-    }
-  };
-
-  const onInputChange = (e) => {
-    console.log(b);
-    setB({ ...b, [e.target.name]: e.target.value });
+    push("/seller/brand");
   };
 
   return (
@@ -123,7 +108,18 @@ const brand = () => {
             </div>
             <div className="card-body">
               <div className="basic-form">
-                <Form className="row">
+       
+      <Formik
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+        initialValues={brands}
+      >
+        {({ handleSubmit, handleChange, values, errors, touched,setFieldValue }) => {
+          return (
+                <Form className="row"
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                >
                   <div className="col-md-8">
                     <div className="row">
                       <FormGroup className="col-md-6 col-lg-6">
@@ -132,9 +128,14 @@ const brand = () => {
                           type="text"
                           className="form-control"
                           name="name"
+                          value={values.name}
                           placeholder=""
-                          onChange={(e) => onInputChange(e)}
+                          isInvalid={!!touched.name && !!errors.name}
+                          // onChange={(e) => onInputChange(e)}
                         />
+
+
+
                       </FormGroup>
 
                       <FormGroup className="col-md-6 col-lg-6">
@@ -144,7 +145,10 @@ const brand = () => {
                           type="text"
                           className="form-control"
                           placeholder=""
-                          onChange={(e) => onInputChange(e)}
+                          isInvalid={
+                            !!touched.contact && !!errors.contact
+                          }
+                          // onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
 
@@ -155,9 +159,14 @@ const brand = () => {
                           type="text"
                           className="form-control"
                           placeholder=""
-                          onChange={(e) => onInputChange(e)}
+                          isInvalid={
+                            !!touched.website && !!errors.website
+                          }
+                          // onChange={(e) => onInputChange(e)}
                         />
                       </FormGroup>
+
+                
 
                       <FormGroup className="col-md-6 col-lg-6">
                         <FormLabel> Email Id</FormLabel>
@@ -166,7 +175,9 @@ const brand = () => {
                           className="form-control"
                           placeholder=""
                           name="email"
-                          onChange={(e) => onInputChange(e)}
+                          isInvalid={
+                            !!touched.email && !!errors.email
+                          }
                         />
                       </FormGroup>
 
@@ -174,16 +185,13 @@ const brand = () => {
                         <FormLabel>Brand Info</FormLabel>
                         <div className="summernote">
                           <Editor
-                            onEditorChange={(newValue, editor) => {
-                              // setText(editor.getContent({format: 'text'}));
-                              setB({
-                                ...initValue,
-                                ["description"]: editor.getContent({
-                                  format: "text",
-                                }),
-                              });
-                            }}
+                            name="description"
+                            onChange={(e) =>
+                              setFieldValue("description", e.target.getContent())
+                            }
                           />
+
+                        
                         </div>
                       </FormGroup>
                     </div>
@@ -200,25 +208,45 @@ const brand = () => {
                         width: 80%;
                       `}
                     >
-                      <i
+                            <FormControl
+                    name="img"
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    // style={{
+                    //   display="none"
+                    // }}
+                    onChange={(e) => setImgs(e.target.files[0])}
+                    // isInvalid={
+                    //   !!touched && !!errors.parentGroupImg
+                    // }
+                    isInvalid={
+                     !!touched.img && !!errors.img
+                    }
+                  />
+                      {/* <i
                         className="flaticon-381-photo-camera"
+                        
                         style={{ fontSize: "34px" }}
-                      ></i>
+                      ></i> */}
                     </div>
                   </div>
 
                   <FormGroup className="col-md-12  text-center">
                     <div className="btn-page mt-5">
                       <Button
+                      // disabled={isLoading}
                         variant="primary btn-rounded"
-                        type="button"
-                        onClick={(e) => addBrand(e)}
+                        type="submit"
                       >
                         Update Brand
                       </Button>
                     </div>
                   </FormGroup>
                 </Form>
+          );
+                          }}
+                </Formik>
               </div>
             </div>
           </div>

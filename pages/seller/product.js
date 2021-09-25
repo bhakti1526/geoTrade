@@ -35,6 +35,7 @@ const product = () => {
 
     const url = "http://localhost:4000";
     const [products,setProducts] = useState(productDetails);
+    const[img,setImg] = useState("");
 
     const onInputChange=(e)=>{
         setProducts({...products,[e.target.name]:e.target.value})
