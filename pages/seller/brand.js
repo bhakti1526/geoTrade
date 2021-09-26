@@ -33,18 +33,18 @@ const brands={
 
 const brand = () => {
   let tokens;
-  const url =process.env.NEXT_PUBLIC_API_URL;
+  const url = process.env.NEXT_PUBLIC_API_URL;
   const [b,setB] = useState(brands);
   const[imgs,setImgs] = useState("");
 
   
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
-  emailAddress: Yup.string().email().required(),
-  password: Yup.string().required().min(3).max(12),
-  outGoingServer: Yup.string().required(),
-  outGoingServerPort: Yup.number().required(),
-  sslTypes: Yup.string().required(),
+  email: Yup.string().email().required(),
+  contact:Yup.string().required(),
+  website:Yup.string().required(),
+  description:Yup.string().required(),
+
   img: Yup.mixed()
   .required("A file is required")
   .test("fileFormat", "image only", () => {
@@ -81,7 +81,7 @@ const validationSchema = Yup.object().shape({
       const data = new FormData();
   
       data.append("name", val.name);
-      data.append("img", img);
+      data.append("img", imgs);
       data.append("contact", val.contact);
       data.append("isActive", val.isActive);
       data.append("isApproved",val.isApproved);
@@ -190,8 +190,6 @@ const validationSchema = Yup.object().shape({
                               setFieldValue("description", e.target.getContent())
                             }
                           />
-
-                        
                         </div>
                       </FormGroup>
                     </div>
