@@ -15,7 +15,7 @@ const getState = () => {
           isSeller: false,
         },
         token: "",
-        user: { email: "", firstName: "" },
+        user: { id: "", email: "", firstName: "" },
         error: {
           isError: false,
           msg: "SOMETHING WENT WRONG",
@@ -30,7 +30,7 @@ const getState = () => {
       isSeller: false,
     },
     token: "",
-    user: { email: "", firstName: "" },
+    user: { id: "", email: "", firstName: "" },
     error: {
       isError: false,
       msg: "SOMETHING WENT WRONG",

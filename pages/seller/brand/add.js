@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, createRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
 import { Formik } from "formik";
@@ -13,8 +13,8 @@ import {
   Button,
 } from "react-bootstrap";
 import * as Yup from "yup";
-import usePostAxios from "../../component/hooks/usePostAxios";
-import { AppContext } from "../../component/context/app.context";
+import usePostAxios from "../../../component/hooks/usePostAxios";
+import { AppContext } from "../../../component/context/app.context";
 
 const brands = {
   name: "",
@@ -33,13 +33,13 @@ const brand = () => {
   let tokens;
   const url = process.env.NEXT_PUBLIC_API_URL;
   const [b, setB] = useState(brands);
-  const [imgs, setImgs] = useState("");
+  const [imgs, setImgs] = useState(null);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     email: Yup.string().email().required(),
     contact: Yup.string().required(),
-    website: Yup.string().required(),
+    website: Yup.string().url().required(),
     description: Yup.string().required(),
 
     img: Yup.mixed()
@@ -66,6 +66,8 @@ const brand = () => {
   //   useEffect(()=>{
   //     // setToken();
   //   },[])
+
+  const imgRef = createRef(null);
 
   const handleSubmit = async (val) => {
     // if(tokens){
@@ -129,7 +131,6 @@ const brand = () => {
                                 value={values.name}
                                 placeholder=""
                                 isInvalid={!!touched.name && !!errors.name}
-                                // onChange={(e) => onInputChange(e)}
                               />
                             </FormGroup>
 
@@ -143,7 +144,6 @@ const brand = () => {
                                 isInvalid={
                                   !!touched.contact && !!errors.contact
                                 }
-                                // onChange={(e) => onInputChange(e)}
                               />
                             </FormGroup>
 
@@ -157,7 +157,6 @@ const brand = () => {
                                 isInvalid={
                                   !!touched.website && !!errors.website
                                 }
-                                // onChange={(e) => onInputChange(e)}
                               />
                             </FormGroup>
 
@@ -177,16 +176,12 @@ const brand = () => {
                               <div className="summernote">
                                 <Editor
                                   name="description"
-                                  // onChange={(e) =>
-                                  //   setFieldValue("description", e.target.getContent())
-                                  // }
-                                  onEditorChange={(newValue, editor) => {
-                                    // setValue(newValue);
+                                  onChange={(e) =>
                                     setFieldValue(
                                       "description",
-                                      editor.getContent({ format: "text" })
-                                    );
-                                  }}
+                                      e.target.getContent()
+                                    )
+                                  }
                                 />
                               </div>
                             </FormGroup>
@@ -209,30 +204,24 @@ const brand = () => {
                               type="file"
                               className="form-control"
                               accept="image/*"
-                              // style={{
-                              //   display="none"
-                              // }}
+                              style={{
+                                display: "none",
+                              }}
+                              ref={imgRef}
                               onChange={(e) => setImgs(e.target.files[0])}
-                              // isInvalid={
-                              //   !!touched && !!errors.parentGroupImg
-                              // }
                               isInvalid={!!touched.img && !!errors.img}
                             />
-                            {/* <i
-                        className="flaticon-381-photo-camera"
-                        
-                        style={{ fontSize: "34px" }}
-                      ></i> */}
+                            <i
+                              onClick={() => imgRef.current.click()}
+                              className="flaticon-381-photo-camera"
+                              style={{ fontSize: "34px" }}
+                            ></i>
                           </div>
                         </div>
 
                         <FormGroup className="col-md-12  text-center">
                           <div className="btn-page mt-5">
-                            <Button
-                              // disabled={isLoading}
-                              variant="primary btn-rounded"
-                              type="submit"
-                            >
+                            <Button variant="primary btn-rounded" type="submit">
                               Update Brand
                             </Button>
                           </div>
