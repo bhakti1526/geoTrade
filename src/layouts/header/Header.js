@@ -13,17 +13,17 @@ const Header = () => {
     auth: { isAuth, isAdmin, isSeller },
   } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   if (isAuth === true) {
-  //     if (pathname.startsWith("/admin/") && isAdmin === false) {
-  //       push("/admin");
-  //     } else if (pathname.startsWith("/seller") && isSeller === false) {
-  //       push("/");
-  //     }
-  //   } else {
-  //     push("/");
-  //   }
-  // }, [isAuth, isAdmin, isSeller]);
+  useEffect(() => {
+    if (isAuth === true) {
+      if (pathname.startsWith("/admin/") && isAdmin === false) {
+        push("/admin");
+      } else if (pathname.startsWith("/seller") && isSeller === false) {
+        push("/");
+      }
+    } else {
+      push("/");
+    }
+  }, [isAuth, isAdmin, isSeller]);
 
   return (
     <div className="header">

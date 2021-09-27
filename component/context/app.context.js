@@ -44,11 +44,11 @@ const appProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initState);
 
   useEffect(() => {
-    window.localStorage.setItem("USERINFO", JSON.stringify(state));
+    axios.defaults.headers.common["Authorization"] = state.token;
   }, [state]);
 
   useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = state.token;
+    window.localStorage.setItem("USERINFO", JSON.stringify(state));
   }, [state]);
 
   return (

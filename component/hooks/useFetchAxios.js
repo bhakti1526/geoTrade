@@ -7,6 +7,11 @@ const useFetchAxios = (url) => {
   const [error, setError] = useState(null);
 
   const getData = async () => {
+    if (typeof window !== "undefined") {
+      const { token } = JSON.parse(window.localStorage.getItem("USERINFO"));
+      axios.defaults.headers.common["Authorization"] = token;
+    }
+
     setIsLoading(true);
     await axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}${url}`)

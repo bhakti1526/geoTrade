@@ -139,7 +139,7 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    {/* <li>
+                    <li>
                       <Link href="/admin/setup/roles" passHref>
                         <a
                           className={`${
@@ -149,7 +149,7 @@ const Sidebar = () => {
                           Roles
                         </a>
                       </Link>
-                    </li> */}
+                    </li>
                     <li>
                       <Link href="/admin/setup/otp" passHref>
                         <a
@@ -348,17 +348,6 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    {/* <li>
-                      <Link href="/admin/parameter/manage-post" passHref>
-                        <a
-                          className={`${
-                            path === "chart/sparkline" ? "mm-active" : ""
-                          }`}
-                        >
-                          Manage Post
-                        </a>
-                      </Link>
-                    </li> */}
                   </ul>
                 </li>
                 <li
@@ -383,28 +372,6 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
-                    {/* <li>
-                      <Link href="/admin/user/manage-product" passHref>
-                        <a
-                          className={`${
-                            path === "ui/alert" ? "mm-active" : ""
-                          }`}
-                        >
-                          Manage User Product
-                        </a>
-                      </Link>
-                    </li> */}
-                    {/* <li>
-                      <Link href="/admin/user/manage-post" passHref>
-                        <a
-                          className={`${
-                            path === "ui/badge" ? "mm-active" : ""
-                          }`}
-                        >
-                          Manage User Post
-                        </a>
-                      </Link>
-                    </li> */}
                     <li>
                       <Link href="/admin/user/manage-package" passHref>
                         <a

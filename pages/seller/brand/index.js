@@ -13,7 +13,7 @@ const manageBrand = () => {
   } = useContext(AppContext);
 
   const { isLoading, response, error, getData } = useFetchAxios(
-    `/api/user/brand?userId=${id}`
+    `/api/user/brand?userId=${true}`
   );
 
   const { deleteData, response: res } = useDeleteAxios();
@@ -88,8 +88,6 @@ const manageBrand = () => {
       ),
     },
   ];
-
-  console.log(response);
 
   return (
     <WrapTable

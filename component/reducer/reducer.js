@@ -1,20 +1,34 @@
 import axios from "axios";
 
 export const Reducer = (state, action) => {
-  console.log(action);
   switch (action.type) {
     case "AUTH-ADMIN":
-      axios.defaults.headers.common["Authorization"] = action.data.data.token;
+      console.log(action.data.data.data);
+      axios.defaults.headers.common["Authorization"] =
+        action.data.data.data.token;
       return {
         auth: {
           isAuth: true,
           isAdmin: true,
           isSeller: false,
         },
+        token: action.data.data.data.token,
+        user: {
+          email: action.data.data.data.user.email,
+        },
+      };
+
+    case "AUTH-USER":
+      axios.defaults.headers.common["Authorization"] = action.data.data.token;
+      return {
+        auth: {
+          isAuth: true,
+          isAdmin: false,
+          isSeller: true,
+        },
         token: action.data.data.token,
         user: {
           email: action.data.data.user.email,
-          firstName: action.data.data.user.firstName,
         },
       };
 

@@ -1,32 +1,78 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import AppLoader from "../../../../src/components/admin/AppLoader";
+
 import usePostAxios from "../../../../component/hooks/usePostAxios";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 
 const initValue = {
   email: "",
   password: "",
+  city: "",
+  country: "",
+  state: "",
   isActive: true,
 };
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
-  password: Yup.string().min(6).max(12).required(),
+  password: Yup.string().min(6).required(),
   isActive: Yup.bool().oneOf([true, false]),
+  city: Yup.string(),
+  country: Yup.string(),
+  state: Yup.string(),
 });
 
 const add = () => {
   const { push } = useRouter();
+  const [countryList, setCountryList] = useState([]);
+  const [stateList, setStateList] = useState([]);
+  const [cityList, setCityList] = useState([]);
 
-  const { postData } = usePostAxios("/api/admin/user");
+  const { isLoading: countryLoad, response: countryResponse } =
+    useFetchAxios("/getCountry");
+  const { isLoading: stateLoad, response: stateResponse } =
+    useFetchAxios("/getState");
+  const { isLoading: cityLoad, response: cityResponse } =
+    useFetchAxios("/getCity");
+
+  const { postData } = usePostAxios("/api/auth/admin/user");
+
+  console.log(countryResponse, cityResponse, stateResponse);
+
+  useEffect(() => {
+    setCountryList(countryResponse);
+  }, [countryResponse]);
+
+  useEffect(() => {
+    setStateList(stateResponse);
+  }, [stateResponse]);
+
+  useEffect(() => {
+    setCityList(cityResponse);
+  }, [cityResponse]);
 
   const handleSubmit = async (val) => {
-    await postData(val);
+    const data = {
+      email: val.email,
+      password: val.password,
+      city: val.city === "select" ? "" : val.city,
+      country: val.country === "select" ? "" : val.country,
+      state: val.state === "select" ? "" : val.state,
+      isActive: val.isActive,
+    };
+
+    await postData(data);
     push("/admin/setup/user");
   };
+
+  if (countryLoad === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
+  if (cityLoad === true) return <AppLoader />;
 
   return (
     <WrapForm title="add user">
@@ -73,8 +119,47 @@ const add = () => {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>country List</Form.Label>
+                    <Form.Control name="country" as="select">
+                      <option>select</option>
+                      {countryList &&
+                        countryList.map((x) => (
+                          <option value={x._id}>{x.name}</option>
+                        ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>state List</Form.Label>
+                    <Form.Control name="state" as="select">
+                      <option>select</option>
+                      {stateList &&
+                        stateList.map((x) => (
+                          <option value={x._id}>{x.name}</option>
+                        ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>city List</Form.Label>
+                    <Form.Control name="city" as="select">
+                      <option>select</option>
+                      {cityList &&
+                        cityList.map((x) => (
+                          <option value={x._id}>{x.name}</option>
+                        ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+
               <Form.Group>
-                <Form.Label>states</Form.Label>
+                <Form.Label>status</Form.Label>
                 <Form.Check
                   checked={!!values.isActive}
                   isInvalid={!!errors.isActive}

@@ -7,7 +7,9 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const roles = () => {
-  const { isLoading, response, error, getData } = useFetchAxios("/getRoles");
+  const { isLoading, response, error, getData } = useFetchAxios(
+    "/api/auth/admin/roles"
+  );
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -18,12 +20,21 @@ const roles = () => {
       accessor: "id",
     },
     {
-      Header: "roles",
-      accessor: "role",
+      Header: "email",
+      accessor: "email",
     },
     {
+      Header: "role",
+      accessor: "locationRights",
+    },
+    {
+      Header: "location",
+      accessor: "locationId.name",
+    },
+
+    {
       Header: "status",
-      accessor: "status",
+      accessor: "isAdmin",
       Cell: (e) => (
         <span
           className={
@@ -72,7 +83,6 @@ const roles = () => {
 
   return (
     <WrapTable
-      bText="add role"
       title="manage roles"
       column={column}
       isLoading={isLoading}

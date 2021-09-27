@@ -1,4 +1,5 @@
 import Head from "next/head";
+import axios from "axios";
 import "nouislider/distribute/nouislider.css";
 import { useEffect, useState } from "react";
 // redux
@@ -28,6 +29,7 @@ import { useRouter } from "next/router";
 function MyApp({ Component, pageProps }) {
   const [doc, setDoc] = useState();
   const [pages, setPages] = useState();
+
   useEffect(() => {
     bodyArt();
     setDoc(document);
@@ -38,8 +40,6 @@ function MyApp({ Component, pageProps }) {
 
     return () => window.removeEventListener("resize", resizeWindow);
   }, [pages]);
-
-  useEffect(() => {}, []);
 
   const { pathname } = useRouter();
 
