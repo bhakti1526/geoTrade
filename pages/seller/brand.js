@@ -186,9 +186,13 @@ const validationSchema = Yup.object().shape({
                         <div className="summernote">
                           <Editor
                             name="description"
-                            onChange={(e) =>
-                              setFieldValue("description", e.target.getContent())
-                            }
+                            // onChange={(e) =>
+                            //   setFieldValue("description", e.target.getContent())
+                            // }
+                            onEditorChange={(newValue, editor) => {
+                              // setValue(newValue);
+                              setFieldValue("description",editor.getContent({format: 'text'}));
+                            }}
                           />
                         </div>
                       </FormGroup>

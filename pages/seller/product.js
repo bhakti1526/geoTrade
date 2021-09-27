@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 const productDetails = {
   name: "",
   slug: "",
-  price: 0,
+  price: "",
   description: "",
   img:""
 };
@@ -243,9 +243,13 @@ const product = () => {
                             //     }),
                             //   });
                             // }}
-                            onChange={(e) =>
-                              setFieldValue("description", e.target.getContent())
-                            }
+                            // onChange={(e) =>
+                            //   setFieldValue("description", e.target.getContent())
+                            // }
+                            onEditorChange={(newValue, editor) => {
+                              // setValue(newValue);
+                              setFieldValue("description",editor.getContent({format: 'text'}));
+                            }}
                           />
                         </div>
                         <small className="d-block mt-2 text-right float-right text-secondary">

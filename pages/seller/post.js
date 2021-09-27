@@ -45,7 +45,7 @@ const initData = {
   parentCategory: "",
   brand: "",
   unit: "",
-  price: 0,
+  price: "",
   img:""
 };
 
@@ -252,9 +252,14 @@ const post = () => {
                           //   });
                           // }}
 
-                          onChange={(e) =>
-                            setFieldValue("description", e.target.getContent())
-                          }
+                          // onChange={(e) =>
+                          //   setFieldValue("description", e.target.getContent())
+                          // }
+
+                          onEditorChange={(newValue, editor) => {
+                            // setValue(newValue);
+                            setFieldValue("description",editor.getContent({format: 'text'}));
+                          }}
                           // onChange={(e) =>
                           //   // setFieldValue("description", e.target.getContent())
 
