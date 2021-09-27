@@ -11,8 +11,8 @@ import {
   Button,
 } from "react-bootstrap";
 
-import {AppContext} from '../../component/context/app.context';
-
+import { AppContext } from "../../component/context/app.context";
+import usePostAxios from "../../component/hooks/usePostAxios";
 
 // {
 //   auth: {
@@ -28,18 +28,15 @@ import {AppContext} from '../../component/context/app.context';
 //   },
 // };
 
-
-const {token} = useContext(AppContext);
-
-const brands={
-  name:"",
-  contact:"",
-  email:"",
-  website:"",
-  userType:"",
-  description:"",
-  isApproved:false,
-  isActive:false
+const brands = {
+  name: "",
+  contact: "",
+  email: "",
+  website: "",
+  userType: "",
+  description: "",
+  isApproved: false,
+  isActive: false,
 };
 
 // "title":"New Title",
@@ -55,52 +52,47 @@ const brands={
 // "parentType":"6144ba1e60d63c513571f4e4",
 // "parentCatagory":"6144ba1e60d63c513571f4e4"
 
-
 const brand = () => {
+  const { token } = useContext(AppContext);
   let tokens;
-  const url ="http://localhost:4000";
-  const [b,setB] = useState(brands);
-  const[img,setImg] = useState("");
+  const url = "http://localhost:4000";
+  const [b, setB] = useState(brands);
+  const [img, setImg] = useState("");
 
   const { isLoading: sendLoad, postData } = usePostAxios("/addBrand");
 
-  useEffect(()=>{
-    const {token} = useContext(AppContext);
+  useEffect(() => {
     tokens = token;
-  },[])
+  }, []);
 
-  
   const handleSubmit = async (val) => {
-
     // push("/admin/parameter/parent-group");
   };
 
-  const addBrand=async(e)=>{
-    if(tokens){
-    // e.preventDefault();
-    // console.log(desc)
-    // const adds = await axios.post(`${url}/addBrand`,b,{
-    //   headers:{
-    //     authorization: token
-    //   }
-    // });
+  const addBrand = async (e) => {
+    if (tokens) {
+      // e.preventDefault();
+      // console.log(desc)
+      // const adds = await axios.post(`${url}/addBrand`,b,{
+      //   headers:{
+      //     authorization: token
+      //   }
+      // });
 
-    const data = new FormData();
+      const data = new FormData();
 
-    data.append("name", b.name);
-    data.append("img", img);
-    data.append("contact", b.contact);
-    data.append("isActive", b.isActive);
-    data.append("isApproved",b.isApproved);
-    data.append("website",b.website);
-    data.append("email",b.email);
-    data.append("userType",b.userType);
-    data.append("description",b.description);
+      data.append("name", b.name);
+      data.append("img", img);
+      data.append("contact", b.contact);
+      data.append("isActive", b.isActive);
+      data.append("isApproved", b.isApproved);
+      data.append("website", b.website);
+      data.append("email", b.email);
+      data.append("userType", b.userType);
+      data.append("description", b.description);
 
-
-    await postData(data);
-
-  }
+      await postData(data);
+    }
 
     if (adds.status === 201) {
       console.log("Brand Added");

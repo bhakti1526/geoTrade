@@ -7,7 +7,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const banner = () => {
-  const { isLoading, response, error } = useFetchAxios("/getBanner");
+  const { isLoading, response, error, getData } = useFetchAxios("/getBanner");
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -69,9 +69,8 @@ const banner = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteBanner/${s.row.original._id}`).then(
-                  () => window.location.reload()
-                );
+                await deleteData(`/deleteBanner/${s.row.original._id}`);
+                getData();
               }}
             >
               delete

@@ -81,7 +81,7 @@ const managePackage = () => {
 
   return (
     <WrapTable
-      bText="add package"
+      // bText="add package"
       title="manage user package"
       column={column}
       isLoading={isLoading}
