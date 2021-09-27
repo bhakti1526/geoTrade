@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { css } from "@emotion/css";
 import {
   Form,
@@ -14,8 +15,9 @@ import {
 } from "react-bootstrap";
 import WrapFrom from "../../src/components/admin/WrapForm";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
+import usePostAxios from "../../component/hooks/usePostAxios";
 import { set } from "date-fns";
-import { AppContext } from "../../component/context/app.context";
+// import {AppContext} from '../../component/context/app.context';
 
 // const {token} = useContext(AppContext);
 
@@ -30,27 +32,67 @@ const imgStyle = css`
 
 // do not post image because it is not implemented so this will be ignored
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  description: Yup.string().required(),
-  sellerType: Yup.string().required(),
-  parentType: Yup.string().required(),
-  parentCategory: Yup.string().required(),
-  brand: Yup.string().required(),
-  unit: Yup.string().required(),
-});
+const initData = {
+  name: "",
+  description: "",
+  sellerType: "",
+  parentType: "",
+  parentCategory: "",
+  brand: "",
+  unit: "",
+  price: "",
+  img: "",
+};
 
 const post = () => {
-  const initData = {
-    name: "",
-    description: "",
-    sellerType: "",
-    parentType: "",
-    parentCategory: "",
-    brand: "",
-    unit: "",
-    price: 0,
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(),
+    description: Yup.string().required(),
+    sellerType: Yup.string().required(),
+    parentType: Yup.string().required(),
+    parentCategory: Yup.string().required(),
+    brand: Yup.string().required(),
+    unit: Yup.string().required(),
+    price: Yup.string().required(),
+    img: Yup.mixed()
+      .required("A file is required")
+      .test("fileFormat", "image only", () => {
+        if (imgs === null || imgs === undefined) return false;
+        return imgs.type === "image/png"
+          ? true
+          : imgs.type === "image/jpeg"
+          ? true
+          : false;
+      }),
+  });
+
+  const { response, postData, isLoading } = usePostAxios("/addPost");
+
+  const { push } = useRouter();
+
+  const [imgs, setImgs] = useState("");
+
+  const handleSubmit = async (val) => {
+    // if(tokens){
+    console.log("xD");
+    const data = new FormData();
+    data.append("name", val.name);
+    data.append("img", imgs);
+    data.append("description", val.description);
+    data.append("price", val.price);
+    data.append("parentCategory", val.parentCategory);
+    data.append("parentType", val.parentType);
+    data.append("sellerType", val.sellerType);
+    data.append("unit", val.unit);
+    data.append("brand", val.brand);
+
+    await postData(data);
+
+    // }
+
+    push("/seller/post");
   };
+
   const [parentGroup, setParentGroup] = useState([]);
   const [parentCategory, setParentCategory] = useState([]);
   const [sellerTypes, setSellerType] = useState([]);
@@ -58,12 +100,13 @@ const post = () => {
   const [unit, setUnit] = useState([]);
   const [initValue, setInitValue] = useState(initData);
   const [initialOpt, setInitialOpt] = useState();
+  const [img, setImg] = useState("");
 
-  let tokens;
+  // let tokens;
 
-  const onInputChange = (e) => {
-    setInitValue({ ...initValue, [e.target.name]: e.target.value });
-  };
+  // const onInputChange = (e) => {
+  //   setInitValue({ ...initValue, [e.target.name]: e.target.value });
+  // };
 
   const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -78,7 +121,7 @@ const post = () => {
     if (st.status === 201) {
       console.log(st.data.data);
       setSellerType(st.data.data);
-      setInitialOpt(st.data.data[0]._id);
+      // setInitialOpt(st.data.data[0]._id);
     }
 
     const pg = await axios.get(`${url}/getParentGroup`);
@@ -107,25 +150,26 @@ const post = () => {
 
   useEffect(() => {
     getReqData();
-    tokens = token;
+    // const {token} = useContext(AppContext);
+    // tokens = token;
   }, []);
 
   const addPost = async (e) => {
-    if (tokens) {
-      e.preventDefault();
-      const ap = await axios.post(`${url}/addPost`, initValue, {
-        headers: {
-          // authorization: localStorage.getItem("jwt"),
-          // authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
-          authorization: tokens,
-        },
-      });
+    // if(tokens){
+    e.preventDefault();
+    const ap = await axios.post(`${url}/addPost`, initValue, {
+      headers: {
+        // authorization: localStorage.getItem("jwt"),
+        // authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
+        authorization: tokens,
+      },
+    });
 
-      if (ap.status === 201) {
-        window.location.reload();
-        console.log("Post Added");
-      }
+    if (ap.status === 201) {
+      window.location.reload();
+      console.log("Post Added");
     }
+    // }
   };
 
   // const { response: res } = useFetchAxios("/getseller");
@@ -145,9 +189,9 @@ const post = () => {
   return (
     <WrapFrom title="add post">
       <Formik
+        onSubmit={handleSubmit}
         enableReinitialize
-        //above line enable them to state update so form can re-render
-        initialValues={initValue}
+        initialValues={initData}
         validationSchema={validationSchema}
       >
         {({
@@ -174,7 +218,8 @@ const post = () => {
                         type="text"
                         className="form-control"
                         placeholder=""
-                        onChange={(e) => onInputChange(e)}
+                        isInvalid={!!touched.name && !!errors.name}
+                        // onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
@@ -182,14 +227,26 @@ const post = () => {
                       <FormLabel> Brand Info </FormLabel>
                       <div className="summernote">
                         <Editor
+                          // onEditorChange={(newValue, editor) => {
+                          //   // setText(editor.getContent({format: 'text'}));
+                          //   setInitValue({
+                          //     ...initValue,
+                          //     ["description"]: editor.getContent({
+                          //       format: "text",
+                          //     }),
+                          //   });
+                          // }}
+
+                          // onChange={(e) =>
+                          //   setFieldValue("description", e.target.getContent())
+                          // }
+
                           onEditorChange={(newValue, editor) => {
-                            // setText(editor.getContent({format: 'text'}));
-                            setInitValue({
-                              ...initValue,
-                              ["description"]: editor.getContent({
-                                format: "text",
-                              }),
-                            });
+                            // setValue(newValue);
+                            setFieldValue(
+                              "description",
+                              editor.getContent({ format: "text" })
+                            );
                           }}
                           // onChange={(e) =>
                           //   // setFieldValue("description", e.target.getContent())
@@ -205,7 +262,8 @@ const post = () => {
                         isInvalid={!!touched.sellerType && !!errors.sellerType}
                         as="select"
                         name="sellerType"
-                        onChange={(e) => onInputChange(e)}
+
+                        // onChange={(e) => onInputChange(e)}
                       >
                         <option>Choosee....</option>
 
@@ -262,7 +320,7 @@ const post = () => {
                         as="select"
                         name="brand"
                         defaultValue={(e) => e.target.value}
-                        onChange={(e) => onInputChange(e)}
+                        // onChange={(e) => onInputChange(e)}
                       >
                         <option>Choosee....</option>
                         {brand.map((p) => (
@@ -280,7 +338,8 @@ const post = () => {
                         className="form-control"
                         placeholder=""
                         name="price"
-                        onChange={(e) => onInputChange(e)}
+                        isInvalid={!!touched.price && !!errors.price}
+                        // onChange={(e) => onInputChange(e)}
                       />
                     </FormGroup>
 
@@ -291,7 +350,7 @@ const post = () => {
                         as="select"
                         name="unit"
                         defaultValue="Choose..."
-                        onChange={(e) => onInputChange(e)}
+                        // onChange={(e) => onInputChange(e)}
                       >
                         <option>Choosee....</option>
                         {unit.map((ui) => (
@@ -306,20 +365,31 @@ const post = () => {
 
                 <div className="col-md-4">
                   <div className={imgStyle}>
-                    <i
+                    <FormControl
+                      name="img"
+                      type="file"
+                      className="form-control"
+                      accept="image/*"
+                      // style={{
+                      //   display="none"
+                      // }}
+                      onChange={(e) => setImgs(e.target.files[0])}
+                      // isInvalid={
+                      //   !!touched && !!errors.parentGroupImg
+                      // }
+                      isInvalid={!!touched.img && !!errors.img}
+                    />
+
+                    {/* <i
                       className="flaticon-381-photo-camera"
                       style={{ fontSize: "34px" }}
-                    ></i>
+                    ></i> */}
                   </div>
                 </div>
 
                 <FormGroup className="col-md-12  text-center">
                   <div className="btn-page mt-5">
-                    <Button
-                      variant="primary btn-rounded"
-                      type="submit"
-                      onClick={(e) => addPost(e)}
-                    >
+                    <Button variant="primary btn-rounded" type="submit">
                       Add Post
                     </Button>
                   </div>

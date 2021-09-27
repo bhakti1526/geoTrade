@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "@material-ui/core";
 import axios from "axios";
+// import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import AppLoader from "../../../src/components/admin/AppLoader";
 
 const inquiry = () => {
   const [rfqData, setRfqData] = useState([]);
-  const getRfqData = async () => {
-    const url = process.env.NEXT_PUBLIC_API_URL;
-    const datas = await axios.get(`${url}/getRfq`);
-    if (datas.status === 201) {
-      setRfqData(datas.data.data);
-      console.log(datas.data.data);
-    }
-  };
+  // const getRfqData = async () => {
+  //   const url = process.env.NEXT_PUBLIC_API_URL;
+  //   const datas = await axios.get(`${url}/getRfq`);
+  //   if (datas.status === 201) {
+  //     setRfqData(datas.data.data);
+  //     console.log(datas.data.data);
+  //   }
+  // };
+
+  const { isLoading: rfqLoad, response: rfqRes } = useFetchAxios("/getRfq");
 
   useEffect(() => {
-    getRfqData();
-  }, []);
+    setRfqData(rfqRes)
+  }, [rfqRes]);
+
+  if(rfqLoad===true) {
+    return <AppLoader/>;
+  }
 
   return (
     <div>

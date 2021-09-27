@@ -15,11 +15,11 @@ const Header = () => {
 
   useEffect(() => {
     if (isAuth === true) {
-      // if (pathname.startsWith("/admin/") && isAdmin === false) {
-      //   push("/admin");
-      // } else if (pathname.startsWith("/seller") && isSeller === false) {
-      //   push("/");
-      // }
+      if (pathname.startsWith("/admin/") && isAdmin === false) {
+        push("/admin");
+      } else if (pathname.startsWith("/seller") && isSeller === false) {
+        push("/");
+      }
     } else {
       push("/");
     }
