@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import {
@@ -19,11 +19,11 @@ const update = () => {
     push,
   } = useRouter();
 
-  const { response } = useFetchAxios(`/api/auth/admin/menu?id=${id}`);
+  const { isLoading, response } = useFetchAxios(
+    `/api/auth/admin/menu?id=${id}`
+  );
 
   const { postData } = usePostAxios(`/api/auth/admin/menu?id=${id}`);
-
-  console.log(response?.menu);
 
   const [initSchema, setInitSchema] = useState({
     setup: {
@@ -72,185 +72,18 @@ const update = () => {
     },
   });
 
-  const handleSubmit = async (val) => {
-    const sideMenu = [
-      {
-        name: "setup",
-        icon: "flaticon-025-dashboard",
-        isActive: val.setup.setup,
-        subMenu: [
-          {
-            name: "Admin User",
-            link: "/admin/setup/user",
-            isActive: val.setup.adminUser,
-          },
-          {
-            name: "Roles",
-            link: "/admin/setup/roles",
-            isActive: val.setup.roles,
-          },
-          {
-            name: "Otp",
-            link: "/admin/setup/otp",
-            isActive: val.setup.otp,
-          },
-          {
-            name: "Email",
-            link: "admin/setup/emails",
-            isActive: val.setup.email,
-          },
-          {
-            name: "Email Details",
-            link: "/admin/setup/emails-details",
-            isActive: val.setup.emailDetails,
-          },
-          {
-            name: "Email Forms",
-            link: "/admin/setup/email-forms",
-            isActive: val.setup.emailForm,
-          },
-        ],
-      },
-      {
-        name: "Manage",
-        icon: "flaticon-050-info",
-        isActive: val.manage.manage,
-        subMenu: [
-          {
-            name: "content",
-            link: "/admin/manage/content",
-            isActive: val.manage.content,
-          },
-          {
-            name: "Banner",
-            link: "/admin/manage/banner",
-            isActive: val.manage.banner,
-          },
-          {
-            name: "Unit",
-            link: "/admin/manage/unit",
-            isActive: val.manage.unit,
-          },
-          {
-            name: "Country",
-            link: "/admin/manage/country",
-            isActive: val.manage.country,
-          },
-          {
-            name: "State",
-            link: "/admin/manage/state",
-            isActive: val.manage.state,
-          },
-          {
-            name: "City",
-            link: "/admin/manage/city",
-            isActive: val.manage.city,
-          },
-          {
-            name: "Tax",
-            link: "/admin/manage/tax",
-            isActive: val.manage.tax,
-          },
-          {
-            name: "Social",
-            link: "/admin/manage/social",
-            isActive: val.manage.social,
-          },
-        ],
-      },
-      {
-        name: "Parameter",
-        icon: "flaticon-041-graph",
-        isActive: val.parameter.parameter,
-        subMenu: [
-          {
-            name: "Seller Type",
-            link: "/admin/parameter/seller-type",
-            isActive: val.parameter.sellerType,
-          },
-          {
-            name: "Parent Group",
-            link: "/admin/parameter/parent-group",
-            isActive: val.parameter.parentGroup,
-          },
-          {
-            name: "Parent Category",
-            link: "/admin/parameter/parent-category",
-            isActive: val.parameter.parentCategory,
-          },
-          {
-            name: "Manage Brand",
-            link: "/admin/parameter/manage-brand",
-            isActive: val.parameter.brnad,
-          },
-        ],
-      },
-      {
-        name: "User",
-        icon: "flaticon-086-star",
-        isActive: val.user.user,
-        subMenu: [
-          {
-            name: "Manage User",
-            link: "/admin/user/manage-user",
-            isActive: val.user.manageUser,
-          },
-          {
-            name: "Manage User Package",
-            link: "/admin/user/manage-package",
-            isActive: val.user.managePackages,
-          },
-        ],
-      },
-      {
-        name: "Report",
-        icon: "flaticon-045-heart",
-        isActive: val.report.report,
-        subMenu: [
-          {
-            name: "Manage Sales",
-            link: "/admin/reports/sales",
-            isActive: val.report.manageSales,
-          },
-          {
-            name: "Manage Registration",
-            link: "/admin/reports/registration",
-            isActive: val.report.manageRegister,
-          },
-          {
-            name: "Manage Billing",
-            link: "/admin/reports/billing",
-            isActive: val.report.manageBilling,
-          },
-          {
-            name: "Manage Tracking",
-            link: "/admin/reports/tracking",
-            isActive: val.report.manageTracking,
-          },
-        ],
-      },
-      {
-        name: "Subscription",
-        icon: "flaticon-013-checkmark",
-        isActive: val.subscription.subscription,
-        subMenu: [
-          {
-            name: "Manage Package",
-            link: "/admin/subscription/manage-package",
-            isActive: val.subscription.managePackages,
-          },
-          {
-            name: "Manage Offer",
-            link: "/admin/subscription/manage-offer",
-            isActive: val.subscription.manageOffer,
-          },
-        ],
-      },
-    ];
+  useEffect(() => {
+    if (response) {
+      setInitSchema(response.menu);
+    }
+  }, [response]);
 
-    await postData(sideMenu);
+  const handleSubmit = async (val) => {
+    await postData({ val });
     push("/admin/setup/roles");
   };
+
+  if (isLoading === true) return <></>;
 
   return (
     <WrapForm title="update roles">

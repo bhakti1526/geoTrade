@@ -8,8 +8,12 @@ const useFetchAxios = (url) => {
 
   const getData = async () => {
     if (typeof window !== "undefined") {
-      const { token } = JSON.parse(window.localStorage.getItem("USERINFO"));
-      axios.defaults.headers.common["Authorization"] = token;
+      try {
+        const { token } = JSON.parse(window.localStorage.getItem("USERINFO"));
+        axios.defaults.headers.common["Authorization"] = token;
+      } catch {
+        axios.defaults.headers.common["Authorization"] = "";
+      }
     }
 
     setIsLoading(true);
