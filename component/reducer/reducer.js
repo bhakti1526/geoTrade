@@ -39,6 +39,7 @@ export const Reducer = (state, action) => {
           isAdmin: false,
           isSeller: false,
         },
+        token: "",
         user: {
           email: "",
           firstName: "",

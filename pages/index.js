@@ -28,11 +28,9 @@ const index = () => {
       .post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/login`, val)
       .then(async (res) => {
         await dispatch({ type: "AUTH-USER", data: res.data });
-        // push("/seller");
+        push("/seller");
       })
       .catch((err) => console.log(err));
-
-    // push("/seller");
   };
 
   return (

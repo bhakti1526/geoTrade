@@ -230,7 +230,7 @@ const Sidebar = () => {
         push("/admin/dashboard");
       }
     }
-  }, [sideMenu, window.location, pathname]);
+  }, [isAdmin, sideMenu, window.location, pathname]);
 
   const [doc, setDoc] = useState();
   useEffect(() => {
@@ -337,7 +337,7 @@ const Sidebar = () => {
       "page-error-503",
     ];
 
-  if (isLoading === true) return <></>;
+  if (isAdmin === true && isLoading === true) return <></>;
 
   return (
     <div className="deznav">

@@ -1,5 +1,4 @@
 import Head from "next/head";
-import axios from "axios";
 import "nouislider/distribute/nouislider.css";
 import { useEffect, useState } from "react";
 // redux

@@ -29,10 +29,6 @@ const brands = {
 };
 
 const brand = () => {
-  const { token } = useContext(AppContext);
-  let tokens;
-  const url = process.env.NEXT_PUBLIC_API_URL;
-  const [b, setB] = useState(brands);
   const [imgs, setImgs] = useState(null);
 
   const validationSchema = Yup.object().shape({
@@ -41,17 +37,7 @@ const brand = () => {
     contact: Yup.string().required(),
     website: Yup.string().url().required(),
     description: Yup.string().required(),
-
-    img: Yup.mixed()
-      .required("A file is required")
-      .test("fileFormat", "image only", () => {
-        if (imgs === null || imgs === undefined) return false;
-        return imgs.type === "image/png"
-          ? true
-          : imgs.type === "image/jpeg"
-          ? true
-          : false;
-      }),
+    img: Yup.string().required(),
   });
 
   const { response, postData, isLoading } = usePostAxios("/api/user/brand");
@@ -171,21 +157,6 @@ const brand = () => {
                                 />
                               </div>
                             </FormGroup>
-
-                            {/* <FormGroup className="col-md-12 col-lg-12">
-                              <FormLabel>Brand Info</FormLabel>
-                              <div className="summernote">
-                                <Editor
-                                  name="description"
-                                  onChange={(e) =>
-                                    setFieldValue(
-                                      "description",
-                                      e.target.getContent()
-                                    )
-                                  }
-                                />
-                              </div>
-                            </FormGroup> */}
                           </div>
                         </div>
 

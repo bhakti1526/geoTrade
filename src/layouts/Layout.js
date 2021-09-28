@@ -24,7 +24,6 @@ const Layout = ({ children, getUser, user }) => {
     <Fragment>
       <div id="main-wrapper" className="show">
         <NavHeader />
-        {/* <ChatBox /> */}
         <Header />
         <Sidebar />
         <div className="content-body" style={{ minHeight: height }}>

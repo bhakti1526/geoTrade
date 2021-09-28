@@ -7,7 +7,11 @@ import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../component/hooks/useDeleteAxios";
 
-const manageBrand = () => {
+const index = () => {
+  const {
+    user: { id },
+  } = useContext(AppContext);
+
   const { isLoading, response, error, getData } = useFetchAxios(
     `/api/user/brand?userId=${true}`
   );
@@ -45,7 +49,7 @@ const manageBrand = () => {
             e.value ? "badge light badge-success" : "badge light badge-danger"
           }
         >
-          {e.value ? "yes".toUpperCase() : "no".toUpperCase()}
+          {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
         </span>
       ),
     },
@@ -73,7 +77,7 @@ const manageBrand = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/api/user/brand?id=${s.row.original._id}`);
+                await deleteData(`/deleteBrands/${s.row.original._id}`);
                 getData();
               }}
             >
@@ -96,4 +100,4 @@ const manageBrand = () => {
   );
 };
 
-export default manageBrand;
+export default index;

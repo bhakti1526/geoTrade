@@ -82,7 +82,7 @@ const Profile = ({ logoutUser }) => {
             <span className="ml-2">Inbox </span>
           </a>
         </Link> */}
-        <Link href="">
+        <Link href="#">
           <a onClick={handleLogOut} className="dropdown-item ai-icon">
             <svg
               id="icon-logout"
