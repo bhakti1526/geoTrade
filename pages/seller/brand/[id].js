@@ -1,68 +1,85 @@
-import React, { useContext, useEffect, useState, createRef } from "react";
+import React, { useEffect, useState, createRef } from "react";
+import axios from "axios";
 import { Editor } from "@tinymce/tinymce-react";
 import { css } from "@emotion/css";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
-
 import {
   Form,
   FormGroup,
   FormLabel,
   FormControl,
-  FormCheck,
   Button,
 } from "react-bootstrap";
 import * as Yup from "yup";
-import usePostAxios from "../../../component/hooks/usePostAxios";
-import { AppContext } from "../../../component/context/app.context";
+import useFetchAxios from "../../../component/hooks/useFetchAxios";
 
-const brands = {
-  name: "",
-  contact: "",
-  email: "",
-  website: "",
-  userType: "",
-  description: "",
-  isApproved: false,
-  isActive: false,
-  img: "",
-};
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  email: Yup.string().email().required(),
+  contact: Yup.string().required(),
+  website: Yup.string().url().required(),
+  description: Yup.string().required(),
+  img: Yup.string().required(),
+});
 
 const brand = () => {
-  const [imgs, setImgs] = useState(null);
-
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required(),
-    email: Yup.string().email().required(),
-    contact: Yup.string().required(),
-    website: Yup.string().url().required(),
-    description: Yup.string().required(),
-    img: Yup.string().required(),
+  const [img, setImg] = useState(null);
+  const [initialSchema, setInitialSchema] = useState({
+    name: "",
+    contact: "",
+    email: "",
+    website: "",
+    userType: "",
+    description: "",
+    isApproved: false,
+    isActive: false,
+    img: "",
   });
 
-  const { response, postData, isLoading } = usePostAxios("/api/user/brand");
+  const {
+    push,
+    query: { id },
+  } = useRouter();
 
-  const { push } = useRouter();
+  const { response } = useFetchAxios(`/api/user/brand?id=${id}`);
 
   const imgRef = createRef(null);
 
   const handleSubmit = async (val) => {
-    const data = new FormData();
-
-    data.append("name", val.name);
-    data.append("img", imgs);
-    data.append("contact", val.contact);
-    data.append("isActive", val.isActive);
-    data.append("isApproved", val.isApproved);
-    data.append("website", val.website);
-    data.append("email", val.email);
-    data.append("userType", val.userType);
-    data.append("description", val.description);
-
-    await postData(data);
-
-    push("/seller/brand");
+    if (img !== null && img !== undefined) {
+      const formData = new FormData();
+      formData.append("img", img);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+        .then((res) => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/brand/${id}`, {
+              ...val,
+              _id: id,
+              img: res.data.data,
+            })
+            .then((res) => {
+              push("/seller/brand");
+            });
+        });
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/brand/${id}`, {
+          ...val,
+          _id: id,
+        })
+        .then((res) => {
+          push("/seller/brand");
+        });
+    }
   };
+
+  useEffect(() => {
+    if (response) {
+      setInitialSchema(response);
+    }
+  }, [response]);
 
   return (
     <div>
@@ -75,9 +92,10 @@ const brand = () => {
             <div className="card-body">
               <div className="basic-form">
                 <Formik
+                  enableReinitialize
                   onSubmit={handleSubmit}
                   validationSchema={validationSchema}
-                  initialValues={brands}
+                  initialValues={initialSchema}
                 >
                   {({
                     handleSubmit,
@@ -114,6 +132,7 @@ const brand = () => {
                                 type="text"
                                 className="form-control"
                                 placeholder=""
+                                value={values.contact}
                                 isInvalid={
                                   !!touched.contact && !!errors.contact
                                 }
@@ -127,6 +146,7 @@ const brand = () => {
                                 type="text"
                                 className="form-control"
                                 placeholder=""
+                                value={values.website}
                                 isInvalid={
                                   !!touched.website && !!errors.website
                                 }
@@ -140,6 +160,7 @@ const brand = () => {
                                 className="form-control"
                                 placeholder=""
                                 name="email"
+                                value={values.email}
                                 isInvalid={!!touched.email && !!errors.email}
                               />
                             </FormGroup>
@@ -148,6 +169,7 @@ const brand = () => {
                               <FormLabel>Brand Info</FormLabel>
                               <div className="summernote">
                                 <Editor
+                                  initialValue={values.description}
                                   onChange={(e) =>
                                     setFieldValue(
                                       "description",
@@ -162,6 +184,7 @@ const brand = () => {
 
                         <div className="col-md-4">
                           <div
+                            onClick={() => imgRef.current.click()}
                             className={css`
                               display: flex;
                               justify-content: center;
@@ -180,11 +203,10 @@ const brand = () => {
                                 display: "none",
                               }}
                               ref={imgRef}
-                              onChange={(e) => setImgs(e.target.files[0])}
+                              onChange={(e) => setImg(e.target.files[0])}
                               isInvalid={!!touched.img && !!errors.img}
                             />
                             <i
-                              onClick={() => imgRef.current.click()}
                               className="flaticon-381-photo-camera"
                               style={{ fontSize: "34px" }}
                             ></i>

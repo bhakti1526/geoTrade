@@ -3,6 +3,7 @@
   border: 1px solid #e2e2e2;
   padding: 20px;
   color: #8e8d8d;
+  height: 6rem;
 }
 
 .add-photo-01 i {
@@ -53,7 +54,7 @@
   top: 33px;
   border-radius: 0.25rem 0 0 0.25rem;
   left: 15px;
-  padding: 19px 15px;
+  padding: 0.78rem;
   background-color: #e2e2e2;
 }
 

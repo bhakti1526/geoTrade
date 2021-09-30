@@ -14,12 +14,9 @@ import {
   Button,
 } from "react-bootstrap";
 import WrapFrom from "../../src/components/admin/WrapForm";
-import useFetchAxios from "../../component/hooks/useFetchAxios";
-import usePostAxios from "../../component/hooks/usePostAxios";
-import { set } from "date-fns";
-// import {AppContext} from '../../component/context/app.context';
+import { AppContext } from "../../component/context/app.context";
 
-// const {token} = useContext(AppContext);
+import usePostAxios from "../../component/hooks/usePostAxios";
 
 const imgStyle = css`
   display: flex;
@@ -29,8 +26,6 @@ const imgStyle = css`
   border: 1px solid rgb(212, 217, 222);
   width: 80%;
 `;
-
-// do not post image because it is not implemented so this will be ignored
 
 const initData = {
   name: "",
@@ -146,13 +141,12 @@ const post = () => {
     // console.log(sellerTypes);
   };
 
-  const { token } = useContext(AppContext);
-
   useEffect(() => {
     getReqData();
     // const {token} = useContext(AppContext);
     // tokens = token;
   }, []);
+  const { token } = useContext(AppContext);
 
   const addPost = async (e) => {
     // if(tokens){
@@ -224,7 +218,7 @@ const post = () => {
                     </FormGroup>
 
                     <FormGroup className="col-md-12 col-lg-12">
-                      <FormLabel> Brand Info </FormLabel>
+                      <FormLabel> Porduct Info </FormLabel>
                       <div className="summernote">
                         <Editor
                           // onEditorChange={(newValue, editor) => {
@@ -370,9 +364,9 @@ const post = () => {
                       type="file"
                       className="form-control"
                       accept="image/*"
-                      // style={{
-                      //   display="none"
-                      // }}
+                      style={{
+                        display: "none",
+                      }}
                       onChange={(e) => setImgs(e.target.files[0])}
                       // isInvalid={
                       //   !!touched && !!errors.parentGroupImg
@@ -380,10 +374,10 @@ const post = () => {
                       isInvalid={!!touched.img && !!errors.img}
                     />
 
-                    {/* <i
+                    <i
                       className="flaticon-381-photo-camera"
                       style={{ fontSize: "34px" }}
-                    ></i> */}
+                    ></i>
                   </div>
                 </div>
 

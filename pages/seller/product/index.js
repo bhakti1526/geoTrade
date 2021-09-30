@@ -91,7 +91,7 @@ const index = () => {
 
   return (
     <WrapTable
-      bText="Add Brand"
+      bText="Add Product"
       title="Manage Brands"
       column={column}
       isLoading={isLoading}

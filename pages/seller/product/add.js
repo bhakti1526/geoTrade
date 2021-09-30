@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
+import React, { useRef, useEffect, useState } from "react";
 import { css } from "@emotion/css";
+import { Editor } from "@tinymce/tinymce-react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import {
@@ -8,67 +8,170 @@ import {
   FormGroup,
   FormLabel,
   FormControl,
-  FormCheck,
   Button,
+  Modal,
 } from "react-bootstrap";
-import { AppContext } from "../../../component/context/app.context";
-import axios from "axios";
-import { Link } from "@material-ui/core";
+
+import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import usePostAxios from "../../../component/hooks/usePostAxios";
+
 import { useRouter } from "next/router";
+
+import AppLoader from "../../../src/components/admin/AppLoader";
 
 const productDetails = {
   name: "",
   slug: "",
   price: "",
   description: "",
-  img: "",
+};
+
+const ImgBlock = ({ img, setImg }) => {
+  const imgRef = useRef(null);
+
+  const handlechange = (e) => {
+    const image = e.target.files[0];
+
+    if (image.type.startsWith("image")) {
+      setImg(image);
+    }
+  };
+
+  return (
+    <>
+      <div
+        className={
+          img
+            ? css`
+                padding: 0;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ` + " add-photo-01"
+            : " add-photo-01"
+        }
+        onClick={() => imgRef.current.click()}
+      >
+        {img === null ? (
+          <>
+            <i className="flaticon-381-photo-camera"></i>
+            <p>Add </p>
+          </>
+        ) : (
+          <img
+            style={{ padding: "0.2rem", height: "auto", width: "100%" }}
+            src={URL.createObjectURL(img)}
+          />
+        )}
+      </div>
+      <input
+        style={{ display: "none" }}
+        ref={imgRef}
+        onChange={handlechange}
+        type="file"
+        accept="image/*"
+      />
+    </>
+  );
+};
+
+const BigImgBlock = ({ img, setImg }) => {
+  const imgRef = useRef(null);
+
+  const handlechange = (e) => {
+    const image = e.target.files[0];
+
+    if (image.type.startsWith("image")) {
+      setImg(image);
+    }
+  };
+
+  return (
+    <div
+      className={
+        img
+          ? css`
+              padding: 0;
+              margin: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ` + " big-photo-add"
+          : " big-photo-add"
+      }
+      onClick={() => imgRef.current.click()}
+    >
+      <div className="add-photo-02">
+        {img === null ? (
+          <>
+            <i className="flaticon-381-photo-camera"></i>
+            <p>Add Photos</p>
+          </>
+        ) : (
+          <img
+            style={{ height: "auto", width: "100%" }}
+            src={URL.createObjectURL(img)}
+          />
+        )}
+      </div>
+      <input
+        style={{ display: "none" }}
+        ref={imgRef}
+        onChange={handlechange}
+        type="file"
+        accept="image/*"
+      />
+    </div>
+  );
 };
 
 const product = () => {
-  // let tokens;
-  const [imgs, setImgs] = useState("");
+  const [unitList, setUnitList] = useState([]);
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  const { isLoading: unitLoad, response } = useFetchAxios("/api/other/unit");
+
+  const toggleModel = () => setIsShowModal((x) => !x);
+
+  useEffect(() => {
+    setUnitList(response);
+  }, [response]);
+
+  const [img, setImg] = useState(null);
+  const [img1, setImg1] = useState(null);
+  const [img2, setImg2] = useState(null);
+  const [img3, setImg3] = useState(null);
+  const [img4, setImg4] = useState(null);
+  const [img5, setImg5] = useState(null);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     slug: Yup.string().required(),
     description: Yup.string().required(),
-    img: Yup.mixed()
-      .required("A file is required")
-      .test("fileFormat", "image only", () => {
-        if (imgs === null || imgs === undefined) return false;
-        return imgs.type === "image/png"
-          ? true
-          : imgs.type === "image/jpeg"
-          ? true
-          : false;
-      }),
+    ytUrl: Yup.string().url().required(),
   });
 
-  const { response, postData, isLoading } = usePostAxios("/addProduct");
-
+  const { postData } = usePostAxios("/api/user/post");
   const { push } = useRouter();
 
   const handleSubmit = async (val) => {
-    // if(tokens){
-
-    console.log("xD");
     const data = new FormData();
     data.append("name", val.name);
-    data.append("img", imgs);
     data.append("price", val.price);
     data.append("slug", val.slug);
     data.append("description", val.description);
+    data.append("img", img);
+    data.append("img", img1);
+    data.append("img", img2);
+    data.append("img", img3);
+    data.append("img", img4);
+    data.append("img", img5);
     await postData(data);
-
-    // }
-
-    push("/seller/product");
+    // push("/seller/product");
   };
 
-  useEffect(() => {
-    // const {token} = useContext(AppContext);
-    // tokens = token;
-  }, []);
+  if (unitLoad === true) return <AppLoader />;
 
   return (
     <div>
@@ -94,186 +197,150 @@ const product = () => {
                     setFieldValue,
                   }) => {
                     return (
-                      //   <Form
-                      //   className="row"
-                      //   onChange={handleChange}
-                      //   onSubmit={handleSubmit}
-                      // >
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="row m-0">
-                            <div className="col-4 col-md-3 col-lg-2 p-0">
-                              <div className="images-upload-part">
-                                <Link
-                                  to="#"
-                                  id="OpenImgUpload"
-                                  title="Upload Image"
-                                >
-                                  <div className="add-photo-01">
-                                    <i className="flaticon-381-photo-camera"></i>
-                                    <p>Add</p>
+                      <Form
+                        className="row"
+                        onChange={handleChange}
+                        onSubmit={handleSubmit}
+                      >
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="row m-0">
+                              <div className="col-4 col-md-3 col-lg-2 p-0">
+                                <ImgBlock img={img1} setImg={setImg1} />
+                                <ImgBlock img={img2} setImg={setImg2} />
+                                <ImgBlock img={img3} setImg={setImg3} />
+                                <ImgBlock img={img4} setImg={setImg4} />
+                                <ImgBlock img={img5} setImg={setImg5} />
+                              </div>
+                              <div className="col-8 col-md-9 col-lg-9 p-0">
+                                <BigImgBlock img={img} setImg={setImg} />
+                                <div className="row m-0">
+                                  <div
+                                    className="col-md-6 p-0"
+                                    onClick={toggleModel}
+                                  >
+                                    <div className="add-photo-01">
+                                      <i class="fab fa-youtube"></i>
+                                      <p>Add Video</p>
+                                    </div>
                                   </div>
-                                </Link>
-                                <FormControl
-                                  type="file"
-                                  id="imgupload"
-                                  style={{ display: "none" }}
-                                />
-                              </div>
-                              <div className="add-photo-01">
-                                <i className="flaticon-381-photo-camera"></i>
-                                <p>Add</p>
-                              </div>
-                              <div className="add-photo-01">
-                                <i className="flaticon-381-photo-camera"></i>
-                                <p>Add</p>
-                              </div>
-                              <div className="add-photo-01">
-                                <i className="flaticon-381-photo-camera"></i>
-                                <p>Add</p>
-                              </div>
-                              <div className="add-photo-01">
-                                <i className="flaticon-381-photo-camera"></i>
-                                <p>Add</p>
-                              </div>
-                            </div>
-                            <div className="col-8 col-md-9 col-lg-9 p-0">
-                              <div className="big-photo-add">
-                                <div className="add-photo-02">
-                                  {/* <i className="flaticon-381-photo-camera"></i> */}
-                                  <p>Add Photos</p>
-                                </div>
-                              </div>
-                              <div className="row m-0">
-                                <div className="col-md-6 p-0">
-                                  <div className="add-photo-01">
-                                    <i class="fab fa-youtube"></i>
-                                    <p>Add Video</p>
+                                  <div className="col-md-6 p-0">
+                                    <div className="add-photo-01">
+                                      <i class="far fa-file-pdf"></i>
+                                      <p>Add PDF</p>
+                                    </div>
                                   </div>
                                 </div>
-                                <div className="col-md-6 p-0">
-                                  <div className="add-photo-01">
-                                    <i class="far fa-file-pdf"></i>
-                                    <p>Add PDF</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12">
-                              <div className="mt-2">
-                                <Link to="#">
-                                  <i className="far fa-lightbulb pr-1"></i> Tips
-                                </Link>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="col-md-6">
-                          <Form
-                            className="row align-items-center mt-4 mt-md-0"
-                            onChange={handleChange}
-                            onSubmit={handleSubmit}
-                          >
-                            <FormControl
-                              name="img"
-                              type="file"
-                              className="form-control"
-                              accept="image/*"
-                              onChange={(e) => setImgs(e.target.files[0])}
-                              // style={{ display: "none" }}
-                            />
-                            <FormGroup className="form-group col-md-12">
-                              <FormLabel>Product/Service Name</FormLabel>
-                              <FormControl
-                                name="name"
-                                // onChange={(e) => onInputChange(e)}
-                                type="text"
-                                className="form-control"
-                                placeholder=""
-                                isInvalid={!!touched.name && !!errors.name}
-                              />
-                            </FormGroup>
-                            <FormGroup className="form-group col-md-5 tag-price mt-2">
-                              <FormLabel>Price</FormLabel>
-                              <i className="fas fa-rupee-sign"></i>
-                              <FormControl
-                                type="text"
-                                className="form-control"
-                                placeholder=""
-                                name="price"
-                                isInvalid={!!touched.price && !!errors.price}
-                                // onChange={(e) => onInputChange(e)}
-                              />
-                            </FormGroup>
-                            <FormGroup className="form-group col-md-2">
-                              <FormLabel className="d-none d-md-block">
-                                &nbsp;
-                              </FormLabel>
-                              <p className="mb-0 text-center">-per-</p>
-                            </FormGroup>
-                            <FormGroup className="form-group col-md-5">
-                              <FormLabel className="d-none d-md-block">
-                                &nbsp;
-                              </FormLabel>
-                              <FormControl
-                                type="text"
-                                name="slug"
-                                // onChange={(e) => onInputChange(e)}
-                                className="form-control"
-                                placeholder="Ex - Pair, Piece etc"
-                                isInvalid={!!touched.slug && !!errors.slug}
-                              />
-                            </FormGroup>
-                            <FormGroup className="form-group col-md-12 mt-3">
-                              <FormLabel className="d-block">
-                                Product/Service Description
-                                <small className="text-right text-secondary float-right">
-                                  Uses, Details, Benefits, etc.
-                                </small>
-                              </FormLabel>
-                              <div className="summernote">
-                                <Editor
-                                  // onEditorChange={(newValue, editor) => {
-                                  //   setProducts({
-                                  //     ...products,
-                                  //     ["description"]: editor.getContent({
-                                  //       format: "text",
-                                  //     }),
-                                  //   });
-                                  // }}
-                                  // onChange={(e) =>
-                                  //   setFieldValue("description", e.target.getContent())
-                                  // }
-                                  onEditorChange={(newValue, editor) => {
-                                    // setValue(newValue);
-                                    setFieldValue(
-                                      "description",
-                                      editor.getContent({ format: "text" })
-                                    );
-                                  }}
-                                />
-                              </div>
-                              <small className="d-block mt-2 text-right float-right text-secondary">
-                                0 character (maximum of 4000) including
-                                formatting.
-                              </small>
-                            </FormGroup>
 
-                            <FormGroup className="form-group col-md-12 mt-3">
-                              <div className="float-right">
-                                <Button
-                                  className="btn btn-success"
-                                  type="submit"
+                          <Modal show={isShowModal} onHide={toggleModel}>
+                            <Modal.Header closeButton>
+                              <Modal.Title>Youtub URL</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <Form.Control name="ytUrl" />
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <Button variant="secondary" onClick={toggleModel}>
+                                Close
+                              </Button>
+                              <Button variant="primary" onClick={toggleModel}>
+                                Save Changes
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
+                          <div class="col-md-6">
+                            <Form
+                              className="row align-items-center mt-4 mt-md-0"
+                              onChange={handleChange}
+                              onSubmit={handleSubmit}
+                            >
+                              <FormGroup className="form-group col-md-12">
+                                <FormLabel>Product/Service Name</FormLabel>
+                                <FormControl
+                                  name="name"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder=""
+                                  isInvalid={!!touched.name && !!errors.name}
+                                />
+                              </FormGroup>
+                              <FormGroup className="form-group col-md-5 tag-price mt-2">
+                                <FormLabel>Price</FormLabel>
+                                <i className="fas fa-rupee-sign"></i>
+                                <FormControl
+                                  type="text"
+                                  className="form-control"
+                                  placeholder=""
+                                  name="price"
+                                  isInvalid={!!touched.price && !!errors.price}
+                                />
+                              </FormGroup>
+                              <FormGroup className="form-group col-md-2">
+                                <FormLabel className="d-none d-md-block">
+                                  &nbsp;
+                                </FormLabel>
+                                <p className="mb-0 text-center">-per-</p>
+                              </FormGroup>
+                              <FormGroup className="form-group col-md-5">
+                                <FormLabel className="d-none d-md-block">
+                                  &nbsp;
+                                </FormLabel>
+                                <FormControl
+                                  type="text"
+                                  name="slug"
+                                  className="form-control"
+                                  placeholder="Ex - Pair, Piece etc"
+                                  as="select"
+                                  isInvalid={!!touched.slug && !!errors.slug}
                                 >
-                                  Save and Continue
-                                  <i class="fas fa-arrow-right pl-1"></i>
-                                </Button>
-                              </div>
-                            </FormGroup>
-                          </Form>
+                                  <option>select</option>
+                                  {unitList.map((x) => (
+                                    <option value={x._id}>{x.name}</option>
+                                  ))}
+                                </FormControl>
+                              </FormGroup>
+                              <FormGroup className="form-group col-md-12 mt-3">
+                                <FormLabel className="d-block">
+                                  Product/Service Description
+                                  <small className="text-right text-secondary float-right">
+                                    Uses, Details, Benefits, etc.
+                                  </small>
+                                </FormLabel>
+                                <div className="summernote">
+                                  <Editor
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        "description",
+                                        e.target.getContent()
+                                      )
+                                    }
+                                  />
+                                </div>
+                                <small className="d-block mt-2 text-right float-right text-secondary">
+                                  0 character (maximum of 4000) including
+                                  formatting.
+                                </small>
+                              </FormGroup>
+
+                              <FormGroup className="form-group col-md-12 mt-3">
+                                <div className="float-right">
+                                  <Button
+                                    className="btn btn-success"
+                                    type="submit"
+                                    onClick={handleSubmit}
+                                  >
+                                    Save and Continue
+                                    <i class="fas fa-arrow-right pl-1"></i>
+                                  </Button>
+                                </div>
+                              </FormGroup>
+                            </Form>
+                          </div>
                         </div>
-                      </div>
-                      // </Form>
+                      </Form>
                     );
                   }}
                 </Formik>

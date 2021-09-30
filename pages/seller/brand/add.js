@@ -191,6 +191,7 @@ const brand = () => {
 
                         <div className="col-md-4">
                           <div
+                            onClick={() => imgRef.current.click()}
                             className={css`
                               display: flex;
                               justify-content: center;
@@ -200,6 +201,21 @@ const brand = () => {
                               width: 80%;
                             `}
                           >
+                            {imgs === null ? (
+                              <>
+                                <i
+                                  className="flaticon-381-photo-camera"
+                                  style={{ fontSize: "34px" }}
+                                ></i>
+                              </>
+                            ) : (
+                              <>
+                                <img
+                                  className="img-fluid"
+                                  src={URL.createObjectURL(imgs)}
+                                />
+                              </>
+                            )}
                             <FormControl
                               name="img"
                               type="file"
@@ -209,14 +225,14 @@ const brand = () => {
                                 display: "none",
                               }}
                               ref={imgRef}
-                              onChange={(e) => setImgs(e.target.files[0])}
+                              onChange={(e) => {
+                                const image = e.target.files[0];
+                                if (image.type.startsWith("image")) {
+                                  setImgs(image);
+                                }
+                              }}
                               isInvalid={!!touched.img && !!errors.img}
                             />
-                            <i
-                              onClick={() => imgRef.current.click()}
-                              className="flaticon-381-photo-camera"
-                              style={{ fontSize: "34px" }}
-                            ></i>
                           </div>
                         </div>
 
