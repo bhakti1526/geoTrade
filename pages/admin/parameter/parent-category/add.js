@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -20,7 +21,6 @@ const initValue = {
   sellerType: "",
   parentCatagoryName: "",
   parentCatagoryImg: "",
-  isActive: false,
 };
 
 const add = () => {
@@ -37,7 +37,7 @@ const add = () => {
   const { isLoading: parentLoad, response: parentRes } =
     useFetchAxios("/getParentGroup");
 
-  const { isLoading, postData } = usePostAxios("/addParentCategory");
+  const { isLoading, postData } = usePostAxios("/api/admin/parencategory");
 
   useEffect(() => {
     setSeller(sellerRes);
@@ -47,8 +47,10 @@ const add = () => {
     setParent(parentRes);
   }, [parentRes]);
 
+  console.log("parent", parent);
+
   const validationSchema = Yup.object().shape({
-    parentGroup: Yup.string().required(),
+    parentGroup: Yup.array().of(Yup.string()).required(),
     sellerType: Yup.string().required(),
     parentCatagoryName: Yup.string().required(),
     parentCatagoryImg: Yup.mixed()
@@ -61,7 +63,6 @@ const add = () => {
           ? true
           : false;
       }),
-    isActive: Yup.bool().oneOf([true, false]),
   });
 
   if (sellerLoad === true) return <AppLoader />;
@@ -69,7 +70,7 @@ const add = () => {
 
   const handleSubmit = async (val) => {
     const data = new FormData();
-    data.append("parentGroup", val.parentGroup);
+    data.append("parentGroup", JSON.stringify(val.parentGroup));
     data.append("sellerType", val.sellerType);
     data.append("parentCatagoryName", val.parentCatagoryName);
     data.append("parentCatagoryImg", img);
@@ -86,7 +87,34 @@ const add = () => {
         initialValues={initValue}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => {
+        {({
+          handleChange,
+          handleSubmit,
+          errors,
+          touched,
+          values,
+          setFieldValue,
+        }) => {
+          const parenCategoryStyle = {
+            control: (base, state) => ({
+              ...base,
+
+              borderColor: state.isFocused
+                ? "#ddd"
+                : !errors?.parentGroup
+                ? "#ddd"
+                : "#f72b50",
+
+              "&:hover": {
+                borderColor: state.isFocused
+                  ? "#ddd"
+                  : !errors?.parentGroup
+                  ? "#ddd"
+                  : "#f72b50",
+              },
+            }),
+          };
+
           return (
             <Form
               className="row"
@@ -95,7 +123,11 @@ const add = () => {
             >
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Seller Name</FormLabel>
-                <Form.Control name="sellerType" as="select">
+                <Form.Control
+                  isInvalid={!!touched.sellerType && !!errors.sellerType}
+                  name="sellerType"
+                  as="select"
+                >
                   <option>selct</option>
                   {seller.map((x) => (
                     <option value={x._id}> {x.sellerTypeName} </option>
@@ -105,17 +137,28 @@ const add = () => {
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Parent Group</FormLabel>
-                <Form.Control name="parentGroup" as="select">
-                  <option>selct</option>
-                  {parent.map((x) => (
-                    <option value={x._id}> {x.parentGroupName} </option>
-                  ))}
-                </Form.Control>
+                <Select
+                  styles={parenCategoryStyle}
+                  options={parent.map((x) => ({
+                    value: x._id,
+                    label: x.parentGroupName,
+                  }))}
+                  isMulti
+                  onChange={(e) =>
+                    setFieldValue(
+                      "parentGroup",
+                      e.map((x) => x.value)
+                    )
+                  }
+                />
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Parent Category Image</FormLabel>
                 <FormControl
+                  isInvalid={
+                    !!touched.parentCatagoryImg && !!errors.parentCatagoryImg
+                  }
                   type="file"
                   accept="image/*"
                   name="parentCatagoryImg"
@@ -131,17 +174,9 @@ const add = () => {
                   className="form-control"
                   name="parentCatagoryName"
                   placeholder=""
-                />
-              </FormGroup>
-
-              <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Status</FormLabel>
-                <FormCheck
-                  type="checkbox"
-                  name="isActive"
-                  checked={values.isActive}
-                  onClick={() => setFieldValue("isActive", !values.isActive)}
-                  label="active or inactive"
+                  isInvalid={
+                    !!touched.parentCatagoryName && !!errors.parentCatagoryName
+                  }
                 />
               </FormGroup>
 

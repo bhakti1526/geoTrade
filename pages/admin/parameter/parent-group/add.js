@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -19,7 +20,6 @@ const initValue = {
   sellerType: "",
   parentGroupName: "",
   parentGroupImg: "",
-  isActive: true,
 };
 
 const add = () => {
@@ -31,7 +31,9 @@ const add = () => {
   const { isLoading: sellerLoad, response: sellerRes } =
     useFetchAxios("/getSellerType");
 
-  const { isLoading: sendLoad, postData } = usePostAxios("/addParentGroup");
+  const { isLoading: sendLoad, postData } = usePostAxios(
+    "/api/admin/parentgroup"
+  );
 
   useEffect(() => {
     setSellerTypes(sellerRes);
@@ -40,7 +42,7 @@ const add = () => {
   if (sellerLoad === true) return <AppLoader />;
 
   const validationSchema = Yup.object().shape({
-    sellerType: Yup.string().required(),
+    sellerType: Yup.array().of(Yup.string()).required(),
     parentGroupName: Yup.string().required(),
     parentGroupImg: Yup.mixed()
       .required("A file is required")
@@ -52,16 +54,14 @@ const add = () => {
           ? true
           : false;
       }),
-    isActive: Yup.bool().oneOf([true, false]),
   });
 
   const handleSubmit = async (val) => {
     const data = new FormData();
 
-    data.append("sellerType", val.sellerType);
+    data.append("sellerType", JSON.stringify(val.sellerType));
     data.append("parentGroupName", val.parentGroupName);
     data.append("parentGroupImg", img);
-    data.append("isActive", val.isActive);
 
     await postData(data);
 
@@ -84,6 +84,26 @@ const add = () => {
           errors,
           setFieldValue,
         }) => {
+          const parenCategoryStyle = {
+            control: (base, state) => ({
+              ...base,
+
+              borderColor: state.isFocused
+                ? "#ddd"
+                : !errors?.sellerType
+                ? "#ddd"
+                : "#f72b50",
+
+              "&:hover": {
+                borderColor: state.isFocused
+                  ? "#ddd"
+                  : !errors?.sellerType
+                  ? "#ddd"
+                  : "#f72b50",
+              },
+            }),
+          };
+
           return (
             <>
               <Form
@@ -93,12 +113,20 @@ const add = () => {
               >
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Seller Type</FormLabel>
-                  <Form.Control name="sellerType" as="select">
-                    <option>select...</option>
-                    {sellerTypes.map((x) => (
-                      <option value={x._id}>{x.sellerTypeName}</option>
-                    ))}
-                  </Form.Control>
+                  <Select
+                    styles={parenCategoryStyle}
+                    options={sellerTypes.map((x) => ({
+                      value: x._id,
+                      label: x.sellerTypeName,
+                    }))}
+                    isMulti
+                    onChange={(e) =>
+                      setFieldValue(
+                        "sellerType",
+                        e.map((x) => x.value)
+                      )
+                    }
+                  />
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
@@ -124,17 +152,6 @@ const add = () => {
                     isInvalid={
                       !!touched.parentGroupImg && !!errors.parentGroupImg
                     }
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Status</FormLabel>
-                  <FormCheck
-                    type="checkbox"
-                    label="active or inactive"
-                    name="isActive"
-                    checked={values.isActive}
-                    onClick={() => setFieldValue("isActive", !values.isActive)}
                   />
                 </FormGroup>
 

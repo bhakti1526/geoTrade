@@ -10,6 +10,8 @@ import {
   FormControl,
   Button,
   Modal,
+  Row,
+  Col,
 } from "react-bootstrap";
 
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
@@ -132,10 +134,21 @@ const product = () => {
 
   const { isLoading: unitLoad, response } = useFetchAxios("/api/other/unit");
 
+  const { isLoading: sellerLoad, response: sellerRes } = useFetchAxios(
+    "/api/other/sellertype"
+  );
+  const { isLoading: parentLoad, response: parentRes } = useFetchAxios(
+    "/api/other/parenttype"
+  );
+  const { isLoading: paremtCategoryLoad, response: paremtCategoryRes } =
+    useFetchAxios("/api/other/parentcategory");
+  const { isLoading: subcategoryLoad, response: seubCategoryRes } =
+    useFetchAxios("/api/other/subcategory");
+
   const toggleModel = () => setIsShowModal((x) => !x);
 
   useEffect(() => {
-    setUnitList(response);
+    if (response) setUnitList(response);
   }, [response]);
 
   const [img, setImg] = useState(null);
@@ -144,12 +157,13 @@ const product = () => {
   const [img3, setImg3] = useState(null);
   const [img4, setImg4] = useState(null);
   const [img5, setImg5] = useState(null);
+  const [pdf, setPdf] = useState(null);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     slug: Yup.string().required(),
     description: Yup.string().required(),
-    ytUrl: Yup.string().url().required(),
+    ytUrl: Yup.string().url(),
   });
 
   const { postData } = usePostAxios("/api/user/post");
@@ -167,11 +181,18 @@ const product = () => {
     data.append("img", img3);
     data.append("img", img4);
     data.append("img", img5);
+    data.append("pdf", pdf);
     await postData(data);
-    // push("/seller/product");
+    push("/seller/product");
   };
 
+  const pdfRef = useRef(null);
+
   if (unitLoad === true) return <AppLoader />;
+  if (sellerLoad === true) return <AppLoader />;
+  if (parentLoad === true) return <AppLoader />;
+  if (subcategoryLoad === true) return <AppLoader />;
+  if (paremtCategoryLoad === true) return <AppLoader />;
 
   return (
     <div>
@@ -224,11 +245,27 @@ const product = () => {
                                       <p>Add Video</p>
                                     </div>
                                   </div>
-                                  <div className="col-md-6 p-0">
+                                  <div
+                                    className="col-md-6 p-0"
+                                    onClick={() => pdfRef.current.click()}
+                                  >
                                     <div className="add-photo-01">
                                       <i class="far fa-file-pdf"></i>
                                       <p>Add PDF</p>
                                     </div>
+                                    <input
+                                      style={{ display: "none" }}
+                                      onChange={(e) => {
+                                        const pdf = e.target.files[0];
+
+                                        if (pdf.type === "application/pdf") {
+                                          setPdf(pdf);
+                                        }
+                                      }}
+                                      type="file"
+                                      accept="application/pdf"
+                                      ref={pdfRef}
+                                    />
                                   </div>
                                 </div>
                               </div>
@@ -252,11 +289,7 @@ const product = () => {
                             </Modal.Footer>
                           </Modal>
                           <div class="col-md-6">
-                            <Form
-                              className="row align-items-center mt-4 mt-md-0"
-                              onChange={handleChange}
-                              onSubmit={handleSubmit}
-                            >
+                            <div className="row align-items-center mt-4 mt-md-0">
                               <FormGroup className="form-group col-md-12">
                                 <FormLabel>Product/Service Name</FormLabel>
                                 <FormControl
@@ -297,6 +330,7 @@ const product = () => {
                                   isInvalid={!!touched.slug && !!errors.slug}
                                 >
                                   <option>select</option>
+                                  {console.log(unitList)}
                                   {unitList.map((x) => (
                                     <option value={x._id}>{x.name}</option>
                                   ))}
@@ -324,22 +358,63 @@ const product = () => {
                                   formatting.
                                 </small>
                               </FormGroup>
-
-                              <FormGroup className="form-group col-md-12 mt-3">
-                                <div className="float-right">
-                                  <Button
-                                    className="btn btn-success"
-                                    type="submit"
-                                    onClick={handleSubmit}
-                                  >
-                                    Save and Continue
-                                    <i class="fas fa-arrow-right pl-1"></i>
-                                  </Button>
-                                </div>
-                              </FormGroup>
-                            </Form>
+                            </div>
                           </div>
                         </div>
+
+                        <Col md="3">
+                          <Form.Group>
+                            <Form.Label>Parent group</Form.Label>
+                            <Form.Control as="select">
+                              <option>select</option>
+                              {parentRes.map((x) => (
+                                <option value={x._id}>
+                                  {x.parentGroupName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </Form.Group>
+                        </Col>
+                        <Col md="3">
+                          <Form.Group>
+                            <Form.Label>parent category</Form.Label>
+                            <Form.Control as="select">
+                              <option>select</option>
+                              {paremtCategoryRes.map((x) => (
+                                <option value={x._id}>
+                                  {x.parentCatagoryName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </Form.Group>
+                        </Col>
+
+                        <Col md="3">
+                          <Form.Group>
+                            <Form.Label>sub parent category</Form.Label>
+                            <Form.Control as="select">
+                              <option>select</option>
+                              {seubCategoryRes.map((x) => (
+                                <option value={x._id}>
+                                  {x.parentSubCategoryName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </Form.Group>
+                        </Col>
+
+                        <FormGroup className="form-group col-md-12 mt-3">
+                          <div className="float-right">
+                            <Button
+                              className="btn btn-success"
+                              type="submit"
+                              onClick={handleSubmit}
+                            >
+                              Save and Continue
+                              <i class="fas fa-arrow-right pl-1"></i>
+                            </Button>
+                          </div>
+                        </FormGroup>
                       </Form>
                     );
                   }}

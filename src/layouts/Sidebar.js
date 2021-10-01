@@ -130,6 +130,11 @@ const Sidebar = () => {
               isActive: val.parameter.parentCategory,
             },
             {
+              name: "Parent Sub Category",
+              link: "/admin/parameter/parent-subcategory",
+              isActive: val.parameter.parentSubCategory,
+            },
+            {
               name: "Manage Brand",
               link: "/admin/parameter/manage-brand",
               isActive: val.parameter.brnad,
@@ -201,36 +206,36 @@ const Sidebar = () => {
     }
   }, [response]);
 
-  useEffect(() => {
-    if (isAdmin === true) {
-      if (sideMenu === []) return;
+  // useEffect(() => {
+  //   if (isAdmin === true) {
+  //     if (sideMenu === []) return;
 
-      let arr = ["/admin/dashboard", "/admin/other/change-password"];
+  //     let arr = ["/admin/dashboard", "/admin/other/change-password"];
 
-      sideMenu.map((x) => {
-        x.subMenu.map((xSub) => {
-          if (xSub.isActive === true) {
-            arr.push(xSub.link);
-          }
-        });
-      });
+  //     sideMenu.map((x) => {
+  //       x.subMenu.map((xSub) => {
+  //         if (xSub.isActive === true) {
+  //           arr.push(xSub.link);
+  //         }
+  //       });
+  //     });
 
-      console.log("pathname", pathname.includes("/admin/setup/user"));
-      console.log("final array", arr);
+  //     console.log("pathname", pathname.includes("/admin/setup/user"));
+  //     console.log("final array", arr);
 
-      let isPathMatch = false;
+  //     let isPathMatch = false;
 
-      arr.map((x) => {
-        if (pathname.startsWith(x)) {
-          isPathMatch = true;
-        }
-      });
+  //     arr.map((x) => {
+  //       if (pathname.startsWith(x)) {
+  //         isPathMatch = true;
+  //       }
+  //     });
 
-      if (!isPathMatch) {
-        push("/admin/dashboard");
-      }
-    }
-  }, [isAdmin, sideMenu, window.location, pathname]);
+  //     if (!isPathMatch) {
+  //       push("/admin/dashboard");
+  //     }
+  //   }
+  // }, [isAdmin, sideMenu, window.location, pathname]);
 
   const [doc, setDoc] = useState();
   useEffect(() => {
@@ -416,7 +421,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          brand
+                          Brand
                         </a>
                       </Link>
                     </li>
@@ -427,7 +432,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          product
+                          Product
                         </a>
                       </Link>
                     </li>
@@ -438,7 +443,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          post
+                          Post
                         </a>
                       </Link>
                     </li>
@@ -449,7 +454,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          rfq
+                          Rfq
                         </a>
                       </Link>
                     </li>
@@ -460,7 +465,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          profile lead
+                          Profile lead
                         </a>
                       </Link>
                     </li>
@@ -471,7 +476,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          inquiry lead
+                          Inquiry lead
                         </a>
                       </Link>
                     </li>
@@ -482,7 +487,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          contect lead
+                          Contect lead
                         </a>
                       </Link>
                     </li>

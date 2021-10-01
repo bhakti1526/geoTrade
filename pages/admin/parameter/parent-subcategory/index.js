@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../../src/components/admin/WrapTable";
-import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../../src/components/admin/AppLoader";
-import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import useDeletAxios from "../../../../component/hooks/useDeleteAxios";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 
-const parentGroup = () => {
-  const { isLoading, response, error, getData } =
-    useFetchAxios("/getParentGroup");
-  const { deleteData, response: res } = useDeleteAxios();
+const index = () => {
+  const { isLoading, response, getData } = useFetchAxios(
+    "/api/admin/subcategory"
+  );
+  const { deleteData } = useDeletAxios();
 
-  if (isLoading === true) return <AppLoader />;
+  console.log(response, isLoading);
 
   const column = [
     {
@@ -19,37 +21,12 @@ const parentGroup = () => {
       accessor: "id",
     },
     {
-      Header: "seller type",
-      accessor: "sellerType.sellerTypeName",
+      Header: "  category name",
+      accessor: "parentCategory.parentCatagoryName",
     },
     {
-      Header: "group name",
-      accessor: "parentGroupName",
-    },
-
-    {
-      Header: "group image",
-      accessor: "parentGroupImg",
-      Cell: (e) => (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
-          alt="product"
-          width="56"
-        />
-      ),
-    },
-    {
-      Header: "status",
-      accessor: "isActive",
-      Cell: (e) => (
-        <span
-          className={
-            e.value ? "badge light badge-success" : "badge light badge-danger"
-          }
-        >
-          {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
-        </span>
-      ),
+      Header: "  subcategory name",
+      accessor: "parentSubCategoryName",
     },
     {
       Header: "action",
@@ -75,7 +52,9 @@ const parentGroup = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteParentGroup/${s.row.original._id}`);
+                await deleteData(
+                  `/api/admin/subcategory?id=${s.row.original._id}`
+                );
                 getData();
               }}
             >
@@ -87,10 +66,12 @@ const parentGroup = () => {
     },
   ];
 
+  if (isLoading === true) return <AppLoader />;
+
   return (
     <WrapTable
-      bText="add parent group"
-      title="manage parent group"
+      bText="add parent subcategory"
+      title="manage parent subcategory"
       column={column}
       isLoading={isLoading}
       columnData={response}
@@ -98,4 +79,4 @@ const parentGroup = () => {
   );
 };
 
-export default parentGroup;
+export default index;

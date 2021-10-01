@@ -221,20 +221,6 @@ const post = () => {
                       <FormLabel> Porduct Info </FormLabel>
                       <div className="summernote">
                         <Editor
-                          // onEditorChange={(newValue, editor) => {
-                          //   // setText(editor.getContent({format: 'text'}));
-                          //   setInitValue({
-                          //     ...initValue,
-                          //     ["description"]: editor.getContent({
-                          //       format: "text",
-                          //     }),
-                          //   });
-                          // }}
-
-                          // onChange={(e) =>
-                          //   setFieldValue("description", e.target.getContent())
-                          // }
-
                           onEditorChange={(newValue, editor) => {
                             // setValue(newValue);
                             setFieldValue(
