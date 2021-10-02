@@ -1,8 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { css } from "@emotion/css";
 import {
@@ -10,12 +9,9 @@ import {
   FormGroup,
   FormLabel,
   FormControl,
-  FormCheck,
   Button,
 } from "react-bootstrap";
 import WrapFrom from "../../src/components/admin/WrapForm";
-import { AppContext } from "../../component/context/app.context";
-
 import usePostAxios from "../../component/hooks/usePostAxios";
 
 const imgStyle = css`
@@ -40,6 +36,8 @@ const initData = {
 };
 
 const post = () => {
+  const [img, setImg] = useState(null);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     description: Yup.string().required(),
@@ -65,10 +63,7 @@ const post = () => {
 
   const { push } = useRouter();
 
-  const [imgs, setImgs] = useState("");
-
   const handleSubmit = async (val) => {
-    // if(tokens){
     console.log("xD");
     const data = new FormData();
     data.append("name", val.name);
@@ -83,8 +78,6 @@ const post = () => {
 
     await postData(data);
 
-    // }
-
     push("/seller/post");
   };
 
@@ -95,90 +88,6 @@ const post = () => {
   const [unit, setUnit] = useState([]);
   const [initValue, setInitValue] = useState(initData);
   const [initialOpt, setInitialOpt] = useState();
-  const [img, setImg] = useState("");
-
-  // let tokens;
-
-  // const onInputChange = (e) => {
-  //   setInitValue({ ...initValue, [e.target.name]: e.target.value });
-  // };
-
-  const url = process.env.NEXT_PUBLIC_API_URL;
-
-  const getReqData = async () => {
-    const pc = await axios.get(`${url}/getParentCategory`);
-    if (pc.status === 201) {
-      console.log(pc.data.data);
-      setParentCategory(pc.data.data);
-    }
-
-    const st = await axios.get(`${url}/getSellerType`);
-    if (st.status === 201) {
-      console.log(st.data.data);
-      setSellerType(st.data.data);
-      // setInitialOpt(st.data.data[0]._id);
-    }
-
-    const pg = await axios.get(`${url}/getParentGroup`);
-    if (pg.status === 201) {
-      console.log(pg.data.data);
-      setParentGroup(pg.data.data);
-      // setInitValue({...initValue,['parentCategory']:pg.data.data[0]._id})
-    }
-
-    const b = await axios.get(`${url}/getBrands`);
-    if (b.status === 201) {
-      console.log(b.data.data);
-      setBrand(b.data.data);
-    }
-
-    const u = await axios.get(`${url}/getUnits`);
-    if (u.status === 201) {
-      console.log(u.data.data);
-      setUnit(u.data.data);
-    }
-
-    // console.log(sellerTypes);
-  };
-
-  useEffect(() => {
-    getReqData();
-    // const {token} = useContext(AppContext);
-    // tokens = token;
-  }, []);
-  const { token } = useContext(AppContext);
-
-  const addPost = async (e) => {
-    // if(tokens){
-    e.preventDefault();
-    const ap = await axios.post(`${url}/addPost`, initValue, {
-      headers: {
-        // authorization: localStorage.getItem("jwt"),
-        // authorization:(JSON.parse(window?.localStorage?.getItem("USERINFO"))).token
-        authorization: tokens,
-      },
-    });
-
-    if (ap.status === 201) {
-      window.location.reload();
-      console.log("Post Added");
-    }
-    // }
-  };
-
-  // const { response: res } = useFetchAxios("/getseller");
-
-  // useEffect(() => {
-  //   setInitValue({
-  //     name: res.name,
-  //     description: res.description,
-  //     sellerType: res.sellerType,
-  //     parentType: res.parentType,
-  //     parentCategory: res.parentCategory,
-  //     brand: res.brand,
-  //     unit: res.unit,
-  //   });
-  // }, [res]);
 
   return (
     <WrapFrom title="add post">

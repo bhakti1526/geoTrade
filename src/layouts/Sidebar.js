@@ -427,7 +427,7 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/seller/lead/rfq" passHref>
+                  <Link href="/seller/rfq" passHref>
                     <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
                       Rfq
                     </a>
