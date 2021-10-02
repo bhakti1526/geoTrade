@@ -47,7 +47,7 @@ const Sidebar = () => {
             },
             {
               name: "Email",
-              link: "admin/setup/emails",
+              link: "/admin/setup/emails",
               isActive: val.setup.email,
             },
             {
@@ -405,93 +405,54 @@ const Sidebar = () => {
               </>
             ) : pathname.startsWith("/seller") ? (
               <>
-                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-                  <a
-                    className="has-arrow ai-icon c-pointer"
-                    aria-expanded="false"
-                  >
-                    <i className="flaticon-043-menu" />
-                    <span className="nav-text">seller</span>
-                  </a>
-                  <ul aria-expanded="false">
-                    <li>
-                      <Link href="/seller/brand" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Brand
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/product" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Product
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/post" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Post
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/rfq" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Rfq
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/profile" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Profile lead
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/inquiry" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Inquiry lead
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/contact" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Contect lead
-                        </a>
-                      </Link>
-                    </li>
-                  </ul>
+                <li>
+                  <Link href="/seller/brand" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Brand
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/product" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Product
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/post" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Post
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/lead/rfq" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Rfq
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/lead/profile" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Profile lead
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/lead/inquiry" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Inquiry lead
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/seller/lead/contact" passHref>
+                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
+                      Contect lead
+                    </a>
+                  </Link>
                 </li>
               </>
             ) : undefined}

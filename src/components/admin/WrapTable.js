@@ -4,6 +4,8 @@ import { Button } from "react-bootstrap";
 import { useTable, useSortBy } from "react-table";
 
 const WrapTable = ({ isLoading, title, column, columnData, bText = null }) => {
+  console.log("COLUMN DATA", columnData);
+
   const columns = useMemo(() => column, []);
   const data = useMemo(
     () => (columnData ? columnData.map((x, i) => ({ ...x, id: i + 1 })) : []),

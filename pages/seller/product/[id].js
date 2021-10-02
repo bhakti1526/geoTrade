@@ -146,7 +146,7 @@ const BigImgBlock = ({ img, setImg }) => {
   );
 };
 
-const product = () => {
+const update = () => {
   const [unitList, setUnitList] = useState([]);
 
   const { isLoading: unitLoad, response } = useFetchAxios("/api/other/unit");
@@ -482,4 +482,4 @@ const product = () => {
   );
 };
 
-export default product;
+export default update;

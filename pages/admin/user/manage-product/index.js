@@ -13,10 +13,12 @@ const manageProduct = () => {
   } = useRouter();
 
   const { isLoading, response, error, getData } = useFetchAxios(
-    `/api/admin/userdata?data=product&id=${id}`
+    `/api/auth/admin/userdata?data=product&id=${id}`
   );
 
-  const { deleteData, response: res } = useDeleteAxios();
+  console.log("USER DATA RESPONSE", response);
+
+  const { deleteData } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
 
@@ -32,13 +34,15 @@ const manageProduct = () => {
     {
       Header: "image",
       accessor: "img",
-      Cell: (e) => (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
-          alt="product"
-          width="56"
-        />
-      ),
+      Cell: (e) => {
+        return (
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value[0]}`}
+            alt="product"
+            width="56"
+          />
+        );
+      },
     },
     {
       Header: "price",
@@ -80,7 +84,10 @@ const manageProduct = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
-            <Link href={`${window.location}/${s.row.original._id}`} passHref>
+            <Link
+              href={`${window.location.pathname}/${s.row.original._id}`}
+              passHref
+            >
               <Dropdown.Item as="a">Edit</Dropdown.Item>
             </Link>
             <Dropdown.Item
@@ -97,6 +104,7 @@ const manageProduct = () => {
     },
   ];
 
+  if (!Array.isArray(response)) return <></>;
   return (
     <WrapTable
       title="manage user product"

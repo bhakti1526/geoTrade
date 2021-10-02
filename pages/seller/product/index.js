@@ -13,7 +13,7 @@ const index = () => {
   } = useContext(AppContext);
 
   const { isLoading, response, error, getData } = useFetchAxios(
-    `/api/user/brand?userId=${true}`
+    `/api/user/product?userId=${true}`
   );
 
   const { deleteData, response: res } = useDeleteAxios();
@@ -26,7 +26,7 @@ const index = () => {
       accessor: "id",
     },
     {
-      Header: "Brnad name",
+      Header: "Prduct name",
       accessor: "name",
     },
     {
@@ -34,7 +34,7 @@ const index = () => {
       accessor: "img",
       Cell: (e) => (
         <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value[0]}`}
           alt="product"
           width="56"
         />

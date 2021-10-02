@@ -7,8 +7,10 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
 const manageUser = () => {
-  const { isLoading, response, error, getData } =
-    useFetchAxios("/api/admin/alluser");
+  const { isLoading, response, error, getData } = useFetchAxios(
+    "/api/auth/admin/alluser"
+  );
+
   const { deleteData, response: res } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
@@ -25,10 +27,6 @@ const manageUser = () => {
     {
       Header: "email",
       accessor: "email",
-    },
-    {
-      Header: "location",
-      accessor: "state",
     },
     {
       Header: "premium",

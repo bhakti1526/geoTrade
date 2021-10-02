@@ -4,7 +4,7 @@
 // const profile = () => {
 //     return (
 //         <div>
-            
+
 //             <div className="row">
 //         <div className="col-xl-12 col-lg-12">
 //           <div className="card">
@@ -13,7 +13,7 @@
 //             </div>
 //             <div className="card-body">
 //               <div className="basic-form">
-               
+
 //               <div className="lead-box mb-4">
 //     <div className="row">
 //         <div className="col-md-12 col-lg-6">
@@ -89,7 +89,6 @@
 //         </div>
 //     </div>
 // </div>
-
 
 // <div className="lead-box mb-4">
 //     <div className="row">
@@ -167,21 +166,17 @@
 //     </div>
 // </div>
 
-
 //                </div>
 //             </div>
 //           </div>
 //         </div>
 //       </div>
-    
 
 //         </div>
 //     )
 // }
 
 // export default profile
-
-
 
 import React, { useEffect } from "react";
 import Link from "next/link";
@@ -195,12 +190,8 @@ import useDeleteAxios from "../../../component/hooks/useDeleteAxios";
 import WrapTableLead from "./WrapTableLead";
 
 const profile = () => {
-
-
   const { isLoading, response, error } = useFetchAxios("/getTracking");
   const { deleteData, response: res } = useDeleteAxios();
-
-  
 
   if (isLoading === true) return <AppLoader />;
 
@@ -226,14 +217,14 @@ const profile = () => {
       accessor: "visitType.name",
     },
     {
-        Header:"Message",
-        accessor:"message"
-    }
+      Header: "Message",
+      accessor: "message",
+    },
   ];
 
   return (
     <WrapTableLead
-    //   bText="add city"
+      //   bText="add city"
       title="Profile Leads"
       column={column}
       isLoading={isLoading}

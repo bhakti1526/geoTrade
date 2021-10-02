@@ -34,7 +34,7 @@ const manageBrand = () => {
     },
     {
       Header: "status",
-      accessor: "isActive",
+      accessor: "isApproved",
       Cell: (e) => (
         <span
           className={

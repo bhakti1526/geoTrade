@@ -19,11 +19,11 @@ const inquiry = () => {
   const { isLoading: rfqLoad, response: rfqRes } = useFetchAxios("/getRfq");
 
   useEffect(() => {
-    setRfqData(rfqRes)
+    setRfqData(rfqRes);
   }, [rfqRes]);
 
-  if(rfqLoad===true) {
-    return <AppLoader/>;
+  if (rfqLoad === true) {
+    return <AppLoader />;
   }
 
   return (

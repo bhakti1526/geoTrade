@@ -3,7 +3,13 @@ import Link from "next/link";
 import { Button } from "react-bootstrap";
 import { useTable, useSortBy } from "react-table";
 
-const WrapTableLead = ({ isLoading, title, column, columnData, bText = null }) => {
+const WrapTableLead = ({
+  isLoading,
+  title,
+  column,
+  columnData,
+  bText = null,
+}) => {
   const columns = useMemo(() => column, []);
   const data = useMemo(
     () => (columnData ? columnData.map((x, i) => ({ ...x, id: i + 1 })) : []),
