@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormControl,
   Button,
-  Modal,
   Col,
   OverlayTrigger,
   Popover,
@@ -176,7 +175,7 @@ const product = () => {
   const [img5, setImg5] = useState(null);
   const [pdf, setPdf] = useState(null);
 
-  const { postData } = usePostAxios("/api/user/post");
+  const { postData } = usePostAxios("/api/user/product");
   const { push } = useRouter();
 
   const handleSubmit = async (val) => {

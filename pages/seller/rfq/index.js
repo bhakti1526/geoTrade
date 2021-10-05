@@ -8,8 +8,6 @@ import useFetchAxios from "../../../component/hooks/useFetchAxios";
 const index = () => {
   const { response, isLoading } = useFetchAxios("/api/user/rfq?userId=true");
 
-  console.log(response);
-
   return (
     <div>
       <div className="row">
@@ -17,17 +15,17 @@ const index = () => {
           <div className="card">
             <div className="card-header d-flex">
               <h4 className="card-title">Inquiry Leads</h4>
-              <Link href={`${window.location.pathname}/add`} passHref>
+              {/* <Link href={`${window.location.pathname}/add`} passHref>
                 <Button className="float-right" as="a">
                   add rfq
                 </Button>
-              </Link>
+              </Link> */}
             </div>
             <div className="card-body">
               {isLoading === true ? (
                 <AppLoader />
               ) : (
-                response.map((x) => <InquiryCard />)
+                response.map((x) => <InquiryCard data={x} />)
               )}
             </div>
           </div>

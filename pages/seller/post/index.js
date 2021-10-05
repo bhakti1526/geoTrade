@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../../../component/context/app.context";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
@@ -13,7 +13,7 @@ const index = () => {
   } = useContext(AppContext);
 
   const { isLoading, response, error, getData } = useFetchAxios(
-    `/api/user/product?userId=${true}`
+    `/api/user/post?userId=${true}`
   );
 
   const { deleteData, response: res } = useDeleteAxios();
@@ -34,7 +34,7 @@ const index = () => {
       accessor: "img",
       Cell: (e) => (
         <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value[0]}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
           alt="product"
           width="56"
         />
@@ -91,8 +91,8 @@ const index = () => {
 
   return (
     <WrapTable
-      bText="Add Product"
-      title="Manage Products"
+      bText="Add Post"
+      title="Manage Post"
       column={column}
       isLoading={isLoading}
       columnData={response}

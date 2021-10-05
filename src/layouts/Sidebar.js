@@ -7,12 +7,11 @@ import useFetchAxios from "../../component/hooks/useFetchAxios";
 
 import { AppContext } from "../../component/context/app.context";
 
-// import { sideBarActive } from "../redux/action/utils";
 const Sidebar = () => {
   const { push, pathname } = useRouter();
 
   const {
-    auth: { isAdmin },
+    auth: { isAdmin, isSeller, isBuyer },
   } = useContext(AppContext);
 
   const [loveEmoji, setLoveEmoji] = useState(false);
@@ -206,36 +205,36 @@ const Sidebar = () => {
     }
   }, [response]);
 
-  // useEffect(() => {
-  //   if (isAdmin === true) {
-  //     if (sideMenu === []) return;
+  useEffect(() => {
+    if (isAdmin === true) {
+      if (sideMenu === []) return;
 
-  //     let arr = ["/admin/dashboard", "/admin/other/change-password"];
+      let arr = ["/admin/dashboard", "/admin/other/change-password"];
 
-  //     sideMenu.map((x) => {
-  //       x.subMenu.map((xSub) => {
-  //         if (xSub.isActive === true) {
-  //           arr.push(xSub.link);
-  //         }
-  //       });
-  //     });
+      sideMenu.map((x) => {
+        x.subMenu.map((xSub) => {
+          if (xSub.isActive === true) {
+            arr.push(xSub.link);
+          }
+        });
+      });
 
-  //     console.log("pathname", pathname.includes("/admin/setup/user"));
-  //     console.log("final array", arr);
+      console.log("pathname", pathname.includes("/admin/setup/user"));
+      console.log("final array", arr);
 
-  //     let isPathMatch = false;
+      let isPathMatch = false;
 
-  //     arr.map((x) => {
-  //       if (pathname.startsWith(x)) {
-  //         isPathMatch = true;
-  //       }
-  //     });
+      arr.map((x) => {
+        if (pathname.startsWith(x)) {
+          isPathMatch = true;
+        }
+      });
 
-  //     if (!isPathMatch) {
-  //       push("/admin/dashboard");
-  //     }
-  //   }
-  // }, [isAdmin, sideMenu, window.location, pathname]);
+      if (!isPathMatch) {
+        push("/admin/dashboard");
+      }
+    }
+  }, [isAdmin, sideMenu, window.location, pathname]);
 
   const [doc, setDoc] = useState();
   useEffect(() => {
@@ -246,101 +245,6 @@ const Sidebar = () => {
   let path = doc && doc.location.pathname;
   path = path && path.split("/");
   path = path && path[path.length - 1];
-  let dashboard = [
-      "",
-      "index-dark",
-      "orders-list",
-      "order-detail",
-      "customer-list",
-      "analytics",
-      "reviews",
-    ],
-    app = [
-      "apps/profile",
-      "apps/post-details",
-      "apps/email/compose",
-      "apps/email/inbox",
-      "apps/email/read",
-      "apps/ecom/product/grid",
-      "apps/ecom/product/list",
-      "apps/ecom/product/order",
-      "apps/ecom/checkout",
-      "apps/ecom/invoice",
-      "apps/ecom/customers",
-      "apps/ecom/product/detail",
-    ],
-    email = ["apps/email/compose", "apps/email/inbox", "apps/email/read"],
-    shop = [
-      "apps/ecom/product/grid",
-      "apps/ecom/product/list",
-      "apps/ecom/product/list",
-      "apps/ecom/product/order",
-      "apps/ecom/checkout",
-      "apps/ecom/invoice",
-      "apps/ecom/customers",
-      "apps/ecom/product/detail",
-    ],
-    charts = [
-      "chart/rechart",
-      "chart/apex",
-      "chart/chartjs",
-      "chart/chartist",
-      "chart/sparkline",
-    ],
-    bootstrap = [
-      "ui/accordion",
-      "ui/badge",
-      "ui/alert",
-      "ui/button",
-      "ui/modal",
-      "ui/button-group",
-      "ui/list-group",
-      "ui/media-object",
-      "ui/card",
-      "ui/carousel",
-      "ui/dropdown",
-      "ui/popover",
-      "ui/progressbar",
-      "ui/tab",
-      "ui/typography",
-      "ui/pagination",
-      "ui/grid",
-    ],
-    plugins = [
-      "plugins/select2",
-      "plugins/sweetalert",
-      "plugins/toastr",
-      "plugins/noui-slider",
-      "plugins/jqvmap",
-      "plugins/lightgallery",
-    ],
-    widget = ["widget-basic"],
-    forms = [
-      "form/element",
-      "form/wizard",
-      "form/editor",
-      "form/pickers",
-      "form/validation",
-    ],
-    table = ["table-bootstrap-basic", "table-datatable-basic"],
-    pages = [
-      "page-register",
-      "page-login",
-      "page-lock-screen",
-      "page-error-400",
-      "page-error-403",
-      "page-error-404",
-      "page-error-500",
-      "page-error-503",
-      "empty-page",
-    ],
-    error = [
-      "page-error-400",
-      "page-error-403",
-      "page-error-404",
-      "page-error-500",
-      "page-error-503",
-    ];
 
   if (isAdmin === true && isLoading === true) return <></>;
 
@@ -406,53 +310,112 @@ const Sidebar = () => {
             ) : pathname.startsWith("/seller") ? (
               <>
                 <li>
-                  <Link href="/seller/brand" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Brand
-                    </a>
-                  </Link>
+                  <a className="has-arrow ai-icon c-pointer">
+                    <i className="flaticon-086-star"></i>
+                    <span className="nav-text">Buyer tools</span>
+                  </a>
+                  <ul>
+                    <li>
+                      <Link href="#" passHref>
+                        <a>chats</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="#" passHref>
+                        <a>rfqs</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="#" passHref>
+                        <a>whislist</a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <Link href="/seller/product" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Product
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/post" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Post
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/rfq" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Rfq
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/profile" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Profile lead
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/inquiry" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Inquiry lead
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/seller/lead/contact" passHref>
-                    <a className={`${path === "ui/button" ? "mm-active" : ""}`}>
-                      Contect lead
-                    </a>
-                  </Link>
+                  <a className="has-arrow ai-icon c-pointer">
+                    <i className="flaticon-025-dashboard"></i>
+                    <span className="nav-text">Seller tools</span>
+                  </a>
+                  <ul>
+                    <li>
+                      <Link href="/seller/brand" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Brand
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/product" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Product
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/post" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Post
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/rfq" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Rfq
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/profile" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Profile lead
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/inquiry" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Inquiry lead
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/seller/lead/contact" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Contect lead
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
               </>
             ) : undefined}

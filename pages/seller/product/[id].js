@@ -147,7 +147,15 @@ const BigImgBlock = ({ img, setImg }) => {
 };
 
 const update = () => {
+  const {
+    query: { id },
+  } = useRouter();
+
   const [unitList, setUnitList] = useState([]);
+
+  const { isLoading: productLoad, response: productRes } = useFetchAxios(
+    `/api/user/product?id=${id}`
+  );
 
   const { isLoading: unitLoad, response } = useFetchAxios("/api/other/unit");
 
@@ -209,6 +217,7 @@ const update = () => {
   if (subcategoryLoad === true) return <AppLoader />;
   if (paremtCategoryLoad === true) return <AppLoader />;
   if (brandLoad === true) return <AppLoader />;
+  if (productLoad === true) return <AppLoader />;
 
   return (
     <div>
