@@ -67,7 +67,9 @@ function MyApp({ Component, pageProps }) {
             />
           </Head>
 
-          {pathname.startsWith("/admin/") || pathname.startsWith("/seller") ? (
+          {pathname.startsWith("/admin/") ||
+          pathname.startsWith("/seller") ||
+          pathname.startsWith("/buyer") ? (
             <Layout>
               <Component {...pageProps} />
             </Layout>

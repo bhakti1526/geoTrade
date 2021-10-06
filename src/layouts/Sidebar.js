@@ -248,6 +248,8 @@ const Sidebar = () => {
 
   if (isAdmin === true && isLoading === true) return <></>;
 
+  console.log(pathname.startsWith("/seller") || pathname.startsWith("/buyer"));
+
   return (
     <div className="deznav">
       {doc && (
@@ -307,7 +309,8 @@ const Sidebar = () => {
                   </ul>
                 </li>
               </>
-            ) : pathname.startsWith("/seller") ? (
+            ) : pathname.startsWith("/seller") ||
+              pathname.startsWith("/buyer") ? (
               <>
                 <li>
                   <a className="has-arrow ai-icon c-pointer">
@@ -316,17 +319,17 @@ const Sidebar = () => {
                   </a>
                   <ul>
                     <li>
-                      <Link href="#" passHref>
+                      <Link href="/buyer/chats" passHref>
                         <a>chats</a>
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" passHref>
+                      <Link href="/buyer/rfqs" passHref>
                         <a>rfqs</a>
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" passHref>
+                      <Link href="/buyer/wishlist" passHref>
                         <a>whislist</a>
                       </Link>
                     </li>
