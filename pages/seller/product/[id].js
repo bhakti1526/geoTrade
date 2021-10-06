@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormControl,
   Button,
-  Modal,
   Col,
   OverlayTrigger,
   Popover,
@@ -22,18 +21,6 @@ import { useRouter } from "next/router";
 
 import AppLoader from "../../../src/components/admin/AppLoader";
 
-const productDetails = {
-  name: "",
-  price: "",
-  unit: "",
-  description: "",
-  brand: "",
-  parentGroup: "",
-  parentCategory: "",
-  parentSubCategory: "",
-  ytUrl: "",
-};
-
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   price: Yup.number().min(20).required(),
@@ -44,6 +31,7 @@ const validationSchema = Yup.object().shape({
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
   ytUrl: Yup.string().url(),
+  sellerType: Yup.string().required(),
 });
 
 const ImgBlock = ({ img, setImg }) => {
@@ -146,35 +134,87 @@ const BigImgBlock = ({ img, setImg }) => {
   );
 };
 
-const update = () => {
-  const {
-    query: { id },
-  } = useRouter();
+const id = () => {
+  const [productDetails, setProductDetails] = useState({
+    name: "",
+    price: "",
+    unit: "",
+    description: "",
+    brand: "",
+    sellerType: "",
+    parentGroup: "",
+    parentCategory: "",
+    parentSubCategory: "",
+    ytUrl: "",
+  });
 
   const [unitList, setUnitList] = useState([]);
 
-  const { isLoading: productLoad, response: productRes } = useFetchAxios(
-    `/api/user/product?id=${id}`
-  );
+  const {
+    push,
+    query: { id },
+  } = useRouter();
 
   const { isLoading: unitLoad, response } = useFetchAxios("/api/other/unit");
 
+  const { isLoading: preoductLoad, response: prodResss } = useFetchAxios(
+    `/api/user/product?id=${id}`
+  );
+
   const { isLoading: brandLoad, response: brandRes } =
     useFetchAxios("/api/other/brand");
+
   const { isLoading: sellerLoad, response: sellerRes } = useFetchAxios(
     "/api/other/sellertype"
   );
+
   const { isLoading: parentLoad, response: parentRes } = useFetchAxios(
     "/api/other/parenttype"
   );
+
   const { isLoading: paremtCategoryLoad, response: paremtCategoryRes } =
     useFetchAxios("/api/other/parentcategory");
+
   const { isLoading: subcategoryLoad, response: seubCategoryRes } =
     useFetchAxios("/api/other/subcategory");
 
   useEffect(() => {
     if (response) setUnitList(response);
   }, [response]);
+
+  useEffect(() => {
+    if (prodResss) {
+      const {
+        name,
+        price,
+        unit,
+        description,
+        brand,
+        sellerType,
+        parentGroup,
+        parentCategory,
+        parentSubCategory,
+        ytUrl,
+        img,
+        pdf,
+      } = prodResss;
+
+      console.log(parentGroup, parentCategory, parentSubCategory);
+
+      setProductDetails({
+        name,
+        price,
+        unit,
+        description,
+        brand,
+        sellerType,
+        parentGroup,
+        parentCategory,
+        parentSubCategory,
+        ytUrl,
+      });
+    }
+  }, [prodResss]);
 
   const [img, setImg] = useState(null);
   const [img1, setImg1] = useState(null);
@@ -184,40 +224,22 @@ const update = () => {
   const [img5, setImg5] = useState(null);
   const [pdf, setPdf] = useState(null);
 
-  const { postData } = usePostAxios("/api/user/post");
-  const { push } = useRouter();
+  const { postData } = usePostAxios("/api/user/product");
 
   const handleSubmit = async (val) => {
-    const data = new FormData();
-    data.append("name", val.name);
-    data.append("price", val.price);
-    data.append("unit", val.unit);
-    data.append("description", val.description);
-    data.append("brand", val.brand);
-    data.append("parentGroup", val.parentGroup);
-    data.append("parentCategory", val.parentCategory);
-    data.append("parentSubCategory", val.parentSubCategory);
-    data.append("ytUrl", val.ytUrl);
-    data.append("img", img);
-    data.append("img", img1);
-    data.append("img", img2);
-    data.append("img", img3);
-    data.append("img", img4);
-    data.append("img", img5);
-    data.append("pdf", pdf);
-    await postData(data);
-    push("/seller/product");
+    console.log(val);
+    // push("/seller/product");
   };
 
   const pdfRef = useRef(null);
 
+  if (preoductLoad === true) return <AppLoader />;
   if (unitLoad === true) return <AppLoader />;
   if (sellerLoad === true) return <AppLoader />;
   if (parentLoad === true) return <AppLoader />;
   if (subcategoryLoad === true) return <AppLoader />;
   if (paremtCategoryLoad === true) return <AppLoader />;
   if (brandLoad === true) return <AppLoader />;
-  if (productLoad === true) return <AppLoader />;
 
   return (
     <div>
@@ -233,6 +255,7 @@ const update = () => {
                   onSubmit={handleSubmit}
                   validationSchema={validationSchema}
                   initialValues={productDetails}
+                  enableReinitialize
                 >
                   {({
                     handleSubmit,
@@ -327,6 +350,7 @@ const update = () => {
                                   className="form-control"
                                   placeholder=""
                                   isInvalid={!!touched.name && !!errors.name}
+                                  value={values.name}
                                 />
                               </FormGroup>
                               <FormGroup className="form-group col-md-5 tag-price mt-2">
@@ -338,6 +362,7 @@ const update = () => {
                                   placeholder=""
                                   name="price"
                                   isInvalid={!!touched.price && !!errors.price}
+                                  value={values.price}
                                 />
                               </FormGroup>
                               <FormGroup className="form-group col-md-2">
@@ -356,6 +381,7 @@ const update = () => {
                                   className="form-control"
                                   as="select"
                                   isInvalid={!!touched.unit && !!errors.unit}
+                                  value={values.unit}
                                 >
                                   <option>select</option>
                                   {unitList.map((x) => (
@@ -372,6 +398,7 @@ const update = () => {
                                 </FormLabel>
                                 <div className="summernote">
                                   <Editor
+                                    initialValue={values.description}
                                     onChange={(e) =>
                                       setFieldValue(
                                         "description",
@@ -395,6 +422,7 @@ const update = () => {
                             <Form.Control
                               name="brand"
                               isInvalid={!!touched.brand && !!errors.brand}
+                              value={values.brand}
                               as="select"
                             >
                               <option>select</option>
@@ -406,6 +434,28 @@ const update = () => {
                         </Col>
 
                         <Col md="3">
+                          <FormGroup>
+                            <FormLabel> Seller Type</FormLabel>
+                            <Form.Control
+                              isInvalid={
+                                !!touched.sellerType && !!errors.sellerType
+                              }
+                              value={values.sellerType}
+                              as="select"
+                              name="sellerType"
+                            >
+                              <option>Choosee....</option>
+
+                              {sellerRes.map((s) => (
+                                <option key={s._id} value={s._id}>
+                                  {s.sellerTypeName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </FormGroup>
+                        </Col>
+
+                        <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
                             <Form.Control
@@ -413,14 +463,20 @@ const update = () => {
                               isInvalid={
                                 !!touched.parentGroup && !!errors.parentGroup
                               }
+                              value={values.parentGroup}
                               as="select"
+                              disabled={!values.sellerType}
                             >
                               <option>select</option>
-                              {parentRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentGroupName}
-                                </option>
-                              ))}
+                              {parentRes
+                                .filter(
+                                  (x) => x.sellerType == values.sellerType
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentGroupName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>
@@ -434,13 +490,19 @@ const update = () => {
                                 !!errors.parentCategory
                               }
                               as="select"
+                              value={values.parentCategory}
+                              disabled={!values.parentGroup}
                             >
                               <option>select</option>
-                              {paremtCategoryRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentCatagoryName}
-                                </option>
-                              ))}
+                              {paremtCategoryRes
+                                .filter(
+                                  (x) => x.parentGroup == values.parentGroup
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentCatagoryName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>
@@ -455,13 +517,20 @@ const update = () => {
                                 !!errors.parentSubCategory
                               }
                               as="select"
+                              value={values.parentSubCategory}
+                              disabled={!values.parentCategory}
                             >
                               <option>select</option>
-                              {seubCategoryRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentSubCategoryName}
-                                </option>
-                              ))}
+                              {seubCategoryRes
+                                .filter(
+                                  (x) =>
+                                    x.parentCategory == values.parentCategory
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentSubCategoryName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>
@@ -491,4 +560,4 @@ const update = () => {
   );
 };
 
-export default update;
+export default id;

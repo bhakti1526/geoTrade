@@ -248,8 +248,6 @@ const Sidebar = () => {
 
   if (isAdmin === true && isLoading === true) return <></>;
 
-  console.log(pathname.startsWith("/seller") || pathname.startsWith("/buyer"));
-
   return (
     <div className="deznav">
       {doc && (
@@ -286,7 +284,7 @@ const Sidebar = () => {
                     )
                   );
                 })}
-                <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
+                <li>
                   <a
                     className="has-arrow ai-icon c-pointer"
                     aria-expanded="false"

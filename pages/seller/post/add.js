@@ -276,13 +276,17 @@ const add = () => {
                         name="parentType"
                         as="select"
                         defaultValue="Choose..."
+                        disabled={!values.sellerType}
                       >
                         <option>Choosee....</option>
-                        {parentGroup.map((p) => (
-                          <option key={p._id} value={p._id}>
-                            {p.parentGroupName}
-                          </option>
-                        ))}
+                        {values.sellerType &&
+                          parentGroup
+                            .filter((x) => x.sellerType == values.sellerType)
+                            .map((p) => (
+                              <option key={p._id} value={p._id}>
+                                {p.parentGroupName}
+                              </option>
+                            ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -295,13 +299,17 @@ const add = () => {
                         as="select"
                         name="parentCategory"
                         defaultValue="Choose..."
+                        disabled={!values.parentType}
                       >
                         <option>Choosee....</option>
-                        {parentCategory.map((p) => (
-                          <option key={p._id} value={p._id}>
-                            {p.parentCatagoryName}
-                          </option>
-                        ))}
+                        {values.parentType &&
+                          parentCategory
+                            .filter((x) => x.parentGroup == values.parentType)
+                            .map((p) => (
+                              <option key={p._id} value={p._id}>
+                                {p.parentCatagoryName}
+                              </option>
+                            ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -347,11 +355,16 @@ const add = () => {
                           !!touched.visibleState && !!errors.visibleState
                         }
                         as="select"
+                        disabled={!values.visibleCountry}
                       >
+                        {console.log("isDisabled", !values.visibleCountry)}
                         <option>Choosee...</option>
-                        {stateRes.map((x) => (
-                          <option value={x._id}>{x.name}</option>
-                        ))}
+                        {values.visibleCountry &&
+                          stateRes
+                            .filter((x) => x.country == values.visibleCountry)
+                            .map((x) => (
+                              <option value={x._id}>{x.name}</option>
+                            ))}
                       </Form.Control>
                     </Form.Group>
                     <Form.Group as={Col} md="4">
@@ -363,11 +376,15 @@ const add = () => {
                           !!touched.visibleCity && !!errors.visibleCity
                         }
                         as="select"
+                        disabled={!values.visibleState}
                       >
                         <option>Choosee...</option>
-                        {cityRes.map((x) => (
-                          <option value={x._id}>{x.name}</option>
-                        ))}
+                        {values.visibleState &&
+                          cityRes
+                            .filter((x) => x.state == values.visibleState)
+                            .map((x) => (
+                              <option value={x._id}>{x.name}</option>
+                            ))}
                       </Form.Control>
                     </Form.Group>
                   </Row>
