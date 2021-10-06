@@ -205,36 +205,36 @@ const Sidebar = () => {
     }
   }, [response]);
 
-  useEffect(() => {
-    if (isAdmin === true) {
-      if (sideMenu === []) return;
+  // useEffect(() => {
+  //   if (isAdmin === true) {
+  //     if (sideMenu === []) return;
 
-      let arr = ["/admin/dashboard", "/admin/other/change-password"];
+  //     let arr = ["/admin/dashboard", "/admin/other/change-password"];
 
-      sideMenu.map((x) => {
-        x.subMenu.map((xSub) => {
-          if (xSub.isActive === true) {
-            arr.push(xSub.link);
-          }
-        });
-      });
+  //     sideMenu.map((x) => {
+  //       x.subMenu.map((xSub) => {
+  //         if (xSub.isActive === true) {
+  //           arr.push(xSub.link);
+  //         }
+  //       });
+  //     });
 
-      console.log("pathname", pathname.includes("/admin/setup/user"));
-      console.log("final array", arr);
+  //     console.log("pathname", pathname.includes("/admin/setup/user"));
+  //     console.log("final array", arr);
 
-      let isPathMatch = false;
+  //     let isPathMatch = false;
 
-      arr.map((x) => {
-        if (pathname.startsWith(x)) {
-          isPathMatch = true;
-        }
-      });
+  //     arr.map((x) => {
+  //       if (pathname.startsWith(x)) {
+  //         isPathMatch = true;
+  //       }
+  //     });
 
-      if (!isPathMatch) {
-        push("/admin/dashboard");
-      }
-    }
-  }, [isAdmin, sideMenu, window.location, pathname]);
+  //     if (!isPathMatch) {
+  //       push("/admin/dashboard");
+  //     }
+  //   }
+  // }, [isAdmin, sideMenu, window.location, pathname]);
 
   const [doc, setDoc] = useState();
   useEffect(() => {
