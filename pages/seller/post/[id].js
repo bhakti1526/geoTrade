@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
@@ -101,11 +102,31 @@ const add = () => {
     img: Yup.string().required(),
   });
 
-  const { response, postData, isLoading } = usePostAxios("/api/user/post");
-
   const handleSubmit = async (val) => {
-    await postData(val);
-    push("/seller/post");
+    if (img !== null && img !== undefined) {
+      const formData = new FormData();
+      formData.append("img", img);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
+        .then((res) => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/post/${id}`, {
+              ...val,
+              img: res.data.data,
+            })
+            .then((res) => {
+              push("/seller/post");
+            });
+        });
+    } else {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/post/${id}`, {
+          ...val,
+        })
+        .then((res) => {
+          push("/seller/post");
+        });
+    }
   };
 
   const [parentGroup, setParentGroup] = useState([]);
@@ -274,13 +295,16 @@ const add = () => {
                         name="parentType"
                         as="select"
                         defaultValue="Choose..."
+                        disabled={!values.sellerType}
                       >
                         <option>Choosee....</option>
-                        {parentGroup.map((p) => (
-                          <option key={p._id} value={p._id}>
-                            {p.parentGroupName}
-                          </option>
-                        ))}
+                        {parentGroup
+                          .filter((x) => x.sellerType == values.sellerType)
+                          .map((p) => (
+                            <option key={p._id} value={p._id}>
+                              {p.parentGroupName}
+                            </option>
+                          ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -294,13 +318,16 @@ const add = () => {
                         as="select"
                         name="parentCategory"
                         defaultValue="Choose..."
+                        disabled={!values.parentType}
                       >
                         <option>Choosee....</option>
-                        {parentCategory.map((p) => (
-                          <option key={p._id} value={p._id}>
-                            {p.parentCatagoryName}
-                          </option>
-                        ))}
+                        {parentCategory
+                          .filter((x) => x.parentGroup == values.parentType)
+                          .map((p) => (
+                            <option key={p._id} value={p._id}>
+                              {p.parentCatagoryName}
+                            </option>
+                          ))}
                       </Form.Control>
                     </FormGroup>
 
@@ -347,11 +374,14 @@ const add = () => {
                           !!touched.visibleState && !!errors.visibleState
                         }
                         as="select"
+                        disabled={!values.visibleCountry}
                       >
                         <option>Choosee...</option>
-                        {stateRes.map((x) => (
-                          <option value={x._id}>{x.name}</option>
-                        ))}
+                        {stateRes
+                          .filter((x) => x.country == values.visibleCountry)
+                          .map((x) => (
+                            <option value={x._id}>{x.name}</option>
+                          ))}
                       </Form.Control>
                     </Form.Group>
                     <Form.Group as={Col} md="4">
@@ -363,11 +393,14 @@ const add = () => {
                           !!touched.visibleCity && !!errors.visibleCity
                         }
                         as="select"
+                        disabled={!values.visibleState}
                       >
                         <option>Choosee...</option>
-                        {cityRes.map((x) => (
-                          <option value={x._id}>{x.name}</option>
-                        ))}
+                        {cityRes
+                          .filter((x) => x.state == values.visibleState)
+                          .map((x) => (
+                            <option value={x._id}>{x.name}</option>
+                          ))}
                       </Form.Control>
                     </Form.Group>
                   </Row>
@@ -397,6 +430,7 @@ const add = () => {
                         const type = e.target.files[0].type;
                         if (type === "image/jpeg" || type === "image/png") {
                           setImg(e.target.files[0]);
+                          setImgUrl("");
                         }
                       }}
                       isInvalid={!!touched.img && !!errors.img}

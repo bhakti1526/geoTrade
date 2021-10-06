@@ -27,6 +27,7 @@ const productDetails = {
   unit: "",
   description: "",
   brand: "",
+  sellerType: "",
   parentGroup: "",
   parentCategory: "",
   parentSubCategory: "",
@@ -43,6 +44,7 @@ const validationSchema = Yup.object().shape({
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
   ytUrl: Yup.string().url(),
+  sellerType: Yup.string().required(),
 });
 
 const ImgBlock = ({ img, setImg }) => {
@@ -196,6 +198,7 @@ const product = () => {
     data.append("img", img4);
     data.append("img", img5);
     data.append("pdf", pdf);
+    data.append("sellerType", val.sellerType);
     await postData(data);
     push("/seller/product");
   };
@@ -396,6 +399,27 @@ const product = () => {
                         </Col>
 
                         <Col md="3">
+                          <FormGroup>
+                            <FormLabel> Seller Type</FormLabel>
+                            <Form.Control
+                              isInvalid={
+                                !!touched.sellerType && !!errors.sellerType
+                              }
+                              as="select"
+                              name="sellerType"
+                            >
+                              <option>Choosee....</option>
+
+                              {sellerRes.map((s) => (
+                                <option key={s._id} value={s._id}>
+                                  {s.sellerTypeName}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </FormGroup>
+                        </Col>
+
+                        <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
                             <Form.Control
@@ -404,13 +428,18 @@ const product = () => {
                                 !!touched.parentGroup && !!errors.parentGroup
                               }
                               as="select"
+                              disabled={!values.sellerType}
                             >
                               <option>select</option>
-                              {parentRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentGroupName}
-                                </option>
-                              ))}
+                              {parentRes
+                                .filter(
+                                  (x) => x.sellerType == values.sellerType
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentGroupName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>
@@ -424,13 +453,18 @@ const product = () => {
                                 !!errors.parentCategory
                               }
                               as="select"
+                              disabled={!values.parentGroup}
                             >
                               <option>select</option>
-                              {paremtCategoryRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentCatagoryName}
-                                </option>
-                              ))}
+                              {paremtCategoryRes
+                                .filter(
+                                  (x) => x.parentGroup == values.parentGroup
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentCatagoryName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>
@@ -445,13 +479,19 @@ const product = () => {
                                 !!errors.parentSubCategory
                               }
                               as="select"
+                              disabled={!values.parentCategory}
                             >
                               <option>select</option>
-                              {seubCategoryRes.map((x) => (
-                                <option value={x._id}>
-                                  {x.parentSubCategoryName}
-                                </option>
-                              ))}
+                              {seubCategoryRes
+                                .filter(
+                                  (x) =>
+                                    x.parentCategory == values.parentCategory
+                                )
+                                .map((x) => (
+                                  <option value={x._id}>
+                                    {x.parentSubCategoryName}
+                                  </option>
+                                ))}
                             </Form.Control>
                           </Form.Group>
                         </Col>

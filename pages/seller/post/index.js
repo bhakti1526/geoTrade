@@ -77,7 +77,7 @@ const index = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteBrands/${s.row.original._id}`);
+                await deleteData(`/api/user/post?id=${s.row.original._id}`);
                 getData();
               }}
             >
