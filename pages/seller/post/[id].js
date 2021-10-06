@@ -15,7 +15,6 @@ import {
   Row,
 } from "react-bootstrap";
 import WrapFrom from "../../../src/components/admin/WrapForm";
-import usePostAxios from "../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 

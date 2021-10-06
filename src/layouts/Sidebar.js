@@ -23,6 +23,8 @@ const Sidebar = () => {
     if (response) {
       const val = response.menu;
 
+      console.log(val);
+
       setSideMenu([
         {
           name: "setup",
@@ -230,8 +232,20 @@ const Sidebar = () => {
         }
       });
 
-      if (!isPathMatch) {
-        push("/admin/dashboard");
+      if (response && !isPathMatch) {
+        const val = response.menu;
+
+        if (
+          pathname.startsWith("/admin/user/manage-product") ||
+          pathname.startsWith("/admin/user/manage-post")
+        ) {
+          if (val.user.manageUser === true) {
+          } else {
+            push("/admin/dashboard");
+          }
+        } else {
+          push("/admin/dashboard");
+        }
       }
     }
   }, [isAdmin, sideMenu, window.location, pathname]);

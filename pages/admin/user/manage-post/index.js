@@ -13,7 +13,7 @@ const managePost = () => {
   } = useRouter();
 
   const { isLoading, response, error, getData } = useFetchAxios(
-    `/api/admin/userdata?data=post&id=${id}`
+    `/api/auth/admin/userdata?data=post&id=${id}`
   );
 
   const { deleteData, response: res } = useDeleteAxios();

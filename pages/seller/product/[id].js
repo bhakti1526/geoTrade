@@ -20,6 +20,7 @@ import usePostAxios from "../../../component/hooks/usePostAxios";
 import { useRouter } from "next/router";
 
 import AppLoader from "../../../src/components/admin/AppLoader";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
@@ -34,7 +35,7 @@ const validationSchema = Yup.object().shape({
   sellerType: Yup.string().required(),
 });
 
-const ImgBlock = ({ img, setImg }) => {
+const ImgBlock = ({ img, setImg, imgUrl, setImgUrl }) => {
   const imgRef = useRef(null);
 
   const handlechange = (e) => {
@@ -42,6 +43,7 @@ const ImgBlock = ({ img, setImg }) => {
 
     if (image.type.startsWith("image")) {
       setImg(image);
+      setImgUrl("");
     }
   };
 
@@ -61,13 +63,27 @@ const ImgBlock = ({ img, setImg }) => {
         }
         onClick={() => imgRef.current.click()}
       >
-        {img === null ? (
+        {imgUrl !== "" ? (
+          imgUrl === undefined ? (
+            <>
+              <i className="flaticon-381-photo-camera"></i>
+              <p>Add </p>
+            </>
+          ) : (
+            <img
+              loading="lazy"
+              style={{ height: "auto", width: "100%" }}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${imgUrl}`}
+            />
+          )
+        ) : img === null ? (
           <>
             <i className="flaticon-381-photo-camera"></i>
             <p>Add </p>
           </>
         ) : (
           <img
+            loading="lazy"
             style={{ padding: "0.2rem", height: "auto", width: "100%" }}
             src={URL.createObjectURL(img)}
           />
@@ -84,7 +100,7 @@ const ImgBlock = ({ img, setImg }) => {
   );
 };
 
-const BigImgBlock = ({ img, setImg }) => {
+const BigImgBlock = ({ img, setImg, imgUrl, setImgUrl }) => {
   const imgRef = useRef(null);
 
   const handlechange = (e) => {
@@ -92,6 +108,7 @@ const BigImgBlock = ({ img, setImg }) => {
 
     if (image.type.startsWith("image")) {
       setImg(image);
+      setImgUrl("");
     }
   };
 
@@ -111,13 +128,20 @@ const BigImgBlock = ({ img, setImg }) => {
       onClick={() => imgRef.current.click()}
     >
       <div className="add-photo-02">
-        {img === null ? (
+        {imgUrl !== "" ? (
+          <img
+            loading="lazy"
+            style={{ height: "auto", width: "100%" }}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${imgUrl}`}
+          />
+        ) : img === null ? (
           <>
             <i className="flaticon-381-photo-camera"></i>
             <p>Add Photos</p>
           </>
         ) : (
           <img
+            loading="lazy"
             style={{ height: "auto", width: "100%" }}
             src={URL.createObjectURL(img)}
           />
@@ -149,6 +173,13 @@ const id = () => {
   });
 
   const [unitList, setUnitList] = useState([]);
+
+  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl1, setImgUrl1] = useState("");
+  const [imgUrl2, setImgUrl2] = useState("");
+  const [imgUrl3, setImgUrl3] = useState("");
+  const [imgUrl4, setImgUrl4] = useState("");
+  const [imgUrl5, setImgUrl5] = useState("");
 
   const {
     push,
@@ -199,8 +230,6 @@ const id = () => {
         pdf,
       } = prodResss;
 
-      console.log(parentGroup, parentCategory, parentSubCategory);
-
       setProductDetails({
         name,
         price,
@@ -213,6 +242,13 @@ const id = () => {
         parentSubCategory,
         ytUrl,
       });
+
+      setImgUrl(img[0]);
+      setImgUrl1(img[1]);
+      setImgUrl2(img[2]);
+      setImgUrl3(img[3]);
+      setImgUrl4(img[4]);
+      setImgUrl5(img[5]);
     }
   }, [prodResss]);
 
@@ -224,11 +260,58 @@ const id = () => {
   const [img5, setImg5] = useState(null);
   const [pdf, setPdf] = useState(null);
 
-  const { postData } = usePostAxios("/api/user/product");
-
   const handleSubmit = async (val) => {
-    console.log(val);
-    // push("/seller/product");
+    const imgArray = [img, img1, img2, img3, img4, img5].filter(
+      (x) => x !== null
+    );
+    const imgUrlArray = [
+      imgUrl,
+      imgUrl1,
+      imgUrl2,
+      imgUrl3,
+      imgUrl4,
+      imgUrl5,
+    ].filter((x) => {
+      if (x === undefined) return false;
+      if (x === "") return false;
+      return true;
+    });
+
+    if (imgArray.length !== 0) {
+      const formData = new FormData();
+      imgArray.map((x) => formData.append("img", x));
+
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/multi`, formData)
+        .then((res) =>
+          console.log(res.data.data.map((x) => imgUrlArray.push(x)))
+        )
+        .then(() => {
+          console.log(imgUrlArray);
+        })
+        .then(() => {
+          axios
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/product/${id}`, {
+              ...val,
+              img: imgUrlArray,
+            })
+            .then((res) => push("/seller/product"));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("THIS IS RUNNIG");
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/product/${id}`, {
+          ...val,
+          img: imgUrlArray,
+        })
+        .then((res) => push("/seller/product"))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const pdfRef = useRef(null);
@@ -275,14 +358,44 @@ const id = () => {
                           <div className="col-md-6">
                             <div className="row m-0">
                               <div className="col-4 col-md-3 col-lg-2 p-0">
-                                <ImgBlock img={img1} setImg={setImg1} />
-                                <ImgBlock img={img2} setImg={setImg2} />
-                                <ImgBlock img={img3} setImg={setImg3} />
-                                <ImgBlock img={img4} setImg={setImg4} />
-                                <ImgBlock img={img5} setImg={setImg5} />
+                                <ImgBlock
+                                  img={img1}
+                                  imgUrl={imgUrl1}
+                                  setImg={setImg1}
+                                  setImgUrl={setImgUrl1}
+                                />
+                                <ImgBlock
+                                  img={img2}
+                                  imgUrl={imgUrl2}
+                                  setImg={setImg2}
+                                  setImgUrl={setImgUrl2}
+                                />
+                                <ImgBlock
+                                  img={img3}
+                                  imgUrl={imgUrl3}
+                                  setImg={setImg3}
+                                  setImgUrl={setImgUrl3}
+                                />
+                                <ImgBlock
+                                  img={img4}
+                                  imgUrl={imgUrl4}
+                                  setImg={setImg4}
+                                  setImgUrl={setImgUrl4}
+                                />
+                                <ImgBlock
+                                  img={img5}
+                                  imgUrl={imgUrl5}
+                                  setImg={setImg5}
+                                  setImgUrl={setImgUrl5}
+                                />
                               </div>
                               <div className="col-8 col-md-9 col-lg-9 p-0">
-                                <BigImgBlock img={img} setImg={setImg} />
+                                <BigImgBlock
+                                  img={img}
+                                  imgUrl={imgUrl}
+                                  setImg={setImg}
+                                  setImgUrl={setImgUrl}
+                                />
                                 <div className="row m-0">
                                   <OverlayTrigger
                                     trigger="click"
@@ -432,7 +545,6 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-
                         <Col md="3">
                           <FormGroup>
                             <FormLabel> Seller Type</FormLabel>
@@ -454,7 +566,6 @@ const id = () => {
                             </Form.Control>
                           </FormGroup>
                         </Col>
-
                         <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
@@ -506,7 +617,6 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-
                         <Col md="3">
                           <Form.Group>
                             <Form.Label>Sub Parent category</Form.Label>
@@ -534,7 +644,6 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-
                         <FormGroup className="form-group col-md-12 mt-3">
                           <div className="float-right">
                             <Button

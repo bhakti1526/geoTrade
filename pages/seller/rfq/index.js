@@ -1,6 +1,4 @@
 import React from "react";
-import Link from "next/link";
-import { Button } from "react-bootstrap";
 import InquiryCard from "../../../src/components/seller/InquiryCard";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
@@ -15,11 +13,6 @@ const index = () => {
           <div className="card">
             <div className="card-header d-flex">
               <h4 className="card-title">Inquiry Leads</h4>
-              {/* <Link href={`${window.location.pathname}/add`} passHref>
-                <Button className="float-right" as="a">
-                  add rfq
-                </Button>
-              </Link> */}
             </div>
             <div className="card-body">
               {isLoading === true ? (
