@@ -1,3 +1,7 @@
+/* .header {
+  z-index: 1200;
+} */
+
 .add-photo-01 {
   text-align: center;
   border: 1px solid #e2e2e2;
@@ -74,4 +78,8 @@
 
 .tox-statusbar__text-container {
   display: none !important;
+}
+
+.chat-desc {
+  height: 100%;
 }

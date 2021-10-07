@@ -105,6 +105,7 @@ const manageProduct = () => {
   ];
 
   if (!Array.isArray(response)) return <></>;
+
   return (
     <WrapTable
       title="manage user product"
