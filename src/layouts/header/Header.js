@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { connect } from "react-redux";
 import { AppContext } from "../../../component/context/app.context";
 import { getHeaderData } from "../../redux/action/utils";
-import Notification from "./Notification";
 import Profile from "./Profile";
 
 const Header = () => {

@@ -28,7 +28,6 @@ const validatinSchema = Yup.object().shape({
   parentCategory: Yup.string().required(),
   parentGroup: Yup.string().required(),
   isAdminApproved: Yup.bool().oneOf([true, false]).required(),
-  isActive: Yup.bool().oneOf([true, false]).required(),
 });
 
 const id = () => {
@@ -50,7 +49,6 @@ const id = () => {
     parentCategory: "",
     parentGroup: "",
     isAdminApproved: false,
-    isActive: true,
   });
 
   const {
@@ -79,6 +77,7 @@ const id = () => {
       parentGroup: productRes?.parentGroup?._id,
       sellerType: productRes?.sellerType?._id,
       unit: productRes?.unit?._id,
+      brand: productRes?.brand?._id,
     });
   }, [productRes]);
 
@@ -101,8 +100,6 @@ const id = () => {
   useEffect(() => {
     setBrandList(brandRes);
   }, [brandRes]);
-
-  console.log(initSchema);
 
   if (productLoad === true) return <AppLoader />;
   if (unitLoad === true) return <AppLoader />;
@@ -287,16 +284,6 @@ const id = () => {
                     onClick={() =>
                       setFieldValue("isAdminApproved", !values.isAdminApproved)
                     }
-                    type="checkbox"
-                    label="active or inactive"
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Status</FormLabel>
-                  <FormCheck
-                    checked={values.isActive}
-                    onClick={() => setFieldValue("isActive", !values.isActive)}
                     type="checkbox"
                     label="active or inactive"
                   />

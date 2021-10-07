@@ -15,7 +15,6 @@ const index = () => {
       Header: "Prduct name",
       accessor: "item.name",
     },
-
     {
       Header: "Product image",
       accessor: "item.img",

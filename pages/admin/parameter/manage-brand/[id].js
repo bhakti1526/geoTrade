@@ -9,7 +9,6 @@ import {
   FormGroup,
   FormControl,
   FormLabel,
-  FormCheck,
   Button,
   Row,
   Col,
@@ -22,7 +21,6 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   img: Yup.string().required(),
   description: Yup.string().required(),
-  isActive: Yup.bool().oneOf([true, false]).required(),
   isApproved: Yup.bool().oneOf([true, false]).required(),
   email: Yup.string().email().required(),
   contact: Yup.string().required(),
@@ -46,7 +44,6 @@ const id = () => {
     contact: "",
     website: "",
     isApproved: false,
-    isActive: true,
   });
 
   useEffect(() => {
@@ -58,7 +55,6 @@ const id = () => {
       contact: response?.contact,
       website: response?.website,
       isApproved: response?.isApproved,
-      isActive: response?.isActive || true,
     });
   }, [response]);
 
@@ -184,7 +180,7 @@ const id = () => {
                   </div>
                 </div>
                 <Row className="ml-2">
-                  <Col md="6">
+                  <Col>
                     <Form.Group>
                       <Form.Label>is Approved</Form.Label>
                       <Form.Check
@@ -192,19 +188,6 @@ const id = () => {
                         onClick={() =>
                           setFieldValue("isApproved", !values.isApproved)
                         }
-                        label="active or inactive"
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md="6">
-                    <Form.Group>
-                      <Form.Label>status</Form.Label>
-                      <Form.Check
-                        checked={values.isActive}
-                        onClick={() =>
-                          setFieldValue("isActive", !values.isActive)
-                        }
-                        label="active or inactive"
                         label="active or inactive"
                       />
                     </Form.Group>

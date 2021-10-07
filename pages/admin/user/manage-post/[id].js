@@ -27,7 +27,6 @@ const validatinSchema = Yup.object().shape({
   parentCategory: Yup.string().required(),
   parentGroup: Yup.string().required(),
   isAdminApproved: Yup.bool().oneOf([true, false]).required(),
-  isActive: Yup.bool().oneOf([true, false]).required(),
 });
 
 const id = () => {
@@ -49,7 +48,6 @@ const id = () => {
     parentCategory: "",
     parentGroup: "",
     isAdminApproved: false,
-    isActive: true,
   });
 
   const {
@@ -72,14 +70,16 @@ const id = () => {
     useFetchAxios("/getBrands");
 
   useEffect(() => {
-    setInitSchema({
-      ...productRes,
-      parentCategory: productRes?.parentCategory?._id,
-      parentGroup: productRes?.parentGroup?._id,
-      sellerType: productRes?.sellerType?._id,
-      unit: productRes?.unit?._id,
-      brand: productRes?.brand?._id,
-    });
+    if (productRes) {
+      setInitSchema({
+        ...productRes,
+        parentCategory: productRes?.parentCategory?._id,
+        parentGroup: productRes?.parentType?._id,
+        sellerType: productRes?.sellerType?._id,
+        unit: productRes?.unit?._id,
+        brand: productRes?.brand?._id,
+      });
+    }
   }, [productRes]);
 
   useEffect(() => {
@@ -110,7 +110,6 @@ const id = () => {
   if (brandLoad === true) return <AppLoader />;
 
   const handleSubmit = async (val) => {
-    console.log(val);
     if (img !== null && img !== undefined) {
       const formData = new FormData();
       formData.append("img", img);
@@ -264,7 +263,6 @@ const id = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Parent Category</FormLabel>
-                  {console.log(values.parentCategory)}
                   <Form.Control
                     name="parentCategory"
                     value={values.parentCategory}
@@ -286,16 +284,6 @@ const id = () => {
                     onClick={() =>
                       setFieldValue("isAdminApproved", !values.isAdminApproved)
                     }
-                    type="checkbox"
-                    label="active or inactive"
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Status</FormLabel>
-                  <FormCheck
-                    checked={values.isActive}
-                    onClick={() => setFieldValue("isActive", !values.isActive)}
                     type="checkbox"
                     label="active or inactive"
                   />

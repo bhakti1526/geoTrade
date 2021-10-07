@@ -74,7 +74,7 @@ const update = () => {
 
   useEffect(() => {
     if (response) {
-      setInitSchema(response.menu);
+      setInitSchema(response?.menu);
     }
   }, [response]);
 
@@ -87,7 +87,11 @@ const update = () => {
 
   return (
     <WrapForm title="update roles">
-      <Formik onSubmit={handleSubmit} initialValues={initSchema}>
+      <Formik
+        enableReinitialize
+        onSubmit={handleSubmit}
+        initialValues={initSchema}
+      >
         {({ handleSubmit, handleChange, values, setFieldValue }) => {
           return (
             <>

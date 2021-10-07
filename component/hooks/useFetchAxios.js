@@ -23,7 +23,9 @@ const useFetchAxios = (url) => {
         console.log(res.data.data);
         setResponse(res.data.data);
       })
-      .catch((err) => setError(err))
+      .catch((err) => {
+        setError(err);
+      })
       .finally(() => setIsLoading(false));
   };
 

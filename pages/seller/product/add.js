@@ -14,11 +14,10 @@ import {
   Popover,
 } from "react-bootstrap";
 
-import useFetchAxios from "../../../component/hooks/useFetchAxios";
-import usePostAxios from "../../../component/hooks/usePostAxios";
-
 import { useRouter } from "next/router";
 
+import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../component/hooks/usePostAxios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 
 const productDetails = {

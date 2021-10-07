@@ -80,6 +80,7 @@ const add = () => {
       _id: sellerResData?._id,
       sellerTypeName: sellerResData?.sellerTypeName,
       sellerTypeImg: sellerResData?.sellerTypeImg,
+      isActive: sellerResData?.isActive,
     });
   }, [sellerResData]);
 

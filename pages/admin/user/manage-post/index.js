@@ -50,7 +50,7 @@ const managePost = () => {
     },
     {
       Header: "approved",
-      accessor: "isApproved",
+      accessor: "isAdminApproved",
       Cell: (e) => (
         <span
           className={
@@ -80,7 +80,10 @@ const managePost = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
-            <Link href={`${window.location}/${s.row.original._id}`} passHref>
+            <Link
+              href={`${window.location.pathname}/${s.row.original._id}`}
+              passHref
+            >
               <Dropdown.Item as="a">Edit</Dropdown.Item>
             </Link>
             <Dropdown.Item
