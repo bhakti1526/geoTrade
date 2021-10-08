@@ -25,7 +25,6 @@ const managePackage = () => {
       Header: "package type",
       accessor: "packageType",
     },
-
     {
       Header: "duration",
       accessor: "duration",
@@ -43,49 +42,48 @@ const managePackage = () => {
         </span>
       ),
     },
-    {
-      Header: "action",
-      Cell: (s) => (
-        <Dropdown className="text-center">
-          <Dropdown.Toggle
-            as="a"
-            variant=""
-            className="btn-link i-false c-pointer"
-          >
-            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-              <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
-                <rect x={0} y={0} width={24} height={24} />
-                <circle fill="#000000" cx={5} cy={12} r={2} />
-                <circle fill="#000000" cx={12} cy={12} r={2} />
-                <circle fill="#000000" cx={19} cy={12} r={2} />
-              </g>
-            </svg>
-          </Dropdown.Toggle>
-          <Dropdown.Menu alignRight={true}>
-            <Link href={`${window.location}/${s.row.original._id}`} passHref>
-              <Dropdown.Item>Edit</Dropdown.Item>
-            </Link>
-            <Dropdown.Item
-              onClick={async () => {
-                await deleteData(`/deleteUnit/${s.row.original._id}`);
-                getData();
-              }}
-            >
-              delete
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      ),
-    },
+    // {
+    //   Header: "action",
+    //   Cell: (s) => (
+    //     <Dropdown className="text-center">
+    //       <Dropdown.Toggle
+    //         as="a"
+    //         variant=""
+    //         className="btn-link i-false c-pointer"
+    //       >
+    //         <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+    //           <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
+    //             <rect x={0} y={0} width={24} height={24} />
+    //             <circle fill="#000000" cx={5} cy={12} r={2} />
+    //             <circle fill="#000000" cx={12} cy={12} r={2} />
+    //             <circle fill="#000000" cx={19} cy={12} r={2} />
+    //           </g>
+    //         </svg>
+    //       </Dropdown.Toggle>
+    //       <Dropdown.Menu alignRight={true}>
+    //         <Link href={`${window.location}/${s.row.original._id}`} passHref>
+    //           <Dropdown.Item>Edit</Dropdown.Item>
+    //         </Link>
+    //         <Dropdown.Item
+    //           onClick={async () => {
+    //             await deleteData(`/deleteUnit/${s.row.original._id}`);
+    //             getData();
+    //           }}
+    //         >
+    //           delete
+    //         </Dropdown.Item>
+    //       </Dropdown.Menu>
+    //     </Dropdown>
+    //   ),
+    // },
   ];
 
   return (
     <WrapTable
-      // bText="add package"
       title="manage user package"
       column={column}
       isLoading={isLoading}
-      // columnData={response}
+      columnData={response}
     />
   );
 };

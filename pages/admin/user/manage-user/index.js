@@ -73,9 +73,9 @@ const manageUser = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
-            <Link href={`${window.location}/${s.row.original._id}`} passHref>
+            {/* <Link href={`${window.location}/${s.row.original._id}`} passHref>
               <Dropdown.Item as="a">Edit</Dropdown.Item>
-            </Link>
+            </Link> */}
 
             {s.row.original.isSeller ? (
               <>

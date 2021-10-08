@@ -18,8 +18,6 @@ const managePost = () => {
 
   const { deleteData, response: res } = useDeleteAxios();
 
-  if (isLoading === true) return <AppLoader />;
-
   const column = [
     {
       Header: "no",
@@ -99,6 +97,8 @@ const managePost = () => {
       ),
     },
   ];
+
+  if (isLoading === true) return <AppLoader />;
 
   return (
     <WrapTable

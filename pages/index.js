@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import jwtDecode from "jwt-decode";
 import { useRouter } from "next/router";
 import axios from "axios";
 import * as Yup from "yup";
@@ -28,7 +29,12 @@ const index = () => {
       .post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/login`, val)
       .then(async (res) => {
         await dispatch({ type: "AUTH-USER", data: res.data });
-        push("/seller");
+
+        const { isSeller } = jwtDecode(res.data.data.token);
+
+        console.log(isSeller);
+
+        push(isSeller ? "/seller" : "/buyer");
       })
       .catch((err) => console.log(err));
   };

@@ -42,7 +42,7 @@ const index = () => {
     },
     {
       Header: "Admin Approved",
-      accessor: "isApproved",
+      accessor: "isAdminApproved",
       Cell: (e) => (
         <span
           className={

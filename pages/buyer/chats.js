@@ -62,7 +62,7 @@ const rfq = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card">
             <div className="card-header">
-              <h4 className="card-title">Rfq Leads</h4>
+              <h4 className="card-title">Chats</h4>
             </div>
             <div className="card-body">
               <div className="basic-form">
@@ -80,11 +80,11 @@ const rfq = () => {
 
                       <div className="name-chat">
                         {/* side chat here */}
-                        {/* <ChatLists />
                         <ChatLists />
                         <ChatLists />
                         <ChatLists />
-                        <ChatLists /> */}
+                        <ChatLists />
+                        <ChatLists />
                       </div>
                     </div>
 
@@ -102,12 +102,11 @@ const rfq = () => {
                           <div className="row">
                             <div className="col-md-12">
                               {/* put chats here */}
-
-                              {/* <ChatItem />
                               <ChatItem />
                               <ChatItem />
                               <ChatItem />
-                              <ChatItem /> */}
+                              <ChatItem />
+                              <ChatItem />
                             </div>
                           </div>
                         </div>

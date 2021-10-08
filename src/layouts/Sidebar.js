@@ -6,12 +6,14 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
 
 import { AppContext } from "../../component/context/app.context";
+import jwtDecode from "jwt-decode";
 
 const Sidebar = () => {
   const { push, pathname } = useRouter();
 
   const {
     auth: { isAdmin, isSeller, isBuyer },
+    token,
   } = useContext(AppContext);
 
   const [loveEmoji, setLoveEmoji] = useState(false);
@@ -347,91 +349,93 @@ const Sidebar = () => {
                     </li>
                   </ul>
                 </li>
-                <li>
-                  <a className="has-arrow ai-icon c-pointer">
-                    <i className="flaticon-025-dashboard"></i>
-                    <span className="nav-text">Seller tools</span>
-                  </a>
-                  <ul>
-                    <li>
-                      <Link href="/seller/brand" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Brand
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/product" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Product
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/post" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Post
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/rfq" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Rfq
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/profile" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Profile lead
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/inquiry" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Inquiry lead
-                        </a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/seller/lead/contact" passHref>
-                        <a
-                          className={`${
-                            path === "ui/button" ? "mm-active" : ""
-                          }`}
-                        >
-                          Contect lead
-                        </a>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                {jwtDecode(token).isSeller ? (
+                  <li>
+                    <a className="has-arrow ai-icon c-pointer">
+                      <i className="flaticon-025-dashboard"></i>
+                      <span className="nav-text">Seller tools</span>
+                    </a>
+                    <ul>
+                      <li>
+                        <Link href="/seller/brand" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Brand
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/product" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Product
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/post" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Post
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/rfq" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Rfq
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/lead/profile" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Profile lead
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/lead/inquiry" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            Inquiry lead
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/seller/lead/contact" passHref>
+                          <a
+                            className={`${
+                              path === "ui/button" ? "mm-active" : ""
+                            }`}
+                          >
+                            contact lead
+                          </a>
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                ) : undefined}
               </>
             ) : undefined}
           </MetisMenu>
@@ -445,14 +449,15 @@ const Sidebar = () => {
                 <p>Design &#38; Devlopment by Barodaweb</p>
               </div>
             </>
-          ) : pathname.startsWith("/seller") ? (
+          ) : pathname.startsWith("/seller") ||
+            pathname.startsWith("/buyer") ? (
             <>
               <div className="copyright">
                 <p>
                   <strong>GEO Trade Admin Dashboard</strong> ©
                   {new Date().getFullYear()} All Rights Reserved
                 </p>
-                <p>Design &#38; Devlopment by Barodaweb</p>
+                {/* <p>Design &#38; Devlopment by Barodaweb</p> */}
               </div>
             </>
           ) : undefined}

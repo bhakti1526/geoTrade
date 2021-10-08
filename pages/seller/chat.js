@@ -57,9 +57,13 @@ const chat = () => {
                   <div className="row m-0">
                     <div className="col-md-4 p-0">
                       {/* <FormGroup className="form-group search-box mb-0">
-            <FormControl type="search" className="form-control" placeholder="Search by Name, Product, City, Company or Mobile"  />
-            <i className="fas fa-search"></i>
-        </FormGroup> */}
+                        <FormControl
+                          type="search"
+                          className="form-control"
+                          placeholder="Search by Name, Product, City, Company or Mobile"
+                        />
+                        <i className="fas fa-search"></i>
+                      </FormGroup> */}
 
                       <div className="name-chat">
                         {chats.map((c) => (

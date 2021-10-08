@@ -54,7 +54,7 @@ const manageProduct = () => {
     },
     {
       Header: "approved",
-      accessor: "isApproved",
+      accessor: "isAdminApproved",
       Cell: (e) => (
         <span
           className={

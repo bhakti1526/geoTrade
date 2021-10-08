@@ -1,9 +1,9 @@
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 export const Reducer = (state, action) => {
   switch (action.type) {
     case "AUTH-ADMIN":
-      console.log(action.data.data.data);
       axios.defaults.headers.common["Authorization"] =
         action.data.data.data.token;
       return {
@@ -20,11 +20,13 @@ export const Reducer = (state, action) => {
 
     case "AUTH-USER":
       axios.defaults.headers.common["Authorization"] = action.data.data.token;
+      const { isSeller } = jwtDecode(action.data.data.token);
+
       return {
         auth: {
           isAuth: true,
           isAdmin: false,
-          isSeller: true,
+          isSeller: isSeller,
         },
         token: action.data.data.token,
         user: {
