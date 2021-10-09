@@ -27,7 +27,7 @@ const update = () => {
     img: "",
     price: "",
     tax: "",
-    sellCost: "",
+
     note: "",
     duration: "",
     description: "",
@@ -71,7 +71,6 @@ const update = () => {
     img: Yup.string().required(),
     price: Yup.number().min(1).required(),
     tax: Yup.string().required(),
-    sellCost: Yup.number().min(1).required(),
     note: Yup.string().required(),
     duration: Yup.number().min(1).required(),
     description: Yup.string().required(),
@@ -183,12 +182,12 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Sell Cost</FormLabel>
+                  <FormLabel> Package Duration</FormLabel>
                   <FormControl
                     type="text"
                     className="form-control"
-                    name="sellCost"
-                    value={values.sellCost}
+                    name="duration"
+                    value={values.duration}
                   />
                 </FormGroup>
 
@@ -199,16 +198,6 @@ const update = () => {
                     className="form-control"
                     name="note"
                     value={values.note}
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Package Duration</FormLabel>
-                  <FormControl
-                    type="text"
-                    className="form-control"
-                    name="duration"
-                    value={values.duration}
                   />
                 </FormGroup>
 

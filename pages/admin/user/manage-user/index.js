@@ -30,7 +30,7 @@ const manageUser = () => {
     },
     {
       Header: "premium",
-      accessor: "premium",
+      accessor: "package.packageId",
       Cell: (e) => (
         <span
           className={
@@ -101,6 +101,7 @@ const manageUser = () => {
 
   return (
     <WrapTable
+      bText="add seller"
       title="manage user"
       column={column}
       isLoading={isLoading}

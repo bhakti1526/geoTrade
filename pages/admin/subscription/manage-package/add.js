@@ -21,7 +21,7 @@ const initValues = {
   img: "",
   price: "",
   tax: "",
-  sellCost: "",
+
   note: "",
   duration: "",
   description: "",
@@ -65,14 +65,13 @@ const add = () => {
       }),
     price: Yup.number().min(1).required(),
     tax: Yup.string().required(),
-    sellCost: Yup.number().min(1).required(),
     note: Yup.string().required(),
     duration: Yup.number().min(1).required(),
     description: Yup.string().required(),
     isPost: Yup.bool().oneOf([true, false]),
-    postCount: Yup.number().min(1).required(),
+    postCount: Yup.number().min(0).required(),
     isLead: Yup.bool().oneOf([true, false]),
-    leadCount: Yup.number().min(1).required(),
+    leadCount: Yup.number().min(0).required(),
     canAddBrand: Yup.bool().oneOf([true, false]),
     isCategoryPriority: Yup.bool().oneOf([true, false]),
     vcnFeature: Yup.bool().oneOf([true, false]),
@@ -80,15 +79,22 @@ const add = () => {
     isActive: Yup.bool().oneOf([true, false]),
   });
 
+  const percentage = (partialValue, totalValue) => {
+    const perValue = (totalValue * partialValue) / 100;
+    return perValue + totalValue;
+  };
+
   const handleSubmit = async (val) => {
     const formData = new FormData();
+
+    const texVal = texRes.find((x) => x._id === val.tax).taxValue;
 
     formData.append("name", val.name);
     formData.append("img", img);
     formData.append("price", val.price);
     formData.append("name", val.name);
     formData.append("tax", val.tax);
-    formData.append("sellCost", val.sellCost);
+    formData.append("sellCost", percentage(texVal, val.price));
     formData.append("note", val.note);
     formData.append("duration", val.duration);
     formData.append("description", val.description);
@@ -114,7 +120,14 @@ const add = () => {
         initialValues={initValues}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => {
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          setFieldValue,
+          touched,
+          errors,
+        }) => {
           return (
             <>
               <Form
@@ -129,6 +142,7 @@ const add = () => {
                     className="form-control"
                     name="name"
                     value={values.name}
+                    isInvalid={!!touched.name && !!errors.name}
                   />
                 </FormGroup>
 
@@ -139,6 +153,7 @@ const add = () => {
                     className="form-control"
                     name="price"
                     value={values.price}
+                    isInvalid={!!touched.price && !!errors.price}
                   />
                 </FormGroup>
 
@@ -150,6 +165,7 @@ const add = () => {
                     accept="image/*"
                     name="img"
                     onChange={(e) => setImg(e.target.files[0])}
+                    isInvalid={!!touched.img && !!errors.img}
                   />
                 </FormGroup>
 
@@ -160,24 +176,26 @@ const add = () => {
                     className="form-control"
                     name="tax"
                     value={values.tax}
+                    isInvalid={!!touched.tax && !!errors.tax}
                     as="select"
                   >
                     <option>option</option>
                     {taxArray.map((x) => (
                       <option key={x._id} value={x._id}>
-                        {x.country.name}({x.taxValue})
+                        {x.country.name} - ({x.taxValue}%)
                       </option>
                     ))}
                   </FormControl>
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Sell Cost</FormLabel>
+                  <FormLabel> Package Duration (in day)</FormLabel>
                   <FormControl
                     type="text"
                     className="form-control"
-                    name="sellCost"
-                    value={values.sellCost}
+                    name="duration"
+                    value={values.duration}
+                    isInvalid={!!touched.duration && !!errors.duration}
                   />
                 </FormGroup>
 
@@ -188,16 +206,7 @@ const add = () => {
                     className="form-control"
                     name="note"
                     value={values.note}
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Package Duration</FormLabel>
-                  <FormControl
-                    type="text"
-                    className="form-control"
-                    name="duration"
-                    value={values.duration}
+                    isInvalid={!!touched.note && !!errors.note}
                   />
                 </FormGroup>
 
@@ -221,6 +230,7 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         checked={values.isLead}
+                        isInvalid={!!touched.isLead && !!errors.isLead}
                         onChange={() => setFieldValue("isLead", !values.isLead)}
                       />
                     </FormGroup>
@@ -231,6 +241,8 @@ const add = () => {
                         type="text"
                         className="form-control"
                         name="leadCount"
+                        value={values.leadCount}
+                        isInvalid={!!touched.leadCount && !!errors.leadCount}
                       />
                     </FormGroup>
                   </div>
@@ -243,6 +255,7 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         value={values.isPost}
+                        isInvalid={!!touched.isPost && !!errors.isPost}
                         onChange={() => setFieldValue("isPost", !values.isPost)}
                       />
                     </FormGroup>
@@ -253,6 +266,8 @@ const add = () => {
                         type="text"
                         className="form-control"
                         name="postCount"
+                        value={values.postCount}
+                        isInvalid={!!touched.postCount && !!errors.postCount}
                       />
                     </FormGroup>
                   </div>
@@ -265,6 +280,9 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         value={values.canAddBrand}
+                        isInvalid={
+                          !!touched.canAddBrand && !!errors.canAddBrand
+                        }
                         onChange={() =>
                           setFieldValue("canAddBrand", !values.canAddBrand)
                         }
@@ -278,6 +296,10 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         value={values.isCategoryPriority}
+                        isInvalid={
+                          !!touched.isCategoryPriority &&
+                          !!errors.isCategoryPriority
+                        }
                         onChange={() =>
                           setFieldValue(
                             "isCategoryPriority",
@@ -296,6 +318,7 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         value={values.vcnFeature}
+                        isInvalid={!!touched.vcnFeature && !!errors.vcnFeature}
                         onChange={() =>
                           setFieldValue("vcnFeature", !values.vcnFeature)
                         }
@@ -309,6 +332,7 @@ const add = () => {
                         type="checkbox"
                         label="yes or no"
                         value={values.vssFeature}
+                        isInvalid={!!touched.vssFeature && !!errors.vssFeature}
                         onChange={() =>
                           setFieldValue("vssFeature", !values.vssFeature)
                         }
@@ -324,6 +348,7 @@ const add = () => {
                     type="checkbox"
                     label="active or inactive"
                     value={values.isActive}
+                    isInvalid={!!touched.isActive && !!errors.isActive}
                     onChange={() => setFieldValue("isActive", !values.isActive)}
                   />
                 </FormGroup>

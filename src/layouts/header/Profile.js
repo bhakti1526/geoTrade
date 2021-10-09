@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { css } from "@emotion/css";
 import { useContext } from "react";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
@@ -15,7 +16,7 @@ const Profile = ({ logoutUser }) => {
   } = useContext(AppContext);
 
   const handleLogOut = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     dispatch({ type: "LOG-OUT" });
   };
 
@@ -85,8 +86,18 @@ const Profile = ({ logoutUser }) => {
             <span className="ml-2">Inbox </span>
           </a>
         </Link> */}
-        {/* <Link href="#" passHref> */}
-        <a onClick={handleLogOut} href="#" className="dropdown-item ai-icon">
+
+        <span
+          onClick={handleLogOut}
+          className={
+            "dropdown-item ai-icon " +
+            css`
+              :hover {
+                cursor: pointer;
+              }
+            `
+          }
+        >
           <svg
             id="icon-logout"
             xmlns="http://www.w3.org/2000/svg"
@@ -104,9 +115,8 @@ const Profile = ({ logoutUser }) => {
             <polyline points="16 17 21 12 16 7" />
             <line x1={21} y1={12} x2={9} y2={12} />
           </svg>
-          <span className="ml-2">Logout </span>
-        </a>
-        {/* </Link> */}
+          <span className="ml-2">Logout</span>
+        </span>
       </Dropdown.Menu>
     </Dropdown>
   );

@@ -43,6 +43,7 @@ export const Reducer = (state, action) => {
         },
         token: "",
         user: {
+          id: "",
           email: "",
           firstName: "",
         },

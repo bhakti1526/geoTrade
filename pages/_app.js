@@ -24,29 +24,6 @@ import "./seller/lead/rfq-lead.css";
 
 import AppProvider from "../component/context/app.context";
 import { useRouter } from "next/router";
-import { AppContext } from "../component/context/app.context";
-
-const HandleRoutes = () => {
-  const {
-    auth: { isAuth, isAdmin, isSeller },
-  } = useContext(AppContext);
-
-  const { pathname, push } = useRouter();
-
-  useEffect(() => {
-    if (isAuth === true) {
-      if (pathname.startsWith("/admin/") && isAdmin === false) {
-        push("/admin");
-      } else if (pathname.startsWith("/seller") && isSeller === false) {
-        push("/buyer");
-      }
-    } else {
-      push("/");
-    }
-  }, [isAuth, isAdmin, isSeller]);
-
-  return <></>;
-};
 
 function MyApp({ Component, pageProps }) {
   const [doc, setDoc] = useState();
@@ -64,8 +41,6 @@ function MyApp({ Component, pageProps }) {
   }, [pages]);
 
   const { pathname } = useRouter();
-
-  console.log(pathname);
 
   if (typeof window === "undefined") return <></>;
 
@@ -91,7 +66,6 @@ function MyApp({ Component, pageProps }) {
               referrerpolicy="no-referrer"
             />
           </Head>
-          <HandleRoutes />
 
           {pathname.startsWith("/admin/") ||
           pathname.startsWith("/seller") ||

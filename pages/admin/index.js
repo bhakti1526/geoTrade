@@ -48,7 +48,7 @@ const index = () => {
                 alt=""
               />
             </div>
-            <h3 className="mb-2">Welcome back!</h3>
+            <h3 className="mb-2">Admin Pannel!</h3>
           </div>
           <div
             className="aside-image"

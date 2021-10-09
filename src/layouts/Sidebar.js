@@ -334,22 +334,27 @@ const Sidebar = () => {
                   <ul>
                     <li>
                       <Link href="/buyer/chats" passHref>
-                        <a>chats</a>
+                        <a>Chats</a>
                       </Link>
                     </li>
                     <li>
                       <Link href="/buyer/rfqs" passHref>
-                        <a>rfqs</a>
+                        <a>Rfqs</a>
                       </Link>
                     </li>
                     <li>
                       <Link href="/buyer/wishlist" passHref>
-                        <a>whislist</a>
+                        <a>Whislist</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/buyer/switch-to-seller" passHref>
+                        <a>Switch to seller</a>
                       </Link>
                     </li>
                   </ul>
                 </li>
-                {jwtDecode(token).isSeller ? (
+                {token && jwtDecode(token).isSeller ? (
                   <li>
                     <a className="has-arrow ai-icon c-pointer">
                       <i className="flaticon-025-dashboard"></i>
