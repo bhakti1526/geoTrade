@@ -72,6 +72,9 @@ const index = () => {
                     {({ handleChange, handleSubmit, errors, touched }) => {
                       return (
                         <>
+                          <h3 className="text-center mb-4 text-black">
+                            Sign in your account
+                          </h3>
                           <Form onSubmit={handleSubmit} onChange={handleChange}>
                             <Form.Group>
                               <Form.Label>email</Form.Label>

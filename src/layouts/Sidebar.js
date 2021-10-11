@@ -300,7 +300,10 @@ const Sidebar = () => {
                     )
                   );
                 })}
-                <li>
+
+                {/* change password */}
+
+                {/* <li>
                   <a
                     className="has-arrow ai-icon c-pointer"
                     aria-expanded="false"
@@ -321,7 +324,7 @@ const Sidebar = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
               </>
             ) : pathname.startsWith("/seller") ||
               pathname.startsWith("/buyer") ? (

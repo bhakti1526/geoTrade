@@ -87,6 +87,22 @@ const Profile = ({ logoutUser }) => {
           </a>
         </Link> */}
 
+        <Link href="/admin/other/change-password" passHref>
+          <a
+            className={
+              "dropdown-item ai-icon " +
+              css`
+                :hover {
+                  cursor: pointer;
+                }
+              `
+            }
+          >
+            <i className="fas fa-key text-danger"></i>
+            <span className="ml-2">Change password</span>
+          </a>
+        </Link>
+
         <span
           onClick={handleLogOut}
           className={
