@@ -122,7 +122,7 @@ const id = () => {
               img: res.data.data,
             })
             .then((res) => {
-              push("/admin/user/manage-post");
+              push(`/admin/user/manage-post?id=${productRes.createdBy._id}`);
             });
         });
     } else {
@@ -131,7 +131,7 @@ const id = () => {
           ...val,
         })
         .then((res) => {
-          push("/admin/user/manage-post");
+          push(`/admin/user/manage-post?id=${productRes.createdBy._id}`);
         });
     }
   };

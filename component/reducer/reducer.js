@@ -7,6 +7,7 @@ export const Reducer = (state, action) => {
       axios.defaults.headers.common["Authorization"] =
         action.data.data.data.token;
       return {
+        ...state,
         auth: {
           isAuth: true,
           isAdmin: true,
@@ -23,6 +24,7 @@ export const Reducer = (state, action) => {
       const { isSeller } = jwtDecode(action.data.data.token);
 
       return {
+        ...state,
         auth: {
           isAuth: true,
           isAdmin: false,
@@ -48,6 +50,7 @@ export const Reducer = (state, action) => {
 
     case "LOG-OUT":
       return {
+        ...state,
         auth: {
           isAuth: false,
           isAdmin: false,
@@ -58,6 +61,25 @@ export const Reducer = (state, action) => {
           id: "",
           email: "",
           firstName: "",
+        },
+      };
+
+    case "SET-ERROR":
+      return {
+        ...state,
+        error: {
+          isError: true,
+          msg: action.msg,
+        },
+      };
+
+    case "REMOVE-ERROR":
+      console.log("THIS IS RUNNING");
+      return {
+        ...state,
+        error: {
+          isError: false,
+          msg: "",
         },
       };
 

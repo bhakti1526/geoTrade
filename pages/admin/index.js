@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import { Form } from "react-bootstrap";
 import { Dispatch } from "../../component/context/app.context";
 import { useRouter } from "next/router";
+import Logo from "../../logo.png";
 
 const initSchema = {
   email: "",
@@ -42,11 +43,7 @@ const index = () => {
         <div className="login-aside text-center  d-flex flex-column flex-row-auto">
           <div className="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
             <div className="text-center mb-4 pt-5">
-              <img
-                style={{ width: "100px" }}
-                src="https://i.ibb.co/q5j82YX/geotrade-logo.png"
-                alt=""
-              />
+              <img style={{ width: "100px" }} src={Logo} alt="" />
             </div>
             <h3 className="mb-2">Admin Pannel!</h3>
           </div>

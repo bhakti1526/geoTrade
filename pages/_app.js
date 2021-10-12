@@ -22,8 +22,29 @@ import "./seller/product-seller.css";
 import "./seller/lead/profile-lead.css";
 import "./seller/lead/rfq-lead.css";
 
-import AppProvider from "../component/context/app.context";
+import AppProvider, {
+  AppContext,
+  Dispatch,
+} from "../component/context/app.context";
 import { useRouter } from "next/router";
+import Logo from "../logo.png";
+import { Alert } from "react-bootstrap";
+
+const ErrorAlert = () => {
+  const {
+    error: { isError, msg },
+  } = useContext(AppContext);
+
+  const dispatch = useContext(Dispatch);
+
+  const toggleError = () => dispatch({ type: "REMOVE-ERROR" });
+
+  return (
+    <Alert variant="danger" onClose={toggleError} show={isError} dismissible>
+      {msg || "something went wrong"}
+    </Alert>
+  );
+};
 
 function MyApp({ Component, pageProps }) {
   const [doc, setDoc] = useState();
@@ -52,12 +73,7 @@ function MyApp({ Component, pageProps }) {
             <title>
               Geo Trade - India's No 1 Mining Directory and B2B Market Place
             </title>
-            <link
-              rel="icon"
-              type="image/png"
-              sizes="16x16"
-              href="https://i.ibb.co/q5j82YX/geotrade-logo.png"
-            />
+            <link rel="icon" type="image/png" sizes="16x16" href={Logo} />
             <link
               rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -71,6 +87,7 @@ function MyApp({ Component, pageProps }) {
           pathname.startsWith("/seller") ||
           pathname.startsWith("/buyer") ? (
             <Layout>
+              <ErrorAlert />
               <Component {...pageProps} />
             </Layout>
           ) : (

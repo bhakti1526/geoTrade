@@ -6,18 +6,34 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
 
 import { AppContext } from "../../component/context/app.context";
+import axios from "axios";
 
 const Sidebar = () => {
   const { push, pathname } = useRouter();
 
   const {
     auth: { isAdmin, isSeller },
+    token,
   } = useContext(AppContext);
 
   const [loveEmoji, setLoveEmoji] = useState(false);
   const [sideMenu, setSideMenu] = useState([]);
+  const [response, setResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { isLoading, response } = useFetchAxios("/api/auth/admin/menu");
+  useEffect(() => {
+    (async () => {
+      if (isAdmin === true) {
+        axios.defaults.headers.common["Authorization"] = token;
+        setIsLoading(true);
+        await axios
+          .get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/admin/menu`)
+          .then((res) => setResponse(res.data.data))
+          .catch((err) => console.log(err));
+      }
+      setIsLoading(false);
+    })();
+  }, []);
 
   useEffect(() => {
     if (response) {

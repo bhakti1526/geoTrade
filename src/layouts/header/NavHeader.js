@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Logo from "../../../logo.png";
 
 const NavHeader = () => {
   const [active, setActive] = useState(false);
@@ -18,10 +19,7 @@ const NavHeader = () => {
     <div className="nav-header">
       <Link href={url} passHref>
         <a className="brand-logo">
-          <img
-            style={{ width: "100px" }}
-            src="https://i.ibb.co/q5j82YX/geotrade-logo.png"
-          />
+          <img style={{ width: "100px" }} src={Logo} />
         </a>
       </Link>
       <div className="nav-control">

@@ -5,6 +5,7 @@ import axios from "axios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import { Dispatch } from "../../../component/context/app.context";
+import Logo from "../../../logo.png";
 
 const RenderPost = ({ data, displayRazorpay }) => {
   const handleClick = () => displayRazorpay(data._id);
@@ -56,7 +57,7 @@ const index = () => {
       currency: currency,
       name: "GroTrade",
       description: "Test Transaction",
-      image: "https://i.ibb.co/q5j82YX/geotrade-logo.png",
+      image: { Logo },
       order_id: order_id,
       handler: async function (response) {
         const data = {

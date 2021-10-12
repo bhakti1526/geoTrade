@@ -5,6 +5,7 @@ import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form, Button } from "react-bootstrap";
+import Logo from "../logo.png";
 
 import { Dispatch } from "../component/context/app.context";
 
@@ -41,11 +42,7 @@ const index = () => {
         <div className="login-aside text-center  d-flex flex-column flex-row-auto">
           <div className="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
             <div className="text-center mb-4 pt-5">
-              <img
-                style={{ width: "100px" }}
-                src="https://i.ibb.co/q5j82YX/geotrade-logo.png"
-                alt=""
-              />
+              <img style={{ width: "100px" }} src={Logo} alt="" />
             </div>
             <h3 className="mb-2">Seller Pannel</h3>
           </div>

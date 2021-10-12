@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { Dispatch } from "../context/app.context";
 
 const useDeleteAxios = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+
+  const dispatch = useContext(Dispatch);
 
   const deleteData = async (url) => {
     setIsLoading(true);
@@ -13,7 +16,10 @@ const useDeleteAxios = () => {
       .then((res) => {
         setResponse(res.data);
       })
-      .catch((err) => setError(err))
+      .catch((err) => {
+        setError(err);
+        dispatch({ type: "SET-ERROR", msg: err?.response?.data?.msg });
+      })
       .finally(() => setIsLoading(false));
   };
 

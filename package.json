@@ -34,6 +34,7 @@
     "material-ui-color-picker": "^3.5.1",
     "moment": "^2.29.1",
     "next": "^10.0.8",
+    "next-images": "^1.8.1",
     "nouislider-react": "^3.4.0",
     "pickadate": "^5.0.0-alpha.3",
     "react": "^17.0.1",

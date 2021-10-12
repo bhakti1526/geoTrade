@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { Dispatch } from "../context/app.context";
 
 const useFetchAxios = (url) => {
   const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+
+  const dispatch = useContext(Dispatch);
 
   const getData = async () => {
     if (typeof window !== "undefined") {
@@ -25,6 +28,7 @@ const useFetchAxios = (url) => {
       })
       .catch((err) => {
         setError(err);
+        dispatch({ type: "SET-ERROR", msg: err?.response?.data?.msg });
       })
       .finally(() => setIsLoading(false));
   };
