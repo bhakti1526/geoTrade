@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { css } from "@emotion/css";
 import { useContext } from "react";
 import Link from "next/link";
@@ -16,7 +15,6 @@ const Profile = ({ logoutUser }) => {
   } = useContext(AppContext);
 
   const handleLogOut = (e) => {
-    // e.preventDefault();
     dispatch({ type: "LOG-OUT" });
   };
 
@@ -29,11 +27,11 @@ const Profile = ({ logoutUser }) => {
         role="button"
         data-toggle="dropdown"
       >
-        <img
+        {/* <img
           style={{ width: "30px", height: "30px" }}
           src="https://www.findcollab.com/img/user-folder/5d9704d04880fprofile.jpg"
           alt=""
-        />
+        /> */}
         <div className="header-info">
           <span className="fs-20 font-w500">{firstName}</span>
           <small>{email}</small>

@@ -35,12 +35,14 @@ const Header = () => {
   const { pathname, push } = useRouter();
 
   const dispatch = useContext(Dispatch);
+  const { token } = useContext(AppContext);
 
   useEffect(() => {
     if (pathname.startsWith("/seller")) {
+      axios.defaults.headers.common["Authorization"] = token;
       axios
         .get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/is-seller`)
-        .then((res) => {})
+        .then((res) => dispatch({ type: "SET-SELLER" }))
         .catch(() => {
           setIsShowModal(true);
         });
