@@ -54,7 +54,8 @@ const brand = () => {
       }),
   });
 
-  const { response, postData, isLoading } = usePostAxios("/api/user/brand");
+  const { response, postData, isLoading, error } =
+    usePostAxios("/api/user/brand");
 
   const { push } = useRouter();
 
@@ -75,7 +76,8 @@ const brand = () => {
 
     await postData(data);
 
-    push("/seller/brand");
+    error && window.scrollTo(0, 0);
+    error && push("/seller/brand");
   };
 
   return (

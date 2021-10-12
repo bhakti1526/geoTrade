@@ -18,12 +18,15 @@ const usePostAxios = (url) => {
       .catch((err) => {
         setError(err);
 
-        dispatch({ type: "SET-ERROR", msg: err?.response?.data?.msg });
+        dispatch({
+          type: "SET-ERROR",
+          msg: err?.response?.data?.msg || "trouble posting data",
+        });
       })
       .finally(() => setIsLoading(false));
   };
 
-  return { isLoading, response, postData };
+  return { isLoading, response, postData, error };
 };
 
 export default usePostAxios;
