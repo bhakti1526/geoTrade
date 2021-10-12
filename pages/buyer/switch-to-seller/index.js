@@ -1,17 +1,19 @@
-import React from "react";
-import AppLoader from "../../../src/components/admin/AppLoader";
-import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-// import Logo from "../../../logo.png";
+
+import AppLoader from "../../../src/components/admin/AppLoader";
+import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import { Dispatch } from "../../../component/context/app.context";
 
 const RenderPost = ({ data, displayRazorpay }) => {
   const handleClick = () => displayRazorpay(data._id);
-
   return <Button onClick={handleClick}>{data.name}</Button>;
 };
 
 const index = () => {
+  const dispatch = useContext(Dispatch);
+
   const loadScript = (src) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -66,8 +68,8 @@ const index = () => {
 
         await axios
           .post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/status`, data)
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
+          .then((res) => dispatch({ type: "SET-SELLER" }))
+          .catch((err) => {});
       },
       prefill: {
         name: "test email",
@@ -96,8 +98,8 @@ const index = () => {
             razorpayPaymentId: payment_id,
             orderCreationId: order_id,
           })
-          .then((res) => console.log(res.data))
-          .catch((err) => console.log(err));
+          .then((res) => dispatch({ type: "REFRESH-TOKEN" }))
+          .catch((err) => dispatch({ type: "REFRESH-TOKEN" }));
       }
     );
   };

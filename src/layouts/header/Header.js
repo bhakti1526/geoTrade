@@ -1,9 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { connect } from "react-redux";
 import { getHeaderData } from "../../redux/action/utils";
 import Profile from "./Profile";
-import { AppContext } from "../../../component/context/app.context";
+import axios from "axios";
+import { AppContext, Dispatch } from "../../../component/context/app.context";
 
 const HandleRoutes = () => {
   const {
@@ -28,19 +30,73 @@ const HandleRoutes = () => {
 };
 
 const Header = () => {
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  const { pathname, push } = useRouter();
+
+  const dispatch = useContext(Dispatch);
+
+  useEffect(() => {
+    if (pathname.startsWith("/seller")) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/is-seller`)
+        .then((res) => {})
+        .catch(() => {
+          setIsShowModal(true);
+        });
+    }
+  }, [pathname]);
+
+  const handleGoBack = () => {
+    setIsShowModal(false);
+    push("/buyer");
+    dispatch({ type: "SET-SELLER-FALSE" });
+  };
+
+  const handleBuy = () => {
+    setIsShowModal(false);
+    push("/buyer/switch-to-seller");
+    dispatch({ type: "SET-SELLER-FALSE" });
+  };
+
   return (
-    <div className="header">
-      <div className="header-content">
-        <nav className="navbar navbar-expand">
-          <div className="collapse navbar-collapse justify-content-end mr-3">
-            <ul className="navbar-nav header-right">
-              <Profile />
-              <HandleRoutes />
-            </ul>
-          </div>
-        </nav>
+    <>
+      <div className="header">
+        <div className="header-content">
+          <nav className="navbar navbar-expand">
+            <div className="collapse navbar-collapse justify-content-end mr-3">
+              <ul className="navbar-nav header-right">
+                <Profile />
+                <HandleRoutes />
+              </ul>
+            </div>
+          </nav>
+        </div>
       </div>
-    </div>
+
+      <Modal show={isShowModal}>
+        <Modal.Header>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>oops it looks like your subscription is expired</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={handleGoBack}
+            className="text-capitalize"
+          >
+            go back
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleBuy}
+            className="text-capitalize"
+          >
+            buy packages
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 

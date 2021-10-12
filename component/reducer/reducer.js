@@ -34,6 +34,18 @@ export const Reducer = (state, action) => {
         },
       };
 
+    case "SET-SELLER":
+      return {
+        ...state,
+        auth: { isAuth: true, isAdmin: false, isSeller: true },
+      };
+
+    case "SET-SELLER-FALSE":
+      return {
+        ...state,
+        auth: { isAuth: true, isAdmin: false, isSeller: false },
+      };
+
     case "LOG-OUT":
       return {
         auth: {
