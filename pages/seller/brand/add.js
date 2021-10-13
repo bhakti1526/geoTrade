@@ -76,8 +76,7 @@ const brand = () => {
 
     await postData(data);
 
-    error && window.scrollTo(0, 0);
-    error && push("/seller/brand");
+    push("/seller/brand");
   };
 
   return (
@@ -143,6 +142,7 @@ const brand = () => {
                                 type="text"
                                 className="form-control"
                                 placeholder=""
+                                value={values.website}
                                 isInvalid={
                                   !!touched.website && !!errors.website
                                 }

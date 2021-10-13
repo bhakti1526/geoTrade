@@ -36,7 +36,7 @@
       "charts": {
         "dailyTargetChart": {
           "data": [70],
-          "name": "Daily Target Income",
+          "name": "Daily Business",
           "subHeading": "Lorem ipsum dolor sit",
           "value": 749.56,
           "heightValue": "1,000",
@@ -44,7 +44,7 @@
         },
         "widget1": {
           "value": "892",
-          "name": "Orders",
+          "name": "Buyers",
           "overview": "+2.7",
           "data": [500, 500, 400, 400, 600, 600, 300, 300, 500, 500, 700, 700]
         },
@@ -55,7 +55,7 @@
           "data": [500, 500, 300, 300, 600, 600, 400, 400, 200, 200, 500, 500]
         },
         "widget3": {
-          "name": "Menu",
+          "name": "Customers",
           "value": "524",
           "data": [300, 300, 400, 400, 200, 200, 400, 400, 500, 500, 700, 700]
         },

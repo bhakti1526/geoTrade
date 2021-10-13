@@ -122,18 +122,18 @@ const Sidebar = () => {
               link: "/admin/manage/social",
               isActive: val.manage.social,
             },
-          ],
-        },
-        {
-          name: "Parameter",
-          icon: "flaticon-041-graph",
-          isActive: val.parameter.parameter,
-          subMenu: [
             {
               name: "Seller Type",
               link: "/admin/parameter/seller-type",
               isActive: val.parameter.sellerType,
             },
+          ],
+        },
+        {
+          name: "Manage Product",
+          icon: "flaticon-041-graph",
+          isActive: val.parameter.parameter,
+          subMenu: [
             {
               name: "Parent Group",
               link: "/admin/parameter/parent-group",
@@ -157,7 +157,7 @@ const Sidebar = () => {
           ],
         },
         {
-          name: "User",
+          name: "Seller",
           icon: "flaticon-086-star",
           isActive: val.user.user,
           subMenu: [
