@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import useFetchAxios from "../../component/hooks/useFetchAxios";
 
 import { AppContext } from "../../component/context/app.context";
 import axios from "axios";

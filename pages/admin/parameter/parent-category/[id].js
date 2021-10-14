@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -84,6 +85,7 @@ const update = () => {
 
   const handleSubmit = async (val) => {
     if (img !== null && img !== undefined) {
+      console.log("THIS IS RUNNING IN 1");
       const formData = new FormData();
       formData.append("img", img);
       axios
@@ -92,19 +94,22 @@ const update = () => {
           axios
             .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentGroup`, {
               ...val,
+              _id: id,
               parentGroupImg: res.data.data,
             })
             .then((res) => {
-              push("/admin/parameter/parent-group");
+              push("/admin/parameter/parent-category");
             });
         });
     } else {
+      console.log("THIS IS RUNNING IN 2");
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentGroup`, {
           ...val,
+          _id: id,
         })
         .then((res) => {
-          push("/admin/parameter/parent-group");
+          push("/admin/parameter/parent-category");
         });
     }
   };

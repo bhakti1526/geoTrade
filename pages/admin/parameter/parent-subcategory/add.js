@@ -25,6 +25,7 @@ const initSchema = {
   parentGroup: "",
   parentCategory: "",
   parentSubCategoryName: "",
+  isActive: false,
 };
 
 const add = () => {
@@ -97,9 +98,10 @@ const add = () => {
                       isInvalid={!!touched.sellerType && !!errors.sellerType}
                     >
                       <option>select</option>
-                      {sellerRes.map((x) => (
-                        <option value={x._id}>{x.sellerTypeName}</option>
-                      ))}
+                      {sellerRes &&
+                        sellerRes.map((x) => (
+                          <option value={x._id}>{x.sellerTypeName}</option>
+                        ))}
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -113,9 +115,12 @@ const add = () => {
                       as="select"
                     >
                       <option>select</option>
-                      {parentGroupRes.map((x) => (
-                        <option value={x._id}>{x.parentGroupName}</option>
-                      ))}
+                      {parentGroupRes &&
+                        parentGroupRes
+                          .filter((x) => x.sellerType._id === values.sellerType)
+                          .map((x) => (
+                            <option value={x._id}>{x.parentGroupName}</option>
+                          ))}
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -124,10 +129,17 @@ const add = () => {
                     <Form.Label>parent category</Form.Label>
                     <Select
                       styles={parenCategoryStyle}
-                      options={prentCategoryRes.map((x) => ({
-                        value: x._id,
-                        label: x.parentCatagoryName,
-                      }))}
+                      options={
+                        prentCategoryRes &&
+                        prentCategoryRes
+                          .filter(
+                            (x) => x.parentGroup._id === values.parentGroup
+                          )
+                          .map((x) => ({
+                            value: x._id,
+                            label: x.parentCatagoryName,
+                          }))
+                      }
                       isMulti
                       onChange={(e) =>
                         setFieldValue(
@@ -153,7 +165,20 @@ const add = () => {
                     />
                   </Form.Group>
                 </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>status</Form.Label>
+                    <Form.Check
+                      onClick={() =>
+                        setFieldValue("isActive", !values.isActive)
+                      }
+                      checked={values.isActive}
+                      label="active or inactive"
+                    />
+                  </Form.Group>
+                </Col>
               </Row>
+
               <Form.Group>
                 <Button disabled={isLoading} type="submit">
                   submit

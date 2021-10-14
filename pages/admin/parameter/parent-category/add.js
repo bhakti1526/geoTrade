@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Select from "react-select";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
@@ -8,7 +8,6 @@ import {
   FormGroup,
   FormLabel,
   FormControl,
-  FormCheck,
   Button,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
@@ -47,7 +46,7 @@ const add = () => {
     setParent(parentRes);
   }, [parentRes]);
 
-  console.log("parent", parent);
+  const selectInputRef = useRef();
 
   const validationSchema = Yup.object().shape({
     parentGroup: Yup.array().of(Yup.string()).required(),
@@ -67,6 +66,10 @@ const add = () => {
 
   if (sellerLoad === true) return <AppLoader />;
   if (parentLoad === true) return <AppLoader />;
+
+  const onClear = () => {
+    selectInputRef.current.select.clearValue();
+  };
 
   const handleSubmit = async (val) => {
     const data = new FormData();
@@ -90,9 +93,9 @@ const add = () => {
         {({
           handleChange,
           handleSubmit,
+          values,
           errors,
           touched,
-          values,
           setFieldValue,
         }) => {
           const parenCategoryStyle = {
@@ -114,6 +117,10 @@ const add = () => {
               },
             }),
           };
+
+          useEffect(() => {
+            onClear();
+          }, [values.sellerType]);
 
           return (
             <Form
@@ -137,12 +144,16 @@ const add = () => {
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Parent Group</FormLabel>
+
                 <Select
                   styles={parenCategoryStyle}
-                  options={parent.map((x) => ({
-                    value: x._id,
-                    label: x.parentGroupName,
-                  }))}
+                  ref={selectInputRef}
+                  options={parent
+                    .filter((x) => x.sellerType._id === values.sellerType)
+                    .map((x) => ({
+                      value: x._id,
+                      label: x.parentGroupName,
+                    }))}
                   isMulti
                   onChange={(e) =>
                     setFieldValue(
