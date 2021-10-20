@@ -428,6 +428,17 @@ const Sidebar = () => {
                         </a>
                       </Link>
                     </li>
+                    <li>
+                      <Link href="/seller/subscription" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Subscription
+                        </a>
+                      </Link>
+                    </li>
                   </ul>
                 </li>
               </>

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { css } from "@emotion/css";
 import parse from "html-react-parser";
 import { Row, Col, Form, Container } from "react-bootstrap";
 import Multistep from "react-multistep";
@@ -213,10 +214,18 @@ const RenderPost = ({ data, displayRazorpay }) => {
             ${data.sellCost}
             <small class="text-muted fw-light">/ {data.duration} day</small>
           </h1>
-          <ul class="list-unstyled mt-3 mb-4">
-            {parse(
-              data.description.replace("<p>", "<li>").replace("</p>", "</li>")
-            )}
+          <ul
+            class={
+              "list-unstyled mt-3 mb-4" +
+              " " +
+              css`
+                p {
+                  margin-bottom: 0;
+                }
+              `
+            }
+          >
+            {parse(data.description)}
           </ul>
           <button
             onClick={handleClick}
@@ -353,11 +362,15 @@ const ThirdForm = ({ formVal }) => {
   return (
     <Container fluid>
       <Row>
-        {response.map((x, i) => (
-          <Col md="4">
-            <RenderPost key={i} data={x} displayRazorpay={displayRazorpay} />
-          </Col>
-        ))}
+        {response
+          .sort((a, b) => {
+            return a["sellCost"] > b["sellCost"];
+          })
+          .map((x, i) => (
+            <Col md="4">
+              <RenderPost key={i} data={x} displayRazorpay={displayRazorpay} />
+            </Col>
+          ))}
       </Row>
     </Container>
   );

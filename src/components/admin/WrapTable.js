@@ -6,11 +6,13 @@ import { useTable, useSortBy } from "react-table";
 const WrapTable = ({
   userId,
   isLoading,
+  genInvoice,
   title,
   column,
   columnData,
   bText = null,
   cbText = null,
+  invoice,
 }) => {
   console.log("COLUMN DATA", columnData);
 
@@ -48,6 +50,15 @@ const WrapTable = ({
                   {cbText}
                 </Button>
               </Link>
+            )}
+            {invoice && (
+              <Button
+                as="a"
+                variant="outline-primary text-capitalize"
+                onClick={genInvoice}
+              >
+                {invoice}
+              </Button>
             )}
             {bText && (
               <Link href={`${window && window.location.pathname}/add`} passHref>
