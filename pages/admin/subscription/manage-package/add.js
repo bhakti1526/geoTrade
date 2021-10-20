@@ -21,7 +21,6 @@ const initValues = {
   img: "",
   price: "",
   tax: "",
-
   note: "",
   duration: "",
   description: "",
@@ -80,8 +79,8 @@ const add = () => {
   });
 
   const percentage = (partialValue, totalValue) => {
-    const perValue = (totalValue * partialValue) / 100;
-    return perValue + totalValue;
+    const perValue = parseInt((partialValue * totalValue) / 100);
+    return parseInt(perValue) + parseInt(totalValue);
   };
 
   const handleSubmit = async (val) => {

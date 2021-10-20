@@ -6,6 +6,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect, useSelector } from "react-redux";
 import { getDashboardData } from "../../src/redux/action/dashboard";
 import { moodChange, pageTitle } from "../../src/redux/action/utils";
+import axios from "axios";
 
 const Menu = dynamic(() => import("../../src/uena/home/Menu"), {
   ssr: false,
@@ -58,17 +59,81 @@ const Index = ({
       setRefresh(false);
     }, 1000);
   };
+
+  const [count, setCount] = useState({ seller: 0, buyer: 0, product: 0 });
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/count?user=${true}`)
+      .then((res) => {
+        setCount(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className="row">
       <div className="col-xl-3 col-xxl-4">
         <div className="row">
+          <div className="col-md-12">
+            <div className="card">
+              <div className="card-header media border-0 pb-0">
+                <div className="media-body d-flex">
+                  <div className="mr-4 mt-1">
+                    <svg
+                      className="card-ico"
+                      width={28}
+                      height={28}
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.10333 12.25H4.66666V19.8333C4.66666 20.6069 4.97395 21.3487 5.52093 21.8957C6.06791 22.4427 6.80978 22.75 7.58333 22.75H8.74999C9.52354 22.75 10.2654 22.4427 10.8124 21.8957C11.3594 21.3487 11.6667 20.6069 11.6667 19.8333V12.25H13.23C13.7436 12.25 14.2362 12.0459 14.5994 11.6827C14.9626 11.3195 15.1667 10.8269 15.1667 10.3133C15.1683 9.94246 15.0608 9.57933 14.8575 9.26914L10.4533 2.41498C10.2072 2.03206 9.86883 1.71709 9.4693 1.49895C9.06977 1.28082 8.62186 1.1665 8.16666 1.1665C7.71146 1.1665 7.26355 1.28082 6.86401 1.49895C6.46448 1.71709 6.12613 2.03206 5.87999 2.41498L1.47583 9.26914C1.27256 9.57933 1.16504 9.94246 1.16666 10.3133C1.16666 10.8269 1.3707 11.3195 1.7339 11.6827C2.09709 12.0459 2.58969 12.25 3.10333 12.25Z"
+                        fill="#FF720D"
+                      />
+                      <path
+                        d="M24.8966 15.75H23.3333V8.16667C23.3333 7.39312 23.026 6.65125 22.479 6.10427C21.932 5.55729 21.1902 5.25 20.4166 5.25H19.25C18.4764 5.25 17.7346 5.55729 17.1876 6.10427C16.6406 6.65125 16.3333 7.39312 16.3333 8.16667V15.75H14.77C14.5156 15.75 14.2638 15.8001 14.0288 15.8974C13.7939 15.9947 13.5804 16.1374 13.4005 16.3172C13.2207 16.4971 13.078 16.7106 12.9807 16.9455C12.8834 17.1805 12.8333 17.4323 12.8333 17.6867C12.8317 18.0575 12.9392 18.4206 13.1425 18.7308L17.5466 25.585C17.7928 25.9679 18.1311 26.2829 18.5307 26.501C18.9302 26.7192 19.3781 26.8335 19.8333 26.8335C20.2885 26.8335 20.7364 26.7192 21.1359 26.501C21.5355 26.2829 21.8738 25.9679 22.12 25.585L26.5241 18.7308C26.7274 18.4206 26.8349 18.0575 26.8333 17.6867C26.8333 17.4323 26.7832 17.1805 26.6859 16.9455C26.5886 16.7106 26.4459 16.4971 26.2661 16.3172C26.0862 16.1374 25.8727 15.9947 25.6378 15.8974C25.4028 15.8001 25.151 15.75 24.8966 15.75Z"
+                        fill="#FF720D"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-black fs-32 font-w600 mb-0">
+                      {/* {orderChart && orderChart.value} */}
+                      {count.product}
+                      {/* <span className="text-success fs-18 font-w500">
+                        {orderChart && orderChart.overview}
+                        +9.4%
+                      </span> */}
+                    </h2>
+                    <p className="mb-0 text-black font-w500">
+                      Products
+                      {/* {orderChart && orderChart.name} */}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body p-0">
+                {orderChart && (
+                  <div id="widgetChart1" className="dashboard-chart">
+                    <OrderChart data={orderChart && orderChart.data} />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="col-xl-12 col-lg-6 col-md-6">
             <div className="card">
               <div className="card-header border-0 pb-0">
                 <div className="separator" />
+
                 <div className="mr-auto">
                   <h4 className="card-title mb-2">
-                    {dailyTargetChart && dailyTargetChart.name}
+                    daily business
+                    {/* {dailyTargetChart && dailyTargetChart.name} */}
                   </h4>
                   <p className="fs-12 mb-0">
                     {dailyTargetChart && dailyTargetChart.subHeading}
@@ -104,10 +169,10 @@ const Index = ({
                 <div className="separator" />
                 <div className="mr-auto">
                   <h4 className="text-black fs-20">
-                    {trendingMenu && trendingMenu.name}
+                    {/* {trendingMenu && trendingMenu.name} */}
                   </h4>
                   <p className="fs-13 mb-0">
-                    {trendingMenu && trendingMenu.subHeading}
+                    {/* {trendingMenu && trendingMenu.subHeading} */}
                   </p>
                 </div>
               </div>
@@ -178,13 +243,16 @@ const Index = ({
                   </div>
                   <div>
                     <h2 className="text-black fs-32 font-w600 mb-0">
-                      {orderChart && orderChart.value}{" "}
-                      <span className="text-success fs-18 font-w500">
+                      {count.seller}
+
+                      {/* {orderChart && orderChart.value} */}
+                      {/* <span className="text-success fs-18 font-w500">
                         {orderChart && orderChart.overview}%
-                      </span>
+                      </span> */}
                     </h2>
                     <p className="mb-0 text-black font-w500">
-                      {orderChart && orderChart.name}
+                      seller
+                      {/* {orderChart && orderChart.name} */}
                     </p>
                   </div>
                 </div>
@@ -231,13 +299,15 @@ const Index = ({
                   </div>
                   <div>
                     <h2 className="text-black fs-32 font-w600 mb-0">
-                      {customerChart && customerChart.value}{" "}
+                      {count.buyer}
+                      {/* {customerChart && customerChart.value}{" "}
                       <span className="text-danger fs-18 font-w500">
                         {customerChart && customerChart.overview}%
-                      </span>
+                      </span> */}
                     </h2>
                     <p className="mb-0 text-black font-w500">
-                      {customerChart && customerChart.name}
+                      buyer
+                      {/* {customerChart && customerChart.name} */}
                     </p>
                   </div>
                 </div>
@@ -253,7 +323,7 @@ const Index = ({
               </div>
             </div>
           </div>
-          <div className="col-xl-4 col-xxl-12">
+          {/* <div className="col-xl-4 col-xxl-12">
             <div className="card">
               <div className="card-header media border-0 pb-0">
                 <div className="media-body d-flex">
@@ -298,15 +368,16 @@ const Index = ({
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="col-xl-12">
             <Tab.Container defaultActiveKey="Monthly">
               <div className="card">
                 <div className="card-header pb-0 flex-wrap border-0">
                   <div className="separator mb-3" />
                   <div className="mr-auto mb-3">
-                    <h4 className="text-black fs-20">
-                      {customerMapChart && customerMapChart.name}
+                    <h4 className="text-black text-capitalize fs-20">
+                      buyer seller map
+                      {/* {customerMapChart && customerMapChart.name} */}
                     </h4>
                     <p className="fs-13 mb-0">
                       {customerMapChart && customerMapChart.subHeading}

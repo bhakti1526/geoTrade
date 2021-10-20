@@ -27,7 +27,6 @@ const update = () => {
     img: "",
     price: "",
     tax: "",
-
     note: "",
     duration: "",
     description: "",
@@ -59,7 +58,7 @@ const update = () => {
   }, [texRes]);
 
   useEffect(() => {
-    console.log(packageRes);
+    console.log("packageRes", packageRes);
     setInitValues({ ...packageRes, tax: packageRes?.tax?._id });
   }, [packageRes]);
 
@@ -244,7 +243,7 @@ const update = () => {
                         name="isPost"
                         type="checkbox"
                         label="yes or no"
-                        value={values.isPost}
+                        checked={values.isPost}
                         onChange={() => setFieldValue("isPost", !values.isPost)}
                       />
                     </FormGroup>
@@ -267,7 +266,7 @@ const update = () => {
                         name="canAddBrand"
                         type="checkbox"
                         label="yes or no"
-                        value={values.canAddBrand}
+                        checked={values.canAddBrand}
                         onChange={() =>
                           setFieldValue("canAddBrand", !values.canAddBrand)
                         }
@@ -280,7 +279,7 @@ const update = () => {
                         name="isCategoryPriority"
                         type="checkbox"
                         label="yes or no"
-                        value={values.isCategoryPriority}
+                        checked={values.isCategoryPriority}
                         onChange={() =>
                           setFieldValue(
                             "isCategoryPriority",
@@ -298,7 +297,7 @@ const update = () => {
                         name="vcnFeature"
                         type="checkbox"
                         label="yes or no"
-                        value={values.vcnFeature}
+                        checked={values.vcnFeature}
                         onChange={() =>
                           setFieldValue("vcnFeature", !values.vcnFeature)
                         }
@@ -326,7 +325,7 @@ const update = () => {
                     name="isActive"
                     type="checkbox"
                     label="active or inactive"
-                    value={values.isActive}
+                    checked={values.isActive}
                     onChange={() => setFieldValue("isActive", !values.isActive)}
                   />
                 </FormGroup>

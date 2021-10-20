@@ -330,7 +330,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                       <Link href="/buyer/rfqs" passHref>
-                        <a>Rfqs</a>
+                        <a>My RFQ</a>
                       </Link>
                     </li>
                     <li>
@@ -391,7 +391,7 @@ const Sidebar = () => {
                             path === "ui/button" ? "mm-active" : ""
                           }`}
                         >
-                          Rfq
+                          RFQ
                         </a>
                       </Link>
                     </li>

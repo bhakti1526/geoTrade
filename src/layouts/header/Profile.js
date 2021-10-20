@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/action/auth";
+import { useRouter } from "next/router";
 
 import { AppContext, Dispatch } from "../../../component/context/app.context";
 
@@ -11,8 +12,11 @@ const Profile = ({ logoutUser }) => {
   const dispatch = useContext(Dispatch);
 
   const {
+    auth: { isSeller, isBuyer },
     user: { firstName, email },
   } = useContext(AppContext);
+
+  const { pathname } = useRouter();
 
   const handleLogOut = (e) => {
     dispatch({ type: "LOG-OUT" });
@@ -85,7 +89,32 @@ const Profile = ({ logoutUser }) => {
           </a>
         </Link> */}
 
-        <Link href="/admin/other/change-password" passHref>
+        {!pathname.startsWith("/admin/") && (
+          <Link href={isBuyer ? "/buyer/profile" : "/seller/profile"} passHref>
+            <a
+              className={
+                "dropdown-item ai-icon " +
+                css`
+                  :hover {
+                    cursor: pointer;
+                  }
+                `
+              }
+            >
+              <i className="fas fa-key text-danger"></i>
+              <span className="ml-2">Profile</span>
+            </a>
+          </Link>
+        )}
+
+        <Link
+          href={
+            pathname.startsWith("/admin/")
+              ? "/admin/other/change-password"
+              : "/buyer/change-password"
+          }
+          passHref
+        >
           <a
             className={
               "dropdown-item ai-icon " +

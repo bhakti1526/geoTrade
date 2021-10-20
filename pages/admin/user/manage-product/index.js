@@ -16,11 +16,16 @@ const manageProduct = () => {
     `/api/auth/admin/userdata?data=product&id=${id}`
   );
 
-  console.log("USER DATA RESPONSE", response);
+  const { response: userRes, isLoading: userLoad } = useFetchAxios(
+    `/api/admin/user-info?userId=${id}`
+  );
+
+  console.log("userRes", userRes);
 
   const { deleteData } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
+  if (userLoad === true) return <AppLoader />;
 
   const column = [
     {
@@ -108,7 +113,9 @@ const manageProduct = () => {
 
   return (
     <WrapTable
-      title="manage user product"
+      cbText={`add product for ${userRes.firstName}`}
+      userId={id}
+      title={`${userRes.firstName}'s product`}
       column={column}
       isLoading={isLoading}
       columnData={response}

@@ -19,7 +19,7 @@ const InquiryCard = ({ data }) => {
                   class="col-1 p-1"
                 />
                 <p className="col-10 p-1 mb-0">
-                  {`${city.name}, ${state.name}`}
+                  {`${city?.name}, ${state?.name}`}
                 </p>
               </div>
               <div className="duration-post mb-3">
@@ -41,7 +41,7 @@ const InquiryCard = ({ data }) => {
                       <td>Member Since</td>
                       <td style={{ width: "10px" }}>:</td>
                       <th>
-                        {moment(createdBy.createdAt)
+                        {moment(createdAt)
                           .fromNow()
                           .toString()
                           .replace("ago", "+")}

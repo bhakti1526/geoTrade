@@ -61,7 +61,7 @@ const Index = ({
   };
   return (
     <div className="row">
-      <div className="col-xl-3 col-xxl-4">
+      {/* <div className="col-xl-3 col-xxl-4">
         <div className="row">
           <div className="col-xl-12 col-lg-6 col-md-6">
             <div className="card">
@@ -151,8 +151,8 @@ const Index = ({
             </div>
           </div>
         </div>
-      </div>
-      <div className="col-xl-9 col-xxl-8">
+      </div> */}
+      <div className="col-xl-12 col-xxl-12">
         <div className="row">
           <div className="col-xl-4 col-xxl-6 col-sm-6">
             <div className="card">
@@ -179,13 +179,14 @@ const Index = ({
                   </div>
                   <div>
                     <h2 className="text-black fs-32 font-w600 mb-0">
-                      {orderChart && orderChart.value}{" "}
-                      <span className="text-success fs-18 font-w500">
-                        {orderChart && orderChart.overview}%
-                      </span>
+                      {orderChart && orderChart.value}
+                      {/* <span className="text-success fs-18 font-w500">
+                        {orderChart && orderChart.overview}%W
+                      </span> */}
                     </h2>
                     <p className="mb-0 text-black font-w500">
-                      {orderChart && orderChart.name}
+                      Rfqs
+                      {/* {orderChart && orderChart.name} */}
                     </p>
                   </div>
                 </div>
@@ -232,7 +233,7 @@ const Index = ({
                   </div>
                   <div>
                     <h2 className="text-black fs-32 font-w600 mb-0">
-                      {customerChart && customerChart.value}{" "}
+                      {customerChart && customerChart.value}
                       <span className="text-danger fs-18 font-w500">
                         {customerChart && customerChart.overview}%
                       </span>
@@ -286,7 +287,8 @@ const Index = ({
                       {menuChart && menuChart.value}
                     </h2>
                     <p className="mb-0 text-black font-w500">
-                      {menuChart && menuChart.name}
+                      Inquiries
+                      {/* {menuChart && menuChart.name} */}
                     </p>
                   </div>
                 </div>
@@ -300,7 +302,7 @@ const Index = ({
               </div>
             </div>
           </div>
-          <div className="col-xl-12">
+          {/* <div className="col-xl-12">
             <Tab.Container defaultActiveKey="Monthly">
               <div className="card">
                 <div className="card-header pb-0 flex-wrap border-0">
@@ -394,7 +396,7 @@ const Index = ({
                 )}
               </div>
             </Tab.Container>
-          </div>
+          </div> */}
           <div className="col-xl-12" style={{ display: "none" }}>
             <div className="card">
               <div className="card-header border-0 flex-wrap pb-0">

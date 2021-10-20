@@ -3,7 +3,15 @@ import Link from "next/link";
 import { Button } from "react-bootstrap";
 import { useTable, useSortBy } from "react-table";
 
-const WrapTable = ({ isLoading, title, column, columnData, bText = null }) => {
+const WrapTable = ({
+  userId,
+  isLoading,
+  title,
+  column,
+  columnData,
+  bText = null,
+  cbText = null,
+}) => {
   console.log("COLUMN DATA", columnData);
 
   const columns = useMemo(() => column, []);
@@ -29,9 +37,20 @@ const WrapTable = ({ isLoading, title, column, columnData, bText = null }) => {
         <div className="card">
           <div className="card-header d-flex">
             <h4 className="card-title  text-capitalize">{title}</h4>
-
+            {cbText && (
+              <Link
+                href={`${
+                  window && window.location.pathname
+                }/add?userId=${userId}`}
+                passHref
+              >
+                <Button as="a" variant="outline-primary text-capitalize">
+                  {cbText}
+                </Button>
+              </Link>
+            )}
             {bText && (
-              <Link href={`${window && window.location}/add`} passHref>
+              <Link href={`${window && window.location.pathname}/add`} passHref>
                 <Button as="a" variant="outline-primary text-capitalize">
                   {bText}
                 </Button>

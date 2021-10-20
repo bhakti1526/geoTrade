@@ -24,8 +24,10 @@ const update = () => {
 
   const [img, setImg] = useState(null);
 
+  console.log(id);
+
   const [initValue, setInitValue] = useState({
-    _id: "",
+    _id: id,
     parentGroup: "",
     sellerType: "",
     parentCatagoryName: "",
@@ -45,18 +47,19 @@ const update = () => {
   const { isLoading, postData } = usePostAxios("/addParentCategory");
 
   const { isLoading: categoryLoad, response: categoryRes } = useFetchAxios(
-    `/getParentCategory?${id}`
+    `/getParentCategory?id=${id}`
   );
 
   useEffect(() => {
     if (categoryRes) {
+      console.log(categoryRes);
       setInitValue({
-        _id: categoryRes[0]?._id,
-        parentGroup: categoryRes[0]?.parentGroup?._id,
-        sellerType: categoryRes[0]?.sellerType?._id,
-        parentCatagoryName: categoryRes[0]?.parentCatagoryName,
-        parentCatagoryImg: categoryRes[0]?.parentCatagoryImg,
-        isActive: categoryRes[0]?.isActive,
+        _id: categoryRes?._id,
+        parentGroup: categoryRes?.parentGroup?._id,
+        sellerType: categoryRes?.sellerType?._id,
+        parentCatagoryName: categoryRes?.parentCatagoryName,
+        parentCatagoryImg: categoryRes?.parentCatagoryImg,
+        isActive: categoryRes?.isActive,
       });
     }
   }, [categoryRes]);
@@ -92,19 +95,18 @@ const update = () => {
         .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
         .then((res) => {
           axios
-            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentGroup`, {
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentCategory`, {
               ...val,
               _id: id,
-              parentGroupImg: res.data.data,
+              parentCatagoryImg: res.data.data,
             })
             .then((res) => {
               push("/admin/parameter/parent-category");
             });
         });
     } else {
-      console.log("THIS IS RUNNING IN 2");
       axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentGroup`, {
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updateParentCategory`, {
           ...val,
           _id: id,
         })

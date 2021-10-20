@@ -16,6 +16,10 @@ const managePost = () => {
     `/api/auth/admin/userdata?data=post&id=${id}`
   );
 
+  const { response: userRes, isLoading: userLoad } = useFetchAxios(
+    `/api/admin/user-info?userId=${id}`
+  );
+
   const { deleteData, response: res } = useDeleteAxios();
 
   const column = [
@@ -99,10 +103,13 @@ const managePost = () => {
   ];
 
   if (isLoading === true) return <AppLoader />;
+  if (userLoad === true) return <AppLoader />;
 
   return (
     <WrapTable
-      title="manage user post"
+      cbText={`add post for ${userRes?.firstName}`}
+      userId={id}
+      title={`${userRes?.firstName}'s post`}
       column={column}
       isLoading={isLoading}
       columnData={response}

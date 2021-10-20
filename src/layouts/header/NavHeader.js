@@ -13,7 +13,7 @@ const NavHeader = () => {
 
   const { pathname } = useRouter();
 
-  const url = pathname.startsWith("/admin/") ? "/admin/dashboard" : "/";
+  const url = pathname.startsWith("/admin/") ? "/admin/dashboard" : "/seller";
 
   return (
     <div className="nav-header">

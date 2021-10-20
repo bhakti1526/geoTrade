@@ -1,6 +1,6 @@
 import Head from "next/head";
 import "nouislider/distribute/nouislider.css";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 // redux
 import { Provider } from "react-redux";
 import SimpleReactLightbox from "simple-react-lightbox";
@@ -15,6 +15,8 @@ import Layout from "../src/layouts/Layout";
 // action
 import { bodyArt, resizeWindow } from "../src/redux/action/utils";
 import store from "../src/redux/store";
+
+import { useContext } from "react";
 
 import "../src/layouts/sideBar.css";
 
@@ -32,7 +34,7 @@ import { Alert } from "react-bootstrap";
 
 const ErrorAlert = () => {
   const {
-    error: { isError, msg },
+    error: { isError = false, msg },
   } = useContext(AppContext);
 
   const dispatch = useContext(Dispatch);

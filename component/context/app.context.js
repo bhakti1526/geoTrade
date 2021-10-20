@@ -29,6 +29,7 @@ const getState = () => {
       isAuth: false,
       isAdmin: false,
       isSeller: false,
+      isBuyer: false,
     },
     token: "",
     user: { id: "", email: "", firstName: "" },

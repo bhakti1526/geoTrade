@@ -1,19 +1,240 @@
-import React, { useContext } from "react";
-import { Button } from "react-bootstrap";
-import axios from "axios";
-
+import React, { useContext, useEffect, useState } from "react";
+import parse from "html-react-parser";
+import { Row, Col, Form, Container } from "react-bootstrap";
+import Multistep from "react-multistep";
+import Select from "react-select";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import { useRouter } from "next/router";
+
+import axios from "axios";
+
 import { Dispatch } from "../../../component/context/app.context";
 import Logo from "../../../logo.png";
 
-const RenderPost = ({ data, displayRazorpay }) => {
-  const handleClick = () => displayRazorpay(data._id);
-  return <Button onClick={handleClick}>{data.name}</Button>;
+const FirstForm = ({ setFormVal, response }) => {
+  const { parentGroup, sellerType } = response;
+
+  const [values, setValues] = useState({
+    sellerType: "",
+    parentGroup: [],
+  });
+
+  useEffect(() => {
+    setFormVal((x) => ({ ...x, firstForm: values }));
+  }, [values]);
+
+  return (
+    <section>
+      <Row>
+        <Col md="12">
+          <Form.Group>
+            <Form.Label>Seller Type</Form.Label>
+            <Select
+              onChange={(val) =>
+                setValues((x) => ({ ...x, sellerType: val.value }))
+              }
+              options={sellerType.map((x) => ({
+                value: x._id,
+                label: x.sellerTypeName,
+              }))}
+            />
+          </Form.Group>
+        </Col>
+        <Col md="12">
+          <Form.Group>
+            <Form.Label>Product Category</Form.Label>
+            <Select
+              isMulti
+              onChange={(val) => setValues((x) => ({ ...x, parentGroup: val }))}
+              options={parentGroup.map((x) => ({
+                value: x._id,
+                label: x.parentGroupName,
+              }))}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+    </section>
+  );
+};
+
+const SecondForm = ({ setFormVal }) => {
+  const [values, setValues] = useState({
+    companyName: "",
+    address: "",
+  });
+
+  const [docs, setDocs] = useState(null);
+
+  useEffect(() => {
+    setFormVal((x) => ({ ...x, SecondForm: values }));
+  }, [values]);
+
+  useEffect(() => {
+    setFormVal((x) => ({ ...x, docs }));
+  }, [docs]);
+
+  return (
+    <>
+      <Row>
+        <Col md="6">
+          <Form.Group>
+            <Form.Label>Company Name</Form.Label>
+            <Form.Control
+              onChange={(e) =>
+                setValues((x) => ({ ...x, companyName: e.target.value }))
+              }
+            />
+          </Form.Group>
+        </Col>
+        <Col md="6" className="d-flex align-items-center">
+          <div class="input-group">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                onChange={(e) => setDocs(e.target.files[0])}
+              />
+              <label class="custom-file-label">Add Brochure / DLR sheet</label>
+            </div>
+          </div>
+        </Col>
+        <Col md="12">
+          <Form.Group>
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              onChange={(e) =>
+                setValues((x) => ({ ...x, address: e.target.value }))
+              }
+            />
+          </Form.Group>
+        </Col>
+
+        <Col md="12">
+          <Form.Group>
+            <Form.Label>Map</Form.Label>
+          </Form.Group>
+        </Col>
+      </Row>
+    </>
+  );
 };
 
 const index = () => {
+  const { isLoading, response } = useFetchAxios("/api/public/get-all-category");
+
+  const [formVal, setFormVal] = useState({});
+
+  const steps = [
+    {
+      name: "Personal Info",
+      component: <FirstForm response={response} setFormVal={setFormVal} />,
+    },
+    { name: "Company Info", component: <SecondForm setFormVal={setFormVal} /> },
+    { name: "Business Hours", component: <ThirdForm formVal={formVal} /> },
+  ];
+
+  const prevStyle = {
+    background: "#F7FAFC",
+    borderWidth: "0px",
+    color: "#333333",
+    borderRadius: "4px",
+    fontSize: "14px",
+    fontWeight: "600",
+    padding: "0.55em 2em",
+    border: "1px solid #EEEEEE",
+    marginRight: "1rem",
+  };
+
+  const nextStyle = {
+    background: "#FF720D",
+    borderWidth: "0px",
+    color: "#fff",
+    borderRadius: "4px",
+    fontSize: "14px",
+    fontWeight: "600",
+    padding: "0.55em 2em",
+  };
+
+  if (isLoading === true) return <AppLoader />;
+
+  return (
+    <div className="row">
+      <div className="col-xl-12 col-xxl-12">
+        <div className="card">
+          <div className="card-header">
+            <h4 className="card-title">Become Seller Form</h4>
+          </div>
+          <div className="card-body">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="step-form-horizontal"
+            >
+              <Multistep
+                showNavigation={true}
+                steps={steps}
+                prevStyle={prevStyle}
+                nextStyle={nextStyle}
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default index;
+
+const RenderPost = ({ data, displayRazorpay }) => {
+  const handleClick = () => displayRazorpay(data._id);
+
+  const [isSelect, setIsSelect] = useState(false);
+
+  const toggelSelect = () => setIsSelect((x) => !x);
+
+  return (
+    <>
+      <div
+        class={
+          !isSelect
+            ? "card mb-4 rounded-3 shadow-sm border"
+            : "card mb-4 rounded-3 shadow-sm border border-primary"
+        }
+        onMouseEnter={toggelSelect}
+        onMouseLeave={toggelSelect}
+      >
+        <div class="card-header py-3" style={{ borderRadius: "0" }}>
+          <h4 class="my-0 fw-normal text-capitalize"> {data.name}</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">
+            ${data.sellCost}
+            <small class="text-muted fw-light">/ {data.duration} day</small>
+          </h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            {parse(
+              data.description.replace("<p>", "<li>").replace("</p>", "</li>")
+            )}
+          </ul>
+          <button
+            onClick={handleClick}
+            type="button"
+            class="w-100 btn btn-lg btn-outline-primary"
+          >
+            Buy {data.name}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const ThirdForm = ({ formVal }) => {
   const dispatch = useContext(Dispatch);
+
+  const { push } = useRouter();
 
   const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -39,9 +260,23 @@ const index = () => {
       return;
     }
 
+    const { firstForm, docs, SecondForm } = formVal;
+
+    const fd = new FormData();
+    fd.append("img", docs);
+
+    let sheetUrl;
+
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, fd)
+      .then((res) => {
+        sheetUrl = res.data.data;
+      })
+      .catch((err) => console.log(err));
+
     const result = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
-      { id }
+      { id, firstForm, SecondForm, sheet: sheetUrl }
     );
 
     if (!result) {
@@ -69,9 +304,13 @@ const index = () => {
 
         await axios
           .post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/status`, data)
-          .then((res) => dispatch({ type: "SET-SELLER" }))
+          .then((res) => {
+            dispatch({ type: "SET-SELLER" });
+            push("/seller");
+          })
           .catch((err) => {});
       },
+
       prefill: {
         name: "test email",
         email: "demo@mail.com",
@@ -99,8 +338,8 @@ const index = () => {
             razorpayPaymentId: payment_id,
             orderCreationId: order_id,
           })
-          .then((res) => dispatch({ type: "REFRESH-TOKEN" }))
-          .catch((err) => dispatch({ type: "REFRESH-TOKEN" }));
+          .then((res) => {})
+          .catch((err) => {});
       }
     );
   };
@@ -109,13 +348,17 @@ const index = () => {
 
   if (isLoading === true) return <AppLoader />;
 
+  console.log(response);
+
   return (
-    <div>
-      {response.map((x, i) => (
-        <RenderPost key={i} data={x} displayRazorpay={displayRazorpay} />
-      ))}
-    </div>
+    <Container fluid>
+      <Row>
+        {response.map((x, i) => (
+          <Col md="4">
+            <RenderPost key={i} data={x} displayRazorpay={displayRazorpay} />
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };
-
-export default index;
