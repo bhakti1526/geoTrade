@@ -215,3 +215,7 @@
     text-align: left;
   }
 }
+
+.form-control {
+  border: 1px solid gray;
+}

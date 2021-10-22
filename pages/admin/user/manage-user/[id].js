@@ -1,99 +1,77 @@
-import React, { useState, useEffect } from "react";
-import {
-  Form,
-  FormLabel,
-  FormCheck,
-  FormGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
-
+import { Formik } from "formik";
+import { useRouter } from "next/router";
+import React from "react";
+import { Form, Row, Col, Button } from "react-bootstrap";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
-import WrapForm from "../../../../src/components/admin/WrapForm";
 import AppLoader from "../../../../src/components/admin/AppLoader";
+import WrapForm from "../../../../src/components/admin/WrapForm";
+import * as Yup from "yup";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 
-const id = () => {
-  const [countryList, setCountryList] = useState([]);
-  const [stateList, setStateList] = useState([]);
-  const [cityList, setCityList] = useState([]);
+const initSchema = {
+  packageId: "",
+};
 
-  const { isLoading: countryLoad, response: countryRes } =
-    useFetchAxios("/getCountry");
-  const { isLoading: cityLoad, response: cityRes } = useFetchAxios("/getCity");
-  const { isLoading: stateLoad, response: stateRes } =
-    useFetchAxios("/getState");
+const validationSchema = Yup.object().shape({
+  packageId: Yup.string().required(),
+});
 
-  useEffect(() => {
-    setCountryList(countryRes);
-  }, [countryRes]);
+const Update = () => {
+  const {
+    query: { id },
+    push,
+  } = useRouter();
 
-  useEffect(() => {
-    setStateList(stateRes);
-  }, [stateRes]);
+  const { isLoading, response } = useFetchAxios(`/getUser?id=${id}`);
+  const { isLoading: packageLoad, response: packageRes } =
+    useFetchAxios("/api/payment");
 
-  useEffect(() => {
-    setCityList(cityRes);
-  }, [cityRes]);
+  const { postData } = usePostAxios("/api/payment/seller");
 
-  if (countryLoad === true) return <AppLoader />;
-  if (cityLoad === true) return <AppLoader />;
-  if (stateLoad === true) return <AppLoader />;
+  if (isLoading === true) return <AppLoader />;
+
+  if (packageLoad === true) return <AppLoader />;
+
+  const handleSubmit = async (val) => {
+    await postData({ packageId: val.packageId, userId: id });
+    push("/admin/user/manage-user");
+  };
 
   return (
-    <WrapForm title="update user">
-      <Form className="row">
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Username</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Email Id</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Phone Number</FormLabel>
-          <FormControl type="text" className="form-control" placeholder="" />
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Country</FormLabel>
-          <Form.Control as="select">
-            <option>option</option>
-            {countryList.map((x) => (
-              <option key={x._id} value={x._id}>
-                {x.name}
-              </option>
-            ))}
-          </Form.Control>
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> State</FormLabel>
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> City</FormLabel>
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Seller Type</FormLabel>
-        </FormGroup>
-
-        <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Status</FormLabel>
-          <FormCheck type="checkbox" label="active or inactive" />
-        </FormGroup>
-
-        <FormGroup className="col-md-12 btn-page text-center">
-          <Button variant="primary btn-rounded" type="button">
-            Update User
-          </Button>
-        </FormGroup>
-      </Form>
+    <WrapForm title={`manage ${response?.firstName} package`}>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initSchema}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit, handleChange, touched, errors }) => {
+          return (
+            <Form onSubmit={handleSubmit} onChange={handleChange}>
+              <Row>
+                <Col md="4">
+                  <Form.Group>
+                    <Form.Label>Packages</Form.Label>
+                    <Form.Control
+                      isInvalid={!!touched.packageId && !!errors.packageId}
+                      name="packageId"
+                      as="select"
+                    >
+                      <option>select</option>
+                      {packageRes &&
+                        packageRes.map((x) => (
+                          <option value={x._id}>{x.name}</option>
+                        ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Button type="submit">update</Button>
+            </Form>
+          );
+        }}
+      </Formik>
     </WrapForm>
   );
 };
 
-export default id;
+export default Update;

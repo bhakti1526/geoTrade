@@ -30,7 +30,7 @@ const manageUser = () => {
     },
     {
       Header: "premium",
-      accessor: "package.packageId",
+      accessor: "package.isPackageActive",
       Cell: (e) => (
         <span
           className={
@@ -73,9 +73,9 @@ const manageUser = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
-            {/* <Link href={`${window.location}/${s.row.original._id}`} passHref>
-              <Dropdown.Item as="a">Edit</Dropdown.Item>
-            </Link> */}
+            <Link href={`${window.location}/${s.row.original._id}`} passHref>
+              <Dropdown.Item as="a">add packages</Dropdown.Item>
+            </Link>
 
             {s.row.original.isSeller ? (
               <>

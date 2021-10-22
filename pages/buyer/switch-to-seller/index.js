@@ -60,10 +60,13 @@ const FirstForm = ({ setFormVal, response }) => {
   );
 };
 
-const SecondForm = ({ setFormVal }) => {
+const SecondForm = ({ location, setFormVal }) => {
   const [values, setValues] = useState({
     companyName: "",
     address: "",
+    country: "",
+    state: "",
+    city: "",
   });
 
   const [docs, setDocs] = useState(null);
@@ -75,6 +78,8 @@ const SecondForm = ({ setFormVal }) => {
   useEffect(() => {
     setFormVal((x) => ({ ...x, docs }));
   }, [docs]);
+
+  const { country, state, city } = location;
 
   return (
     <>
@@ -101,7 +106,7 @@ const SecondForm = ({ setFormVal }) => {
             </div>
           </div>
         </Col>
-        <Col md="12">
+        <Col md="4">
           <Form.Group>
             <Form.Label>Address</Form.Label>
             <Form.Control
@@ -109,6 +114,58 @@ const SecondForm = ({ setFormVal }) => {
                 setValues((x) => ({ ...x, address: e.target.value }))
               }
             />
+          </Form.Group>
+        </Col>
+        <Col md="4">
+          <Form.Group>
+            <Form.Label>Country</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={(e) =>
+                setValues((x) => ({ ...x, country: e.target.value }))
+              }
+            >
+              <option>select</option>
+              {country.map((x) => (
+                <option value={x._id}>{x.name}</option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+        </Col>
+        <Col md="4">
+          <Form.Group>
+            <Form.Label>State</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={(e) =>
+                setValues((x) => ({ ...x, state: e.target.value }))
+              }
+            >
+              <option>select</option>
+              {state
+                .filter((x) => x.country === values.country)
+                .map((x) => (
+                  <option value={x._id}>{x.name}</option>
+                ))}
+            </Form.Control>
+          </Form.Group>
+        </Col>
+        <Col md="4">
+          <Form.Group>
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              as="select"
+              onChange={(e) =>
+                setValues((x) => ({ ...x, city: e.target.value }))
+              }
+            >
+              <option>select</option>
+              {city
+                .filter((x) => x.state === values.state)
+                .map((x) => (
+                  <option value={x._id}>{x.name}</option>
+                ))}
+            </Form.Control>
           </Form.Group>
         </Col>
 
@@ -124,16 +181,36 @@ const SecondForm = ({ setFormVal }) => {
 
 const index = () => {
   const { isLoading, response } = useFetchAxios("/api/public/get-all-category");
+  const { isLoading: countryLoad, response: countryRes } = useFetchAxios(
+    "/api/public/country"
+  );
+  const { isLoading: stateLoad, response: stateRes } =
+    useFetchAxios("/api/public/state");
+  const { isLoading: cityLoad, response: cityRes } =
+    useFetchAxios("/api/public/city");
 
   const [formVal, setFormVal] = useState({});
+
+  if (isLoading === true) return <AppLoader />;
+  if (countryLoad === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
+  if (cityLoad === true) return <AppLoader />;
+
+  const location = { country: countryRes, state: stateRes, city: cityRes };
 
   const steps = [
     {
       name: "Personal Info",
       component: <FirstForm response={response} setFormVal={setFormVal} />,
     },
-    { name: "Company Info", component: <SecondForm setFormVal={setFormVal} /> },
-    { name: "Business Hours", component: <ThirdForm formVal={formVal} /> },
+    {
+      name: "Company Info",
+      component: <SecondForm setFormVal={setFormVal} location={location} />,
+    },
+    {
+      name: "Business Hours",
+      component: <ThirdForm formVal={formVal} />,
+    },
   ];
 
   const prevStyle = {
@@ -157,8 +234,6 @@ const index = () => {
     fontWeight: "600",
     padding: "0.55em 2em",
   };
-
-  if (isLoading === true) return <AppLoader />;
 
   return (
     <div className="row">
@@ -356,8 +431,6 @@ const ThirdForm = ({ formVal }) => {
   const { isLoading, response } = useFetchAxios("/api/payment");
 
   if (isLoading === true) return <AppLoader />;
-
-  console.log(response);
 
   return (
     <Container fluid>

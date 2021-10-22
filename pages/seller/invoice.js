@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { css } from "@emotion/css";
-import { Card, Col, Table, Button } from "react-bootstrap";
+import { Card, Col, Table, Button, Row } from "react-bootstrap";
 import { useRouter } from "next/router";
 import useFetchAxios from "../../component/hooks/useFetchAxios";
 import Logo from "../../logo.png";
@@ -58,14 +58,76 @@ const invoice = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-4 col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                <h6>To:</h6>
-                <div>
-                  <strong> {response?.user?.companyName}</strong>
-                </div>
+              <Row
+                className={css`
+                  margin-left: 0rem;
+                  margin-bottom: 1rem;
+                `}
+              >
+                <Col md="6">
+                  <h6>To:</h6>
+                  <div>
+                    <strong> {response?.user?.companyName}</strong>
+                  </div>
 
-                <div>Email: {response?.user?.email} </div>
-              </div>
+                  <div>Email: {response?.user?.email} </div>
+                </Col>
+                <Col md="6">
+                  <Table className="text-start font-weight-normal">
+                    <tbody>
+                      <tr>
+                        <td
+                          className={
+                            "left" +
+                            " " +
+                            css`
+                              border-top: 1px solid transparent !important;
+                            `
+                          }
+                        >
+                          <strong>Transaction Id</strong>
+                        </td>
+                        <td
+                          className={
+                            "right" +
+                            " " +
+                            css`
+                              border-top: 1px solid transparent !important;
+                            `
+                          }
+                        >
+                          {" "}
+                          {response?._id}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          className={
+                            "left" +
+                            " " +
+                            css`
+                              border-bottom: 1px solid #eeeeee;
+                            `
+                          }
+                        >
+                          <strong>Transaction Date</strong>
+                        </td>
+                        <td
+                          className={
+                            "right" +
+                            " " +
+                            css`
+                              border-bottom: 1px solid #eeeeee;
+                            `
+                          }
+                        >
+                          {moment(response?.paidDate).format("DD MMM YYYY")}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </Col>
+              </Row>
               <div className="container mt-1">
                 <Table
                   className="text-center font-weight-normal"
@@ -121,6 +183,15 @@ const invoice = () => {
                     </tbody>
                   </Table>
                 </Col>
+              </div>
+              <div className="my-2 d-flex justify-content-center text-capitalize">
+                <p
+                  className={css`
+                    font-size: 0.7rem;
+                  `}
+                >
+                  this is computer generated invoice signature not required
+                </p>
               </div>
             </Card>
           </div>

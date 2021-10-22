@@ -16,6 +16,7 @@ import WrapForm from "../../../../src/components/admin/WrapForm";
 import AppLoader from "../.../../../../../src/components/admin/AppLoader";
 
 const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
   country: Yup.string().required(),
   taxValue: Yup.number().required().min(1).max(100),
   isActive: Yup.bool().oneOf([true, false]),
@@ -32,6 +33,7 @@ const update = () => {
     country: "",
     taxValue: "",
     isActive: true,
+    name: "",
   });
 
   const [countryList, setCountryList] = useState([]);
@@ -53,6 +55,7 @@ const update = () => {
       taxValue: getTax?.taxValue,
       country: getTax?.country?._id,
       isActive: getTax?.isActive,
+      name: getTax?.name,
     });
   }, [getTax]);
 
@@ -101,6 +104,18 @@ const update = () => {
                     </option>
                   ))}
                 </Form.Control>
+              </FormGroup>
+
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Tax Name </FormLabel>
+                <FormControl
+                  type="text"
+                  className="form-control"
+                  name="taxValue"
+                  placeholder=" "
+                  value={values.name}
+                  isInvalid={!!touched.name && !!errors.name}
+                />
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">

@@ -4,7 +4,7 @@ import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 
 const index = () => {
-  const { response, isLoading } = useFetchAxios("/api/user/rfq?userId=true");
+  const { response, isLoading } = useFetchAxios("/api/user/rfq");
 
   return (
     <div>

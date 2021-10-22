@@ -90,7 +90,7 @@ const Profile = ({ logoutUser }) => {
         </Link> */}
 
         {!pathname.startsWith("/admin/") && (
-          <Link href={isBuyer ? "/buyer/profile" : "/seller/profile"} passHref>
+          <Link href={isBuyer ? "/buyer/profile" : "/buyer/profile"} passHref>
             <a
               className={
                 "dropdown-item ai-icon " +
@@ -101,7 +101,7 @@ const Profile = ({ logoutUser }) => {
                 `
               }
             >
-              <i className="fas fa-key text-danger"></i>
+              <i className="fas fa-user text-danger"></i>
               <span className="ml-2">Profile</span>
             </a>
           </Link>
