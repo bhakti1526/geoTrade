@@ -19,12 +19,14 @@ const initSchema = {
   country: "",
   taxValue: "",
   isActive: true,
+  name: "",
 };
 
 const validationSchema = Yup.object().shape({
   country: Yup.string().required(),
   taxValue: Yup.number().required().min(1).max(100),
   isActive: Yup.bool().oneOf([true, false]),
+  name: Yup.string().required(),
 });
 
 const add = () => {
@@ -85,7 +87,19 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Tax</FormLabel>
+                <FormLabel> Tax Name </FormLabel>
+                <FormControl
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  placeholder=" "
+                  value={values.name}
+                  isInvalid={!!touched.name && !!errors.name}
+                />
+              </FormGroup>
+
+              <FormGroup className="col-md-6 col-lg-4">
+                <FormLabel> Tax value</FormLabel>
                 <FormControl
                   type="text"
                   className="form-control"

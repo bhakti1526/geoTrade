@@ -14,10 +14,14 @@ import usePostAxios from "../../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 
+const regMatch =
+  /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   classs: Yup.string().required(),
-  url: Yup.string().url().required(),
+  url: Yup.string()
+    .matches(regMatch, "Website should be a valid URL")
+    .required(),
   isActive: Yup.bool().oneOf([true, false]),
 });
 

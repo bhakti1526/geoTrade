@@ -22,6 +22,10 @@ const tax = () => {
       accessor: "country.name",
     },
     {
+      Header: "Name",
+      accessor: "name",
+    },
+    {
       Header: "tax",
       accessor: "taxValue",
     },
@@ -73,8 +77,6 @@ const tax = () => {
       ),
     },
   ];
-
-  console.log(response);
 
   return (
     <WrapTable

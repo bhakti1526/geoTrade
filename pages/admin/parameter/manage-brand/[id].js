@@ -17,6 +17,9 @@ import WrapForm from "../../../../src/components/admin/WrapForm";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 import AppLoading from "../../../../src/components/admin/AppLoader";
 
+const regMatch =
+  /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   img: Yup.string().required(),
@@ -24,7 +27,9 @@ const validationSchema = Yup.object().shape({
   isApproved: Yup.bool().oneOf([true, false]).required(),
   email: Yup.string().email().required(),
   contact: Yup.string().required(),
-  website: Yup.string().url().required(),
+  website: Yup.string()
+    .matches(regMatch, "Website should be a valid URL")
+    .required(),
 });
 
 const id = () => {

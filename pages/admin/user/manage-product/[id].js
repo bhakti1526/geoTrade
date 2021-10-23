@@ -329,6 +329,8 @@ import { useRouter } from "next/router";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 import axios from "axios";
 
+const regMatch =
+  /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   price: Yup.number().min(20).required(),
@@ -338,7 +340,7 @@ const validationSchema = Yup.object().shape({
   parentGroup: Yup.string().required(),
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
-  ytUrl: Yup.string().url(),
+  ytUrl: Yup.string().matches(regMatch, "Website should be a valid URL"),
   sellerType: Yup.string().required(),
   isAdminApproved: Yup.bool().oneOf([true, false]),
 });

@@ -111,7 +111,7 @@ const update = () => {
                 <FormControl
                   type="text"
                   className="form-control"
-                  name="taxValue"
+                  name="name"
                   placeholder=" "
                   value={values.name}
                   isInvalid={!!touched.name && !!errors.name}
@@ -119,7 +119,7 @@ const update = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Tax</FormLabel>
+                <FormLabel> Tax value</FormLabel>
                 <FormControl
                   type="text"
                   className="form-control"

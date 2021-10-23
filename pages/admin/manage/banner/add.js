@@ -29,6 +29,9 @@ const add = () => {
 
   const { isLoading, postData, response } = usePostAxios("/addBanner");
 
+  const regMatch =
+    /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
+
   const validationSchema = Yup.object().shape({
     img: Yup.mixed()
       .required("A file is required")
@@ -41,7 +44,10 @@ const add = () => {
           : false;
       }),
     name: Yup.string().required("banner name is required"),
-    redirectUrl: Yup.string().url(),
+    redirectUrl: Yup.string().matches(
+      regMatch,
+      "Website should be a valid URL"
+    ),
     isDisplay: Yup.bool().oneOf([true, false]),
     isRedirect: Yup.bool().oneOf([true, false]),
   });
