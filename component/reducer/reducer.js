@@ -50,6 +50,7 @@ export const Reducer = (state, action) => {
       };
 
     case "LOG-OUT":
+      delete axios.defaults.headers.common["Authorization"];
       return {
         ...state,
         auth: {

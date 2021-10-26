@@ -16,9 +16,10 @@ const Profile = ({ logoutUser }) => {
     user: { firstName, email },
   } = useContext(AppContext);
 
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const handleLogOut = (e) => {
+    push("/admin");
     dispatch({ type: "LOG-OUT" });
   };
 

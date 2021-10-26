@@ -68,7 +68,7 @@ const update = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     img: Yup.string().required(),
-    price: Yup.number().min(1).required(),
+    price: Yup.number().min(0).required(),
     tax: Yup.string().required(),
     note: Yup.string().required(),
     duration: Yup.number().min(1).required(),
@@ -174,7 +174,7 @@ const update = () => {
                     <option>option</option>
                     {taxArray.map((x) => (
                       <option key={x._id} value={x._id}>
-                        {x.country.name}({x.taxValue})
+                        {x.country.name} - ({x.name}) - ({x.taxValue}%)
                       </option>
                     ))}
                   </FormControl>

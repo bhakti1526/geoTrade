@@ -19,6 +19,12 @@ const update = () => {
     push,
   } = useRouter();
 
+  const { isLoading: userLoad, response: userRes } = useFetchAxios(
+    `/api/admin/user-info?userId=${id}`
+  );
+
+  console.log("USER-RES", userRes);
+
   const { isLoading, response } = useFetchAxios(
     `/api/auth/admin/menu?id=${id}`
   );
@@ -84,9 +90,9 @@ const update = () => {
   };
 
   if (isLoading === true) return <></>;
-
+  if (userLoad === true) return <></>;
   return (
-    <WrapForm title="update roles">
+    <WrapForm title={`update roles for ${userRes?.email}`}>
       <Formik
         enableReinitialize
         onSubmit={handleSubmit}
@@ -307,7 +313,7 @@ const update = () => {
                             !values.parameter.parameter
                           )
                         }
-                        label="parameter"
+                        label="Products"
                       />
                     </FormGroup>
                   </div>

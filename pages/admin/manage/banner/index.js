@@ -34,7 +34,7 @@ const banner = () => {
     },
     {
       Header: "status",
-      accessor: "isActive",
+      accessor: "isDisplay",
       Cell: (e) => (
         <span
           className={

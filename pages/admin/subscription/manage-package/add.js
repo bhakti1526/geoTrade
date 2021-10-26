@@ -62,7 +62,7 @@ const add = () => {
           ? true
           : false;
       }),
-    price: Yup.number().min(1).required(),
+    price: Yup.number().min(0).required(),
     tax: Yup.string().required(),
     note: Yup.string().required(),
     duration: Yup.number().min(1).required(),
@@ -181,7 +181,7 @@ const add = () => {
                     <option>option</option>
                     {taxArray.map((x) => (
                       <option key={x._id} value={x._id}>
-                        {x.country.name} - ({x.taxValue}%)
+                        {x.country.name} - ({x.name}) - ({x.taxValue}%)
                       </option>
                     ))}
                   </FormControl>

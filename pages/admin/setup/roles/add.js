@@ -9,6 +9,7 @@ import {
   FormCheck,
 } from "react-bootstrap";
 import WrapForm from "../../../../src/components/admin/WrapForm";
+import useFetchAxios from "../../../../component/hooks/useFetchAxios";
 
 const add = () => {
   return (

@@ -129,7 +129,7 @@ const Sidebar = () => {
           ],
         },
         {
-          name: "Manage Product",
+          name: "Product",
           icon: "flaticon-041-graph",
           isActive: val.parameter.parameter,
           subMenu: [
@@ -152,6 +152,23 @@ const Sidebar = () => {
               name: "Manage Brand",
               link: "/admin/parameter/manage-brand",
               isActive: val.parameter.brnad,
+            },
+          ],
+        },
+        {
+          name: "Subscription",
+          icon: "flaticon-013-checkmark",
+          isActive: val.subscription.subscription,
+          subMenu: [
+            {
+              name: "Manage Package",
+              link: "/admin/subscription/manage-package",
+              isActive: val.subscription.managePackages,
+            },
+            {
+              name: "Manage Offer",
+              link: "/admin/subscription/manage-offer",
+              isActive: val.subscription.manageOffer,
             },
           ],
         },
@@ -196,23 +213,6 @@ const Sidebar = () => {
               name: "Manage Tracking",
               link: "/admin/reports/tracking",
               isActive: val.report.manageTracking,
-            },
-          ],
-        },
-        {
-          name: "Subscription",
-          icon: "flaticon-013-checkmark",
-          isActive: val.subscription.subscription,
-          subMenu: [
-            {
-              name: "Manage Package",
-              link: "/admin/subscription/manage-package",
-              isActive: val.subscription.managePackages,
-            },
-            {
-              name: "Manage Offer",
-              link: "/admin/subscription/manage-offer",
-              isActive: val.subscription.manageOffer,
             },
           ],
         },

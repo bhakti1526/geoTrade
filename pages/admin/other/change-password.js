@@ -19,7 +19,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const changePassword = () => {
-  const { postData, isLoading } = usePostAxios("/api/admin/changepassword");
+  const { postData, isLoading } = usePostAxios(
+    "/api/auth/admin/changepassword"
+  );
 
   const { push } = useRouter();
 
