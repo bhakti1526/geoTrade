@@ -174,7 +174,7 @@ const brand = () => {
                               <FormLabel>Brand Info</FormLabel>
                               <div className="summernote">
                                 <Editor
-                                  initialValue={values.description}
+                                  initialValue={initialSchema.description}
                                   onChange={(e) =>
                                     setFieldValue(
                                       "description",

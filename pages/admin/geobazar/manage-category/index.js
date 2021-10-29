@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React from "react";
 import { Dropdown } from "react-bootstrap";
-import WrapTable from "../../../../src/components/admin/WrapTable";
+import Link from "next/link";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
+import WrapTable from "../../../../src/components/admin/WrapTable";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 import useDeleteAxios from "../../../../component/hooks/useDeleteAxios";
 
-const manageBrand = () => {
-  const { isLoading, response, error, getData } = useFetchAxios("/getBrands");
-  const { deleteData, response: res } = useDeleteAxios();
+const index = () => {
+  const { response, isLoading, getData } = useFetchAxios(
+    "/api/admin/geo-bazar-category"
+  );
+
+  const { deleteData } = useDeleteAxios();
 
   if (isLoading === true) return <AppLoader />;
 
@@ -18,23 +21,13 @@ const manageBrand = () => {
       accessor: "id",
     },
     {
-      Header: "brnad name",
+      Header: "name",
       accessor: "name",
     },
+
     {
-      Header: "brand image",
-      accessor: "img",
-      Cell: (e) => (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${e.value}`}
-          alt="product"
-          width="56"
-        />
-      ),
-    },
-    {
-      Header: "approved",
-      accessor: "isApproved",
+      Header: "status",
+      accessor: "isActive",
       Cell: (e) => (
         <span
           className={
@@ -69,7 +62,9 @@ const manageBrand = () => {
             </Link>
             <Dropdown.Item
               onClick={async () => {
-                await deleteData(`/deleteBrands/${s.row.original._id}`);
+                await deleteData(
+                  `/api/admin/geo-bazar-category?id=${s.row.original._id}`
+                );
                 getData();
               }}
             >
@@ -81,17 +76,14 @@ const manageBrand = () => {
     },
   ];
 
-  console.log(response);
-
   return (
     <WrapTable
-      title="manage brand "
-      bText="add brnad"
+      title="geo bazar category"
+      bText="add geo bazar category"
       column={column}
-      isLoading={isLoading}
       columnData={response}
     />
   );
 };
 
-export default manageBrand;
+export default index;

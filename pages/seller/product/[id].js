@@ -514,7 +514,7 @@ const id = () => {
                                 </FormLabel>
                                 <div className="summernote">
                                   <Editor
-                                    initialValue={values.description}
+                                    initialValue={productDetails.description}
                                     onChange={(e) =>
                                       setFieldValue(
                                         "description",

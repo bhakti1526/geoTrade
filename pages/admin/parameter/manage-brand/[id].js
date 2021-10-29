@@ -175,7 +175,7 @@ const id = () => {
                       <FormLabel>Brand Info</FormLabel>
                       <div className="summernote">
                         <Editor
-                          initialValue={values.description}
+                          initialValue={initSchema.description}
                           onChange={(e) =>
                             setFieldValue("description", e.target.getContent())
                           }

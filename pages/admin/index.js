@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Form } from "react-bootstrap";
-import { Dispatch } from "../../component/context/app.context";
+import { AppContext, Dispatch } from "../../component/context/app.context";
 import { useRouter } from "next/router";
 import Logo from "../../logo.png";
 
@@ -20,6 +20,16 @@ const validationSchema = Yup.object().shape({
 const index = () => {
   const dispatch = useContext(Dispatch);
   const { push } = useRouter();
+
+  const {
+    auth: { isAdmin },
+  } = useContext(AppContext);
+
+  useEffect(() => {
+    if (isAdmin === true) {
+      push("/admin/dashboard");
+    }
+  }, [isAdmin]);
 
   const handleSubmit = (val) => {
     try {

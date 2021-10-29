@@ -31,9 +31,9 @@ const add = () => {
   const [initData, setInitData] = useState({
     name: "",
     description: "",
-    sellerType: "",
-    parentType: "",
-    parentCategory: "",
+    // sellerType: "",
+    // parentType: "",
+    // parentCategory: "",
     brand: "",
     unit: "",
     price: "",
@@ -41,6 +41,8 @@ const add = () => {
     visibleCountry: "",
     visibleState: "",
     visibleCity: "",
+    geoCategory: "",
+    geoSubCategory: "",
   });
 
   const imgRef = useRef(null);
@@ -50,20 +52,24 @@ const add = () => {
     query: { id },
   } = useRouter();
 
-  const { isLoading: sellerLoad, response: sellerRes } = useFetchAxios(
-    "/api/other/sellertype"
-  );
+  // const { isLoading: sellerLoad, response: sellerRes } = useFetchAxios(
+  //   "/api/other/sellertype"
+  // );
 
   const { isLoading: postLoad, response: postRes } = useFetchAxios(
     `/api/user/post?id=${id}`
   );
 
-  const { isLoading: parentLoad, response: parentRes } = useFetchAxios(
-    "/api/other/parenttype"
-  );
+  // const { isLoading: parentLoad, response: parentRes } = useFetchAxios(
+  //   "/api/other/parenttype"
+  // );
 
-  const { isLoading: paremtCategoryLoad, response: paremtCategoryRes } =
-    useFetchAxios("/api/other/parentcategory");
+  // const { isLoading: paremtCategoryLoad, response: paremtCategoryRes } =
+  //   useFetchAxios("/api/other/parentcategory");
+
+  const { isLoading: geoLoad, response: geoRes } = useFetchAxios(
+    "/api/public/geobazar/category"
+  );
 
   const { isLoading: unitLoad, response: unitRes } =
     useFetchAxios("/api/other/unit");
@@ -89,9 +95,11 @@ const add = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     description: Yup.string().required(),
-    sellerType: Yup.string().required(),
-    parentType: Yup.string().required(),
-    parentCategory: Yup.string().required(),
+    // sellerType: Yup.string().required(),
+    // parentType: Yup.string().required(),
+    // parentCategory: Yup.string().required(),
+    geoCategory: Yup.string().required(),
+    geoSubCategory: Yup.string().required(),
     brand: Yup.string().required(),
     unit: Yup.string().required(),
     price: Yup.number().required().min(20),
@@ -128,29 +136,29 @@ const add = () => {
     }
   };
 
-  const [parentGroup, setParentGroup] = useState([]);
-  const [parentCategory, setParentCategory] = useState([]);
-  const [sellerTypes, setSellerType] = useState([]);
+  // const [parentGroup, setParentGroup] = useState([]);
+  // const [parentCategory, setParentCategory] = useState([]);
+  // const [sellerTypes, setSellerType] = useState([]);
   const [brand, setBrand] = useState([]);
   const [unit, setUnit] = useState([]);
 
-  useEffect(() => {
-    if (parentRes) {
-      setParentGroup(parentRes);
-    }
-  }, [parentRes]);
+  // useEffect(() => {
+  //   if (parentRes) {
+  //     setParentGroup(parentRes);
+  //   }
+  // }, [parentRes]);
 
-  useEffect(() => {
-    if (paremtCategoryRes) {
-      setParentCategory(paremtCategoryRes);
-    }
-  }, [paremtCategoryRes]);
+  // useEffect(() => {
+  //   if (paremtCategoryRes) {
+  //     setParentCategory(paremtCategoryRes);
+  //   }
+  // }, [paremtCategoryRes]);
 
-  useEffect(() => {
-    if (sellerRes) {
-      setSellerType(sellerRes);
-    }
-  }, [sellerRes]);
+  // useEffect(() => {
+  //   if (sellerRes) {
+  //     setSellerType(sellerRes);
+  //   }
+  // }, [sellerRes]);
 
   useEffect(() => {
     if (brandRes) {
@@ -172,14 +180,15 @@ const add = () => {
     }
   }, [postRes]);
 
-  if (sellerLoad === true) return <AppLoader />;
-  if (parentLoad === true) return <AppLoader />;
-  if (paremtCategoryLoad === true) return <AppLoader />;
+  // if (sellerLoad === true) return <AppLoader />;
+  // if (parentLoad === true) return <AppLoader />;
+  // if (paremtCategoryLoad === true) return <AppLoader />;
   if (brnadLoad === true) return <AppLoader />;
   if (unitLoad === true) return <AppLoader />;
   if (countryLoad === true) return <AppLoader />;
   if (stateLoad === true) return <AppLoader />;
   if (cityLoad === true) return <AppLoader />;
+  if (geoLoad === true) return <AppLoader />;
 
   return (
     <WrapFrom title="add post">
@@ -260,7 +269,7 @@ const add = () => {
                         }}
                       >
                         <Editor
-                          initialValue={values.description}
+                          initialValue={initData.description}
                           onChange={(e) =>
                             setFieldValue("description", e.target.getContent())
                           }
@@ -268,7 +277,7 @@ const add = () => {
                       </div>
                     </FormGroup>
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    {/* <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel> Seller Type</FormLabel>
                       <Form.Control
                         value={values.sellerType}
@@ -328,7 +337,7 @@ const add = () => {
                             </option>
                           ))}
                       </Form.Control>
-                    </FormGroup>
+                    </FormGroup> */}
 
                     <FormGroup className="col-md-6 col-lg-4">
                       <FormLabel>Brand</FormLabel>
@@ -344,6 +353,46 @@ const add = () => {
                             {p.name}
                           </option>
                         ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel>category</FormLabel>
+                      <Form.Control
+                        isInvalid={
+                          !!touched.geoCategory && !!errors.geoCategory
+                        }
+                        as="select"
+                        name="geoCategory"
+                        value={values.geoCategory}
+                      >
+                        <option>Choosee....</option>
+                        {geoRes.category.map((x) => (
+                          <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel>subcategory</FormLabel>
+                      <Form.Control
+                        isInvalid={
+                          !!touched.geoSubCategory && !!errors.geoSubCategory
+                        }
+                        as="select"
+                        name="geoSubCategory"
+                        value={values.geoSubCategory}
+                      >
+                        <option>Choosee....</option>
+                        {geoRes.subcategory
+                          .filter((x) => x.category === values.geoCategory)
+                          .map((x) => (
+                            <option key={x._id} value={x._id}>
+                              {x.name}
+                            </option>
+                          ))}
                       </Form.Control>
                     </FormGroup>
                   </div>

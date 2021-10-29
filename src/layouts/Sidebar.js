@@ -216,6 +216,23 @@ const Sidebar = () => {
             },
           ],
         },
+        {
+          name: "Geo-Bazar",
+          icon: "flaticon-043-menu",
+          isActive: val.subscription.subscription,
+          subMenu: [
+            {
+              name: "Category",
+              link: "/admin/geobazar/manage-category",
+              isActive: val.subscription.managePackages,
+            },
+            {
+              name: "Sub category",
+              link: "/admin/geobazar/manage-subcategory",
+              isActive: val.subscription.manageOffer,
+            },
+          ],
+        },
       ]);
     }
   }, [response]);

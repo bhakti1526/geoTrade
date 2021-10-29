@@ -11,7 +11,6 @@ import {
 
 const WrapTable = ({
   userId,
-  isLoading,
   genInvoice,
   title,
   column,
@@ -32,7 +31,6 @@ const WrapTable = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     gotoPage,
     prepareRow,
     page,
@@ -112,7 +110,7 @@ const WrapTable = ({
                   <span className="mr-2">Search:</span>
                   <input
                     placeholder="search something"
-                    className="form-control rounded-pill"
+                    className="form-control"
                     onChange={(e) => {
                       onChange(e.target.value);
                     }}

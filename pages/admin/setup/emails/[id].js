@@ -66,7 +66,7 @@ const update = () => {
         <FormGroup className="col-md-12">
           <div className="summernote">
             <Editor
-              initialValue={pageData.content}
+              initialValue={res?.content}
               onChange={(e) =>
                 setPageData((x) => ({
                   ...x,

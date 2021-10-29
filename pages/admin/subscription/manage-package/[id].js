@@ -204,7 +204,7 @@ const update = () => {
                   <FormLabel> package description </FormLabel>
                   <div className="summernote">
                     <Editor
-                      initialValue={values.description}
+                      initialValue={initValues.description}
                       onChange={(e) =>
                         setFieldValue("description", e.target.getContent())
                       }
