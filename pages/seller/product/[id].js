@@ -12,6 +12,7 @@ import {
   Col,
   OverlayTrigger,
   Popover,
+  Spinner,
 } from "react-bootstrap";
 
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
@@ -30,12 +31,13 @@ const validationSchema = Yup.object().shape({
   price: Yup.number().min(20).required(),
   unit: Yup.string().required(),
   description: Yup.string().min(6).required(),
-  brand: Yup.string().required(),
+  brand: Yup.string(),
   parentGroup: Yup.string().required(),
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
   ytUrl: Yup.string().matches(regMatch, "Website should be a valid URL"),
   sellerType: Yup.string().required(),
+  searchTag: Yup.string(),
 });
 
 const ImgBlock = ({ img, setImg, imgUrl, setImgUrl }) => {
@@ -173,6 +175,7 @@ const id = () => {
     parentCategory: "",
     parentSubCategory: "",
     ytUrl: "",
+    searchTag: "",
   });
 
   const [unitList, setUnitList] = useState([]);
@@ -231,6 +234,7 @@ const id = () => {
         ytUrl,
         img,
         pdf,
+        searchTag,
       } = prodResss;
 
       setProductDetails({
@@ -239,11 +243,12 @@ const id = () => {
         unit,
         description,
         brand,
-        sellerType,
+        sellerType: "617bb291fc13ae3f5c000000",
         parentGroup,
         parentCategory,
         parentSubCategory,
         ytUrl,
+        searchTag: searchTag.toString(),
       });
 
       setImgUrl(img[0]);
@@ -263,7 +268,10 @@ const id = () => {
   const [img5, setImg5] = useState(null);
   const [pdf, setPdf] = useState(null);
 
+  const [postLoad, setPostLoad] = useState(false);
+
   const handleSubmit = async (val) => {
+    setPostLoad(true);
     const imgArray = [img, img1, img2, img3, img4, img5].filter(
       (x) => x !== null
     );
@@ -286,9 +294,7 @@ const id = () => {
 
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/multi`, formData)
-        .then((res) =>
-          console.log(res.data.data.map((x) => imgUrlArray.push(x)))
-        )
+        .then((res) => res.data.data.map((x) => imgUrlArray.push(x)))
         .then(() => {
           console.log(imgUrlArray);
         })
@@ -315,6 +321,8 @@ const id = () => {
           console.log(err);
         });
     }
+
+    setPostLoad(false);
   };
 
   const pdfRef = useRef(null);
@@ -359,6 +367,14 @@ const id = () => {
                       >
                         <div className="row">
                           <div className="col-md-6">
+                            <small
+                              style={{
+                                color: "blue",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              Image size 500 x 500
+                            </small>
                             <div className="row m-0">
                               <div className="col-4 col-md-3 col-lg-2 p-0">
                                 <ImgBlock
@@ -548,7 +564,7 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="3">
+                        {/* <Col md="3">
                           <FormGroup>
                             <FormLabel> Seller Type</FormLabel>
                             <Form.Control
@@ -568,7 +584,7 @@ const id = () => {
                               ))}
                             </Form.Control>
                           </FormGroup>
-                        </Col>
+                        </Col> */}
                         <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
@@ -583,9 +599,9 @@ const id = () => {
                             >
                               <option>select</option>
                               {parentRes
-                                .filter(
-                                  (x) => x.sellerType == values.sellerType
-                                )
+                                // .filter(
+                                //   (x) => x.sellerType == values.sellerType
+                                // )
                                 .map((x) => (
                                   <option value={x._id}>
                                     {x.parentGroupName}
@@ -647,6 +663,18 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
+                        <Col md="4">
+                          <Form.Label>
+                            search tags (seprate it with coma)
+                          </Form.Label>
+                          <Form.Control
+                            name="searchTag"
+                            value={values.searchTag}
+                            isInvalid={
+                              !!touched.searchTag && !!errors.searchTag
+                            }
+                          />
+                        </Col>
                         <FormGroup className="form-group col-md-12 mt-3">
                           <div className="float-right">
                             <Button
@@ -654,6 +682,18 @@ const id = () => {
                               type="submit"
                               onClick={handleSubmit}
                             >
+                              {postLoad === true && (
+                                <Spinner
+                                  animation="border"
+                                  role="status"
+                                  style={{
+                                    height: "15px",
+                                    width: "15px",
+                                    marginRight: "0.2rem",
+                                    marginBottom: "0.2rem",
+                                  }}
+                                ></Spinner>
+                              )}
                               Save and Continue
                               <i class="fas fa-arrow-right pl-1"></i>
                             </Button>

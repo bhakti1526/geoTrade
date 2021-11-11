@@ -142,11 +142,7 @@ const update = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12 text-center tn-page">
-                <Button
-                  disabled={isLoad}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoad} variant="primary" type="submit">
                   Update Tax
                 </Button>
               </FormGroup>

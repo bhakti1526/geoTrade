@@ -90,11 +90,7 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button
-                    disabled={isLoading}
-                    variant="primary btn-rounded"
-                    type="submit"
-                  >
+                  <Button disabled={isLoading} variant="primary" type="submit">
                     Add Country
                   </Button>
                 </FormGroup>

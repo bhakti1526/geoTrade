@@ -92,7 +92,7 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12  text-center btn-page">
-                  <Button variant="primary btn-rounded" type="submit">
+                  <Button variant="primary" type="submit">
                     Add Email Form
                   </Button>
                 </FormGroup>

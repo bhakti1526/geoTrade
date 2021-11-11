@@ -123,8 +123,16 @@ const id = () => {
                       />
                     </FormGroup>
 
-                    <FormGroup className="col-md-4  ">
-                      <FormLabel> Brand image</FormLabel>
+                    <FormGroup className="col-md-4">
+                      <FormLabel>
+                        {" "}
+                        Brand image{" "}
+                        <small
+                          style={{ color: "blue", textDecoration: "underline" }}
+                        >
+                          (image size : 468 x 152)
+                        </small>{" "}
+                      </FormLabel>
                       <FormControl
                         type="text"
                         className="form-control"
@@ -201,7 +209,7 @@ const id = () => {
 
                 <FormGroup className="col-md-12  text-center">
                   <div className="btn-page mt-5">
-                    <Button variant="primary btn-rounded" type="submit">
+                    <Button variant="primary" type="submit">
                       Update Brand
                     </Button>
                   </div>

@@ -16,10 +16,17 @@ const contact = () => {
       accessor: "id",
     },
     {
-      Header: "email",
-      accessor: "buyer.email",
+      Header: "buyer name",
+      accessor: "buyer.firstName",
     },
-
+    {
+      Header: "mobile",
+      accessor: "buyer.mobile",
+    },
+    // {
+    //   Header: "product / post",
+    //   accessor: "originId.name",
+    // },
     {
       Header: "Message",
       accessor: "message",
@@ -27,9 +34,7 @@ const contact = () => {
     {
       Header: "Action",
       accessor: "contact",
-      Cell: (e) => (
-        <button className="btn btn-primary rounded-pill">contact</button>
-      ),
+      Cell: (e) => <button className="btn btn-primary">contact</button>,
     },
   ];
 

@@ -130,11 +130,7 @@ const update = () => {
               </Form.Group>
 
               <FormGroup className="col-md-12 text-center btn-page">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Social
                 </Button>
               </FormGroup>

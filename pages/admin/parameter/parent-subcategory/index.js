@@ -21,6 +21,10 @@ const index = () => {
       accessor: "id",
     },
     {
+      Header: "  parent group name",
+      accessor: "parentGroup.parentGroupName",
+    },
+    {
       Header: "  category name",
       accessor: "parentCategory.parentCatagoryName",
     },
@@ -28,6 +32,7 @@ const index = () => {
       Header: "  subcategory name",
       accessor: "parentSubCategoryName",
     },
+
     {
       Header: "action",
       Cell: (s) => (

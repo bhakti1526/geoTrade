@@ -17,7 +17,7 @@ import AppLoader from "../../../../src/components/admin/AppLoader";
 import usePostAxios from "../../../../component/hooks/usePostAxios";
 
 const initValue = {
-  sellerType: "",
+  sellerType: ["617bb291fc13ae3f5c000000"],
   parentGroupName: "",
   parentGroupImg: "",
 };
@@ -111,7 +111,10 @@ const add = () => {
                 onSubmit={handleSubmit}
                 onChange={handleChange}
               >
-                <FormGroup className="col-md-6 col-lg-4">
+                {/* <FormGroup
+                  className="col-md-6 col-lg-4"
+                  style={{ display: "none" }}
+                >
                   <FormLabel> Seller Type</FormLabel>
                   <Select
                     styles={parenCategoryStyle}
@@ -127,7 +130,7 @@ const add = () => {
                       )
                     }
                   />
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Parent Group Name</FormLabel>
@@ -142,7 +145,15 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Parent Group Image</FormLabel>
+                  <FormLabel>
+                    {" "}
+                    Parent Group Image
+                    <small
+                      style={{ color: "blue", textDecoration: "underline" }}
+                    >
+                      image size : 500 x 500
+                    </small>{" "}
+                  </FormLabel>
                   <FormControl
                     name="parentGroupImg"
                     type="file"
@@ -156,11 +167,7 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button
-                    disabled={sendLoad}
-                    variant="primary btn-rounded"
-                    type="submit"
-                  >
+                  <Button disabled={sendLoad} variant="primary" type="submit">
                     Add Parent Group
                   </Button>
                 </FormGroup>

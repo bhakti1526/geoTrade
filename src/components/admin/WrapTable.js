@@ -121,7 +121,7 @@ const WrapTable = ({
             <div className="table-responsive">
               <div className="dataTables_wrapper">
                 <table
-                  className="table table-responsive-md text-center"
+                  className="table table-responsive-md text-center vb-table"
                   {...getTableProps()}
                 >
                   <thead>
@@ -149,7 +149,10 @@ const WrapTable = ({
                     ))}
                   </thead>
 
-                  <tbody {...getTableBodyProps()}>
+                  <tbody
+                    {...getTableBodyProps()}
+                    className="min-height-auto-scroll"
+                  >
                     {page.map((row) => {
                       prepareRow(row);
                       return (

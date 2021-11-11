@@ -67,7 +67,8 @@ const update = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
-    img: Yup.string().required(),
+    img: Yup.string(),
+    // .required()
     price: Yup.number().min(0).required(),
     tax: Yup.string().required(),
     note: Yup.string().required(),
@@ -331,11 +332,7 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button
-                    disabled={isLoading}
-                    variant="primary btn-rounded"
-                    type="submit"
-                  >
+                  <Button disabled={isLoading} variant="primary " type="submit">
                     Add Package
                   </Button>
                 </FormGroup>

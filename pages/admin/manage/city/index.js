@@ -18,30 +18,38 @@ const city = () => {
       accessor: "id",
     },
     {
-      Header: "country name",
-      accessor: "country.name",
+      Header: "city name",
+      accessor: "name",
     },
     {
       Header: "state name",
       accessor: "state.name",
     },
     {
-      Header: "city name",
-      accessor: "name",
+      Header: "country name",
+      accessor: "country.name",
     },
     {
-      Header: "status",
-      accessor: "isActive",
-      Cell: (e) => (
-        <span
-          className={
-            e.value ? "badge light badge-success" : "badge light badge-danger"
-          }
-        >
-          {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
-        </span>
-      ),
+      Header: "city short code",
+      accessor: "shortCityCode",
     },
+    {
+      Header: "city tel code",
+      accessor: "cityTelCode",
+    },
+    // {
+    //   Header: "status",
+    //   accessor: "isActive",
+    //   Cell: (e) => (
+    //     <span
+    //       className={
+    //         e.value ? "badge light badge-success" : "badge light badge-danger"
+    //       }
+    //     >
+    //       {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
+    //     </span>
+    //   ),
+    // },
     {
       Header: "action",
       Cell: (s) => (

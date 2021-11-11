@@ -134,11 +134,7 @@ const id = () => {
               </FormGroup> */}
 
               <FormGroup className="col-md-12  text-center btn-page">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Email Details
                 </Button>
               </FormGroup>

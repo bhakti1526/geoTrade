@@ -219,7 +219,7 @@ const add = () => {
         <div className="row">
           <FormGroup className="col-md-12  text-center">
             <div className="btn-page">
-              <Button variant="primary btn-rounded" type="button">
+              <Button variant="primary" type="button">
                 Add Roles
               </Button>
             </div>

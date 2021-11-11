@@ -26,11 +26,12 @@ const productDetails = {
   unit: "",
   description: "",
   brand: "",
-  sellerType: "",
+  sellerType: "617bb291fc13ae3f5c000000",
   parentGroup: "",
   parentCategory: "",
   parentSubCategory: "",
   ytUrl: "",
+  searchTag: "",
 };
 
 const regMatch =
@@ -41,12 +42,13 @@ const validationSchema = Yup.object().shape({
   price: Yup.number().min(20).required(),
   unit: Yup.string().required(),
   description: Yup.string().min(6).required(),
-  brand: Yup.string().required(),
+  brand: Yup.string(),
   parentGroup: Yup.string().required(),
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
   ytUrl: Yup.string().matches(regMatch, "Website should be a valid URL"),
   sellerType: Yup.string().required(),
+  searchTag: Yup.string(),
 });
 
 const ImgBlock = ({ img, setImg }) => {
@@ -207,6 +209,8 @@ const product = () => {
     data.append("img", img5);
     data.append("pdf", pdf);
     data.append("sellerType", val.sellerType);
+    data.append("searchTag", val.searchTag || val.name);
+
     await postData(data);
     push("/admin/user/manage-user");
   };
@@ -407,7 +411,7 @@ const product = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col md="3">
+                        {/* <Col md="3">
                           <FormGroup>
                             <FormLabel> Seller Type</FormLabel>
                             <Form.Control
@@ -427,7 +431,7 @@ const product = () => {
                                 ))}
                             </Form.Control>
                           </FormGroup>
-                        </Col>
+                        </Col> */}
 
                         <Col md="3">
                           <Form.Group>
@@ -443,9 +447,9 @@ const product = () => {
                               <option>select</option>
                               {parentRes &&
                                 parentRes
-                                  .filter(
-                                    (x) => x.sellerType == values.sellerType
-                                  )
+                                  // .filter(
+                                  //   (x) => x.sellerType == values.sellerType
+                                  // )
                                   .map((x) => (
                                     <option value={x._id}>
                                       {x.parentGroupName}
@@ -507,6 +511,19 @@ const product = () => {
                                   ))}
                             </Form.Control>
                           </Form.Group>
+                        </Col>
+
+                        <Col md="4">
+                          <Form.Label>
+                            search tags (seprate it with coma)
+                          </Form.Label>
+                          <Form.Control
+                            name="searchTag"
+                            value={values.searchTag}
+                            isInvalid={
+                              !!touched.searchTag && !!errors.searchTag
+                            }
+                          />
                         </Col>
 
                         <FormGroup className="form-group col-md-12 mt-3">

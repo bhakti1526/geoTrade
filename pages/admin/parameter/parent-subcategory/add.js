@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initSchema = {
-  sellerType: "",
+  sellerType: "617bb291fc13ae3f5c000000",
   parentGroup: "",
   parentCategory: "",
   parentSubCategoryName: "",
@@ -88,7 +88,7 @@ const add = () => {
           return (
             <Form onChange={handleChange} onSubmit={handleSubmit}>
               <Row>
-                <Col md="4">
+                {/* <Col md="4">
                   <Form.Group>
                     <Form.Label>seller type</Form.Label>
                     <Form.Control
@@ -104,7 +104,7 @@ const add = () => {
                         ))}
                     </Form.Control>
                   </Form.Group>
-                </Col>
+                </Col> */}
                 <Col md="4">
                   <Form.Group>
                     <Form.Label>parent group</Form.Label>
@@ -117,7 +117,7 @@ const add = () => {
                       <option>select</option>
                       {parentGroupRes &&
                         parentGroupRes
-                          .filter((x) => x.sellerType._id === values.sellerType)
+                          // .filter((x) => x.sellerType._id === values.sellerType)
                           .map((x) => (
                             <option value={x._id}>{x.parentGroupName}</option>
                           ))}

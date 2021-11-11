@@ -37,6 +37,22 @@ const manageProduct = () => {
       accessor: "name",
     },
     {
+      Header: "parent group",
+      accessor: "parentGroup.parentGroupName",
+    },
+    {
+      Header: "parent category",
+      accessor: "parentCategory.parentCatagoryName",
+    },
+    {
+      Header: "parent subCategory",
+      accessor: "parentSubCategory.parentSubCategoryName",
+    },
+    {
+      Header: "brand",
+      accessor: "brand.name",
+    },
+    {
       Header: "image",
       accessor: "img",
       Cell: (e) => {
@@ -52,11 +68,12 @@ const manageProduct = () => {
     {
       Header: "price",
       accessor: "price",
+      Cell: (e) => {
+        console.log(e);
+        return `${e.row.original.price} / ${e.row.original.unit.name}`;
+      },
     },
-    {
-      Header: "unit",
-      accessor: "unit.name",
-    },
+
     {
       Header: "approved",
       accessor: "isAdminApproved",

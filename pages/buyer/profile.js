@@ -289,11 +289,7 @@ const profile = () => {
                 </Col>
               </Row>
               <div className="mt-4">
-                <Button
-                  type="submit"
-                  disabled={isSendingData}
-                  className="rounded-pill"
-                >
+                <Button type="submit" disabled={isSendingData}>
                   Update
                 </Button>
               </div>

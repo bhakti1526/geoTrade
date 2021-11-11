@@ -83,3 +83,17 @@
 .chat-desc {
   height: 100%;
 }
+
+.vb-table .min-height-auto-scroll {
+  display: block;
+  max-height: 240px;
+  /* height: 240px; */
+  overflow-y: auto;
+}
+
+.vb-table thead,
+.vb-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}

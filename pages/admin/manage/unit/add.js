@@ -70,7 +70,7 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button variant="primary btn-rounded" type="submit">
+                  <Button variant="primary" type="submit">
                     Add Unit
                   </Button>
                 </FormGroup>

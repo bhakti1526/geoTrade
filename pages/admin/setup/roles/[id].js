@@ -539,7 +539,7 @@ const update = () => {
 
                 <div className="row">
                   <FormGroup className="col-md-12 btn-page text-center">
-                    <Button variant="primary btn-rounded" type="submit">
+                    <Button variant="primary" type="submit">
                       Add Roles
                     </Button>
                   </FormGroup>

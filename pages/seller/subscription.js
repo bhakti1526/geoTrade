@@ -279,7 +279,6 @@ const Transaction = ({ findSubscription }) => {
       Cell: (e) => {
         return (
           <Button
-            className="rounded-pill"
             onClick={() => {
               push(`/seller/invoice?id=${e.cell.row.original._id}`);
             }}

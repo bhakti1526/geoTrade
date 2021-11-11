@@ -55,7 +55,7 @@ const index = () => {
             <div className="text-center mb-4 pt-5">
               <img style={{ width: "100px" }} src={Logo} alt="" />
             </div>
-            <h3 className="mb-2">Admin Pannel!</h3>
+            <h3 className="mb-2">Admin panel!</h3>
           </div>
           <div
             className="aside-image"

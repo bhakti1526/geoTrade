@@ -65,7 +65,7 @@ const add = () => {
 
         <FormGroup className="col-md-12  text-center">
           <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
+            <Button variant="primary" type="button">
               Add Menu
             </Button>
           </div>

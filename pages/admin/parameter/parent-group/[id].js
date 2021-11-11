@@ -46,7 +46,7 @@ const update = () => {
     console.log(parentRes);
     setInitValue({
       _id: parentRes?._id,
-      sellerType: parentRes?.sellerType?._id,
+      sellerType: "617bb291fc13ae3f5c000000",
       parentGroupName: parentRes?.parentGroupName,
       parentGroupImg: parentRes?.parentGroupImg,
       isActive: true,
@@ -117,7 +117,10 @@ const update = () => {
                 onSubmit={handleSubmit}
                 onChange={handleChange}
               >
-                <FormGroup className="col-md-6 col-lg-4">
+                {/* <FormGroup
+                  className="col-md-6 col-lg-4"
+                  style={{ display: "none" }}
+                >
                   <FormLabel> Seller Type</FormLabel>
                   <Form.Control
                     value={values.sellerType}
@@ -129,7 +132,7 @@ const update = () => {
                       <option value={x._id}>{x.sellerTypeName}</option>
                     ))}
                   </Form.Control>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel> Parent Group Name</FormLabel>
@@ -145,7 +148,15 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Parent Group Image</FormLabel>
+                  <FormLabel>
+                    {" "}
+                    Parent Group Image
+                    <small
+                      style={{ color: "blue", textDecoration: "underline" }}
+                    >
+                      image size : 500 x 500
+                    </small>{" "}
+                  </FormLabel>
                   <FormControl
                     name="parentGroupImg"
                     type="file"
@@ -170,11 +181,7 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button
-                    disabled={sendLoad}
-                    variant="primary btn-rounded"
-                    type="submit"
-                  >
+                  <Button disabled={sendLoad} variant="primary" type="submit">
                     Add Parent Group
                   </Button>
                 </FormGroup>

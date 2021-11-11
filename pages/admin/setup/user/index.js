@@ -23,14 +23,15 @@ const user = () => {
       Header: "email",
       accessor: "email",
     },
-    {
-      Header: "role",
-      accessor: "locationRights",
-    },
-    {
-      Header: "location",
-      accessor: "locationId.name",
-    },
+    // {
+    //   Header: "role",
+    //   accessor: "locationRights",
+    // },
+    // {
+    //   Header: "location",
+    //   accessor: "locationId.name",
+
+    // },
     {
       Header: "status",
       accessor: "isActive",

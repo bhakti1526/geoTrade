@@ -259,9 +259,7 @@ const profile = () => {
                 </Col>
               </Row>
               <div className="mt-4">
-                <Button type="submit" className="rounded-pill">
-                  Update
-                </Button>
+                <Button type="submit">Update</Button>
               </div>
             </Form>
           );

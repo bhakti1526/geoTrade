@@ -48,7 +48,13 @@ const id = () => {
         </FormGroup>
 
         <FormGroup className="col-md-6 col-lg-4">
-          <FormLabel> Post Image</FormLabel>
+          <FormLabel>
+            {" "}
+            Post Image
+            <small style={{ color: "blue", textDecoration: "underline" }}>
+              image size : 600 x 450
+            </small>
+          </FormLabel>
           <FormControl type="file" className="form-control" placeholder="" />
         </FormGroup>
 
@@ -131,7 +137,7 @@ const id = () => {
 
         <FormGroup className="col-md-12  text-center">
           <div className="btn-page">
-            <Button variant="primary btn-rounded" type="button">
+            <Button variant="primary" type="button">
               Update Post
             </Button>
           </div>

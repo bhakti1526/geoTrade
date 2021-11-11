@@ -24,6 +24,7 @@ import axios from "axios";
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/;
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
   price: Yup.number().min(20).required(),
@@ -36,6 +37,7 @@ const validationSchema = Yup.object().shape({
   ytUrl: Yup.string().matches(regMatch, "Website should be a valid URL"),
   sellerType: Yup.string().required(),
   isAdminApproved: Yup.bool().oneOf([true, false]),
+  searchTag: Yup.string(),
 });
 
 const ImgBlock = ({ img, setImg, imgUrl, setImgUrl }) => {
@@ -168,12 +170,13 @@ const id = () => {
     unit: "",
     description: "",
     brand: "",
-    sellerType: "",
+    sellerType: "617bb291fc13ae3f5c000000",
     parentGroup: "",
     parentCategory: "",
     parentSubCategory: "",
     ytUrl: "",
     isAdminApproved: false,
+    searchTag: "",
   });
 
   const [unitList, setUnitList] = useState([]);
@@ -233,6 +236,7 @@ const id = () => {
         img,
         isAdminApproved,
         pdf,
+        searchTag,
       } = prodResss;
 
       setProductDetails({
@@ -241,12 +245,13 @@ const id = () => {
         unit,
         description,
         brand,
-        sellerType,
+        sellerType: "617bb291fc13ae3f5c000000",
         parentGroup,
         parentCategory,
         parentSubCategory,
         ytUrl,
         isAdminApproved,
+        searchTag: searchTag.toString(),
       });
 
       setImgUrl(img[0]);
@@ -399,7 +404,7 @@ const id = () => {
                                   setImg={setImg5}
                                   setImgUrl={setImgUrl5}
                                 />
-                              </div>
+                              </div>{" "}
                               <div className="col-8 col-md-9 col-lg-9 p-0">
                                 <BigImgBlock
                                   img={img}
@@ -463,7 +468,6 @@ const id = () => {
                               </div>
                             </div>
                           </div>
-
                           <div class="col-md-6">
                             <div className="row align-items-center mt-4 mt-md-0">
                               <FormGroup className="form-group col-md-12">
@@ -556,7 +560,7 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="3">
+                        {/* <Col md="3">
                           <FormGroup>
                             <FormLabel> Seller Type</FormLabel>
                             <Form.Control
@@ -576,7 +580,7 @@ const id = () => {
                               ))}
                             </Form.Control>
                           </FormGroup>
-                        </Col>
+                        </Col> */}
                         <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
@@ -591,9 +595,9 @@ const id = () => {
                             >
                               <option>select</option>
                               {parentRes
-                                .filter(
-                                  (x) => x.sellerType == values.sellerType
-                                )
+                                // .filter(
+                                //   (x) => x.sellerType == values.sellerType
+                                // )
                                 .map((x) => (
                                   <option value={x._id}>
                                     {x.parentGroupName}
@@ -654,6 +658,18 @@ const id = () => {
                                 ))}
                             </Form.Control>
                           </Form.Group>
+                        </Col>
+                        <Col md="4">
+                          <Form.Label>
+                            search tags (seprate it with coma)
+                          </Form.Label>
+                          <Form.Control
+                            name="searchTag"
+                            value={values.searchTag}
+                            isInvalid={
+                              !!touched.searchTag && !!errors.searchTag
+                            }
+                          />
                         </Col>
                         <FormGroup className="col-md-6 col-lg-4">
                           <FormLabel> Admin Approved</FormLabel>

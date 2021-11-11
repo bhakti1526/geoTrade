@@ -56,7 +56,7 @@ const update = () => {
       setInitValue({
         _id: categoryRes?._id,
         parentGroup: categoryRes?.parentGroup?._id,
-        sellerType: categoryRes?.sellerType?._id,
+        sellerType: "617bb291fc13ae3f5c000000",
         parentCatagoryName: categoryRes?.parentCatagoryName,
         parentCatagoryImg: categoryRes?.parentCatagoryImg,
         isActive: categoryRes?.isActive,
@@ -131,7 +131,7 @@ const update = () => {
               onChange={handleChange}
               onSubmit={handleSubmit}
             >
-              <FormGroup className="col-md-6 col-lg-4">
+              {/* <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Seller Name</FormLabel>
                 <Form.Control
                   value={values.sellerType}
@@ -143,7 +143,7 @@ const update = () => {
                     <option value={x._id}> {x.sellerTypeName} </option>
                   ))}
                 </Form.Control>
-              </FormGroup>
+              </FormGroup> */}
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Parent Group</FormLabel>
@@ -160,7 +160,13 @@ const update = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Parent Category Image</FormLabel>
+                <FormLabel>
+                  {" "}
+                  Parent Category Image
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    image size : 500 x 500
+                  </small>{" "}
+                </FormLabel>
                 <FormControl
                   type="file"
                   accept="image/*"
@@ -193,11 +199,7 @@ const update = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12 btn-page text-center">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Parent Category
                 </Button>
               </FormGroup>

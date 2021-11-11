@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import CreatableSelect from "react-select/creatable";
 import { css } from "@emotion/css";
 import { Editor } from "@tinymce/tinymce-react";
 import * as Yup from "yup";
@@ -12,6 +13,7 @@ import {
   Col,
   OverlayTrigger,
   Popover,
+  Spinner,
 } from "react-bootstrap";
 
 import { useRouter } from "next/router";
@@ -26,11 +28,12 @@ const productDetails = {
   unit: "",
   description: "",
   brand: "",
-  sellerType: "",
+  sellerType: "617bb291fc13ae3f5c000000",
   parentGroup: "",
   parentCategory: "",
   parentSubCategory: "",
   ytUrl: "",
+  searchTag: "",
 };
 
 const regMatch =
@@ -41,12 +44,13 @@ const validationSchema = Yup.object().shape({
   price: Yup.number().min(20).required(),
   unit: Yup.string().required(),
   description: Yup.string().min(6).required(),
-  brand: Yup.string().required(),
+  brand: Yup.string(),
   parentGroup: Yup.string().required(),
   parentCategory: Yup.string().required(),
   parentSubCategory: Yup.string().required(),
   ytUrl: Yup.string().matches(regMatch, "Website should be a valid URL"),
   sellerType: Yup.string().required(),
+  searchTag: Yup.string(),
 });
 
 const ImgBlock = ({ img, setImg }) => {
@@ -179,7 +183,7 @@ const product = () => {
   const [img5, setImg5] = useState(null);
   const [pdf, setPdf] = useState(null);
 
-  const { postData } = usePostAxios("/api/user/product");
+  const { postData, isLoading: postLoad } = usePostAxios("/api/user/product");
   const { push } = useRouter();
 
   const handleSubmit = async (val) => {
@@ -201,6 +205,8 @@ const product = () => {
     data.append("img", img5);
     data.append("pdf", pdf);
     data.append("sellerType", val.sellerType);
+    data.append("searchTag", val.searchTag || val.name);
+
     await postData(data);
     push("/seller/product");
   };
@@ -245,6 +251,14 @@ const product = () => {
                       >
                         <div className="row">
                           <div className="col-md-6">
+                            <small
+                              style={{
+                                color: "blue",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              Image size 500 x 500
+                            </small>
                             <div className="row m-0">
                               <div className="col-4 col-md-3 col-lg-2 p-0">
                                 <ImgBlock img={img1} setImg={setImg1} />
@@ -400,7 +414,7 @@ const product = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col md="3">
+                        {/* <Col md="3">
                           <FormGroup>
                             <FormLabel> Seller Type</FormLabel>
                             <Form.Control
@@ -419,7 +433,7 @@ const product = () => {
                               ))}
                             </Form.Control>
                           </FormGroup>
-                        </Col>
+                        </Col> */}
 
                         <Col md="3">
                           <Form.Group>
@@ -434,9 +448,9 @@ const product = () => {
                             >
                               <option>select</option>
                               {parentRes
-                                .filter(
-                                  (x) => x.sellerType == values.sellerType
-                                )
+                                // .filter(
+                                //   (x) => x.sellerType == values.sellerType
+                                // )
                                 .map((x) => (
                                   <option value={x._id}>
                                     {x.parentGroupName}
@@ -498,6 +512,18 @@ const product = () => {
                           </Form.Group>
                         </Col>
 
+                        <Col md="4">
+                          <Form.Label>
+                            search tags (seprate it with coma)
+                          </Form.Label>
+                          <Form.Control
+                            name="searchTag"
+                            isInvalid={
+                              !!touched.searchTag && !!errors.searchTag
+                            }
+                          />
+                        </Col>
+
                         <FormGroup className="form-group col-md-12 mt-3">
                           <div className="float-right">
                             <Button
@@ -505,6 +531,18 @@ const product = () => {
                               type="submit"
                               onClick={handleSubmit}
                             >
+                              {postLoad === true && (
+                                <Spinner
+                                  animation="border"
+                                  role="status"
+                                  style={{
+                                    height: "15px",
+                                    width: "15px",
+                                    marginRight: "0.2rem",
+                                    marginBottom: "0.2rem",
+                                  }}
+                                ></Spinner>
+                              )}
                               Save and Continue
                               <i class="fas fa-arrow-right pl-1"></i>
                             </Button>

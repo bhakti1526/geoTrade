@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Logo from "../../../../logo.png";
 import { useRouter } from "next/router";
 import { Editor } from "@tinymce/tinymce-react";
 import {
@@ -75,16 +76,17 @@ const add = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
-    img: Yup.mixed()
-      .required("A file is required")
-      .test("fileFormat", "image only", () => {
-        if (img === null || img === undefined) return false;
-        return img.type === "image/png"
-          ? true
-          : img.type === "image/jpeg"
-          ? true
-          : false;
-      }),
+    img: Yup.mixed(),
+    // .mixed()
+    //   .required("A file is required")
+    //   .test("fileFormat", "image only", () => {
+    //     if (img === null || img === undefined) return false;
+    //     return img.type === "image/png"
+    //       ? true
+    //       : img.type === "image/jpeg"
+    //       ? true
+    //       : false;
+    //   }),
     description: Yup.string().required(),
     stateDate: Yup.string().required(),
     endDate: Yup.string().required(),
@@ -156,14 +158,23 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Offer Name</FormLabel>
+                  <FormLabel>
+                    Offer image
+                    <small
+                      style={{ color: "blue", textDecoration: "underline" }}
+                    >
+                      image size : 140 x 95
+                    </small>
+                  </FormLabel>
                   <FormControl
                     type="file"
                     className="form-control"
                     placeholder=""
                     accept="image/*"
                     name="img"
-                    onChange={(e) => setImg(e.target.files[0])}
+                    onChange={(e) => {
+                      setImg(e.target.files[0]);
+                    }}
                   />
                 </FormGroup>
 
@@ -334,7 +345,7 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button variant="primary btn-rounded" type="submit">
+                  <Button variant="primary " type="submit">
                     Add Offers
                   </Button>
                 </FormGroup>

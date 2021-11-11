@@ -74,7 +74,7 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Icon Class</FormLabel>
+                <FormLabel> Icon Class  (<a target="_blank" style={{fontSize:"0.8rem", color:"blue", textDecoration:"underline"}} href="https://fontawesome.com/v5.15/icons?d=gallery&v=5.8.0,5.8.1&m=free">  for class use this library</a>)  </FormLabel>
                 <FormControl
                   type="text"
                   className="form-control"
@@ -105,11 +105,7 @@ const add = () => {
               </Form.Group>
 
               <FormGroup className="col-md-12 text-center btn-page">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Social
                 </Button>
               </FormGroup>

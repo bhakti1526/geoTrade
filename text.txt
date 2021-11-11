@@ -1,0 +1,60 @@
+done : 
+    Sell on geo trade bind content from CMS and packages
+    Geo Bazar to bind
+    Sub category to bind from menu [right scroll menu]
+    Banner if clickable needs to be redirected to link specified – needs to be open in new tab
+    Promotional offer next to banner to bind
+    Category – respective products to bind
+    Category raw – view all to bind all category products
+    URL rewriting like geotrade.org.in/Mining Bazar to be done
+    Become a seller button needs to link with seller panel registration page
+    Contact details to be dynamic
+    Social media link bind
+    Add Download mobile app icons in the footer
+    Search Grid Box needs to be rectangles
+    Need to have title fix [no scroll] in all grids – checked with parent category
+    All save/submit buttons needs to be in rectangle format in the forms
+    Designed by Barodaweb displays two times, needs to remove from left panel
+    Admin user – gives message on top something went wrong, grid should display [User, country, state, city , status action]
+    After creation another admin user when we login giving error jwt authentication error [rrsadm@barodaweb.net / rrsadm]
+    Logout not working
+    Content to bind on website
+    Banner – in the grid needs to have columns [No, Banner (image) , Redirected to (LINK) , display order, Is display on, Status], Need to have field Display order
+    Country/ state / city/ Banner default in grid shows disable – column not required to display
+    Country – Country Short name field missing its there in the grid but not in the form
+    City – Add City Telcode in the form
+    City – in the grid display [no, City, State, Country, city code, city tel code, status, action]
+    Social – icon image to be added in the field and display in grid, what is icon class in the grid ?
+    Seller type field needs to be removed from PG, PC and PSC
+    Manage Brands – page title to be changed from PC to Brands and Add brand option not there
+    Check for duplication of product sub categories
+    Grid should display Seller Name, Date of registration, date of expiry , subscription plan, country – State – city, status, action
+    display grid Should containing [Sr no, product name, PG – PC - PSC – Brand, , Rate Per Unit, Status, Action]
+    while adding product by default description is right aligned which is needs to be changed to left align
+    brand selection – needs to have Not Branded on top
+    parent group selection not coming
+    parent category drop down needs to be filtered based on the parent group
+    sub parent category needs to be binded based on parent group
+    Post content to be checked
+    Add package – package image and note needs to be optional, tax rate selection not required here
+    Trending products to bind on home page
+    CMS to be bind
+    Create form with fields Company Name, Contact person, Pghone Number, Mobile number, email , website address, GST No, other1, other2, android app icon, android app link, ios app icon, ios app link
+    Contact details to be dynamic
+    Looking for any product Not on Geotrade ? [ display form to be filled ]
+    Add product request under manage products menu
+    SMS API to be linked for OTP authentication
+
+pending 
+    Meta tags and page description to be updated 
+    In every form where we are allowing to upload image display message below text box for proposed image size and type 
+    Check responsive for mobile view 
+    Graph record should display live data 
+    Roles – in the grid no need to have column  Role and location  
+    In the action need to have option to edit seller profile  
+    List suppliers with filters like  supply product by sub category, by brand
+   
+May be
+    Change in all forms for delete action it should be soft delete [with is deleted flag true]
+    Search not working 
+    In the form image needs to be displayed for entered e.g. product category when edit image not displaying

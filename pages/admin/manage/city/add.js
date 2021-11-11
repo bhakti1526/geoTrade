@@ -20,6 +20,7 @@ const initValue = {
   country: "",
   shortCityCode: "",
   isActive: true,
+  cityTelCode: "",
 };
 
 const validationSchema = Yup.object().shape({
@@ -27,6 +28,7 @@ const validationSchema = Yup.object().shape({
   state: Yup.string().required(),
   country: Yup.string().required(),
   shortCityCode: Yup.string().required(),
+  cityTelCode: Yup.string().required(),
 });
 
 const city = () => {
@@ -130,6 +132,17 @@ const city = () => {
                 />
               </FormGroup>
 
+              <FormGroup className="col-md-6 col-lg-3">
+                <FormLabel> City tel code</FormLabel>
+                <FormControl
+                  type="text"
+                  className="form-control"
+                  placeholder=" "
+                  name="cityTelCode"
+                  isInvalid={!!touched.cityTelCode && !!errors.cityTelCode}
+                />
+              </FormGroup>
+
               <Form.Group className="ml-3">
                 <Form.Label>status </Form.Label>
                 <Form.Check
@@ -141,7 +154,7 @@ const city = () => {
 
               <FormGroup className="col-md-12  text-center">
                 <div className="btn-page">
-                  <Button variant="primary btn-rounded" type="submit">
+                  <Button variant="primary" type="submit">
                     Add City
                   </Button>
                 </div>

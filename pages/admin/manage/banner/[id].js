@@ -24,6 +24,7 @@ const id = () => {
     redirectUrl: "",
     isDisplay: true,
     isRedirect: false,
+    indexNo: "",
   });
 
   const {
@@ -44,6 +45,7 @@ const id = () => {
         redirectUrl: bannerRes.redirectUrl,
         isDisplay: bannerRes.isDisplay,
         isRedirect: bannerRes.isRedirect,
+        indexNo: bannerRes.indexNo,
       });
     }
   }, [bannerRes]);
@@ -60,6 +62,7 @@ const id = () => {
     ),
     isDisplay: Yup.bool().oneOf([true, false]),
     isRedirect: Yup.bool().oneOf([true, false]),
+    indexNo: Yup.number().required(),
   });
 
   const handleSubmit = async (val) => {
@@ -128,7 +131,13 @@ const id = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Banner Image</FormLabel>
+                <FormLabel>
+                  {" "}
+                  Banner Image{" "}
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    image size : 747 x 485
+                  </small>{" "}
+                </FormLabel>
                 <FormControl
                   name="img"
                   type="file"
@@ -171,6 +180,19 @@ const id = () => {
                   {errors.isDisplay}
                 </Form.Control.Feedback>
               </FormGroup>
+
+              <Form.Group>
+                <Form.Label>show index</Form.Label>
+                <Form.Control
+                  name="indexNo"
+                  type="number"
+                  value={values.indexNo}
+                  isInvalid={!!touched.indexNo && !!errors.indexNo}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.indexNo}
+                </Form.Control.Feedback>
+              </Form.Group>
 
               <FormGroup className="col-md-6 custom-checkbox col-lg-4">
                 <FormLabel> Is Redirectable</FormLabel>

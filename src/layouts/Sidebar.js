@@ -74,6 +74,11 @@ const Sidebar = () => {
               link: "/admin/setup/email-forms",
               isActive: val.setup.emailForm,
             },
+            {
+              name: "company details",
+              link: "/admin/setup/other",
+              isActive: val.setup.emailForm,
+            },
           ],
         },
         {
@@ -152,6 +157,11 @@ const Sidebar = () => {
               name: "Manage Brand",
               link: "/admin/parameter/manage-brand",
               isActive: val.parameter.brnad,
+            },
+            {
+              name: "Requested Product",
+              link: "/admin/parameter/requested-product",
+              isActive: val.parameter.parentGroup,
             },
           ],
         },
@@ -355,7 +365,8 @@ const Sidebar = () => {
                         <a>Whislist</a>
                       </Link>
                     </li>
-                    <li>
+
+                    <li style={{ display: isSeller ? "none" : undefined }}>
                       <Link href="/buyer/switch-to-seller" passHref>
                         <a>Switch to seller</a>
                       </Link>
@@ -413,6 +424,17 @@ const Sidebar = () => {
                       </Link>
                     </li>
                     <li>
+                      <Link href="/seller/product_request" passHref>
+                        <a
+                          className={`${
+                            path === "ui/button" ? "mm-active" : ""
+                          }`}
+                        >
+                          Requseted Product
+                        </a>
+                      </Link>
+                    </li>
+                    <li>
                       <Link href="/seller/lead/profile" passHref>
                         <a
                           className={`${
@@ -461,27 +483,6 @@ const Sidebar = () => {
               </>
             ) : undefined}
           </MetisMenu>
-          {pathname.startsWith("/admin/") ? (
-            <>
-              <div className="copyright">
-                <p>
-                  <strong>GEO Trade Admin Dashboard</strong> ©
-                  {new Date().getFullYear()} All Rights Reserved
-                </p>
-                <p>Design &#38; Devlopment by Barodaweb</p>
-              </div>
-            </>
-          ) : pathname.startsWith("/seller") ||
-            pathname.startsWith("/buyer") ? (
-            <>
-              <div className="copyright">
-                <p>
-                  <strong>GEO Trade Admin Dashboard</strong> ©
-                  {new Date().getFullYear()} All Rights Reserved
-                </p>
-              </div>
-            </>
-          ) : undefined}
         </PerfectScrollbar>
       )}
     </div>

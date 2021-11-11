@@ -18,10 +18,10 @@ const parentGroup = () => {
       Header: "no",
       accessor: "id",
     },
-    {
-      Header: "seller type",
-      accessor: "sellerType.sellerTypeName",
-    },
+    // {
+    //   Header: "seller type",
+    //   accessor: "sellerType.sellerTypeName",
+    // },
     {
       Header: "group name",
       accessor: "parentGroupName",

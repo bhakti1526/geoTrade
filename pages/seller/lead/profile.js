@@ -17,8 +17,12 @@ const profile = () => {
       accessor: "id",
     },
     {
-      Header: "email",
-      accessor: "buyer.email",
+      Header: "buyer name",
+      accessor: "buyer.firstName",
+    },
+    {
+      Header: "mobile",
+      accessor: "buyer.mobile",
     },
 
     {
@@ -28,9 +32,7 @@ const profile = () => {
     {
       Header: "Action",
       accessor: "contact",
-      Cell: (e) => (
-        <button className="btn btn-primary rounded-pill">contact</button>
-      ),
+      Cell: (e) => <button className="btn btn-primary">contact</button>,
     },
   ];
 

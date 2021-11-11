@@ -211,9 +211,7 @@ const id = () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group>
-                <Button type="submit" className="rounded-pill">
-                  add user
-                </Button>
+                <Button type="submit">add user</Button>
               </Form.Group>
             </Form>
           );

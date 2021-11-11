@@ -14,15 +14,15 @@ const banner = () => {
 
   const column = [
     {
-      Header: "no",
+      Header: "SrNo",
       accessor: "id",
     },
+    // {
+    //   Header: "name",
+    //   accessor: "name",
+    // },
     {
-      Header: "name",
-      accessor: "name",
-    },
-    {
-      Header: "image",
+      Header: "Banner Image",
       accessor: "img",
       Cell: (e) => (
         <img
@@ -32,6 +32,26 @@ const banner = () => {
         />
       ),
     },
+
+    {
+      Header: "Redirection Link",
+      accessor: "redirectUrl",
+      Cell: (e) =>
+        e.value && (
+          <a
+            href={
+              e.value.startsWith("http://") || e.value.startsWith("https://")
+                ? e.value
+                : `https://${e.value}`
+            }
+            target="_blank"
+            style={{ textDecoration: "underline" }}
+          >
+            url
+          </a>
+        ),
+    },
+
     {
       Header: "status",
       accessor: "isDisplay",
@@ -44,6 +64,10 @@ const banner = () => {
           {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
         </span>
       ),
+    },
+    {
+      Header: "Display Order",
+      accessor: "indexNo",
     },
     {
       Header: "action",

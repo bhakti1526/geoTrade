@@ -20,6 +20,7 @@ const initSchema = {
   redirectUrl: "",
   isDisplay: true,
   isRedirect: false,
+  indexNo: "",
 };
 
 const add = () => {
@@ -44,6 +45,7 @@ const add = () => {
           : false;
       }),
     name: Yup.string().required("banner name is required"),
+    indexNo: Yup.number().required(),
     redirectUrl: Yup.string().matches(
       regMatch,
       "Website should be a valid URL"
@@ -59,6 +61,7 @@ const add = () => {
     formData.append("isRedirect", val.isRedirect);
     formData.append("redirectUrl", val.redirectUrl || "");
     formData.append("isDisplay", val.isDisplay);
+    formData.append("indexNo", val.indexNo);
 
     await postData(formData);
 
@@ -102,7 +105,13 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Banner Image</FormLabel>
+                <FormLabel>
+                  Banner Image (
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    image size : 747 x 485
+                  </small>
+                  )
+                </FormLabel>
                 <FormControl
                   name="img"
                   type="file"
@@ -147,6 +156,18 @@ const add = () => {
                 </Form.Control.Feedback>
               </FormGroup>
 
+              <Form.Group>
+                <Form.Label>show index</Form.Label>
+                <Form.Control
+                  name="indexNo"
+                  type="number"
+                  isInvalid={!!touched.indexNo && !!errors.indexNo}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.indexNo}
+                </Form.Control.Feedback>
+              </Form.Group>
+
               <FormGroup className="col-md-6 custom-checkbox col-lg-4">
                 <FormLabel> Is Redirectable</FormLabel>
                 <Form.Check
@@ -165,11 +186,7 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12 btn-page  text-center">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Banner
                 </Button>
               </FormGroup>

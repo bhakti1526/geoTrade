@@ -86,7 +86,7 @@ const manageBrand = () => {
   return (
     <WrapTable
       title="manage brand "
-      bText="add brnad"
+      bText="add brand"
       column={column}
       isLoading={isLoading}
       columnData={response}

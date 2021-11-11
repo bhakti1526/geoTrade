@@ -78,11 +78,7 @@ const add = () => {
         </FormGroup>
 
         <FormGroup className="col-md-12  text-center btn-page">
-          <Button
-            onClick={handleSubmite}
-            variant="primary btn-rounded"
-            type="submit"
-          >
+          <Button onClick={handleSubmite} variant="primary" type="submit">
             Update Page Content
           </Button>
         </FormGroup>

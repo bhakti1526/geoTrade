@@ -42,6 +42,7 @@ const id = () => {
     if (subCategoryRes) {
       setInitSchema({
         ...subCategoryRes,
+        sellerType: "617bb291fc13ae3f5c000000",
       });
     }
   }, [subCategoryRes]);
@@ -66,7 +67,7 @@ const id = () => {
   };
 
   return (
-    <WrapForm>
+    <WrapForm title="update subcategory">
       <Formik
         enableReinitialize
         onSubmit={handleSubmit}
@@ -84,7 +85,7 @@ const id = () => {
           return (
             <Form onChange={handleChange} onSubmit={handleSubmit}>
               <Row>
-                <Col md="4">
+                {/* <Col md="4">
                   <Form.Group>
                     <Form.Label>seller type</Form.Label>
                     <Form.Control
@@ -99,7 +100,7 @@ const id = () => {
                       ))}
                     </Form.Control>
                   </Form.Group>
-                </Col>
+                </Col> */}
                 <Col md="4">
                   <Form.Group>
                     <Form.Label>parent group</Form.Label>
@@ -134,8 +135,6 @@ const id = () => {
                     </Form.Control>
                   </Form.Group>
                 </Col>
-              </Row>
-              <Row>
                 <Col md="4">
                   <Form.Group>
                     <Form.Label> sub category</Form.Label>
@@ -150,6 +149,7 @@ const id = () => {
                   </Form.Group>
                 </Col>
               </Row>
+
               <Form.Group>
                 <Button disabled={isLoading} type="submit">
                   submit

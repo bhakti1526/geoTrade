@@ -17,7 +17,7 @@ import usePostAxios from "../../../../component/hooks/usePostAxios";
 
 const initValue = {
   parentGroup: "",
-  sellerType: "",
+  sellerType: "617bb291fc13ae3f5c000000",
   parentCatagoryName: "",
   parentCatagoryImg: "",
 };
@@ -128,7 +128,10 @@ const add = () => {
               onChange={handleChange}
               onSubmit={handleSubmit}
             >
-              <FormGroup className="col-md-6 col-lg-4">
+              {/* <FormGroup
+                className="col-md-6 col-lg-4"
+                style={{ display: "none" }}
+              >
                 <FormLabel> Seller Name</FormLabel>
                 <Form.Control
                   isInvalid={!!touched.sellerType && !!errors.sellerType}
@@ -140,7 +143,7 @@ const add = () => {
                     <option value={x._id}> {x.sellerTypeName} </option>
                   ))}
                 </Form.Control>
-              </FormGroup>
+              </FormGroup> */}
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel> Parent Group</FormLabel>
@@ -149,7 +152,7 @@ const add = () => {
                   styles={parenCategoryStyle}
                   ref={selectInputRef}
                   options={parent
-                    .filter((x) => x.sellerType._id === values.sellerType)
+                    // .filter((x) => x.sellerType._id === values.sellerType)
                     .map((x) => ({
                       value: x._id,
                       label: x.parentGroupName,
@@ -165,7 +168,13 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Parent Category Image</FormLabel>
+                <FormLabel>
+                  {" "}
+                  Parent Category Image
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    image size : 500 x 500
+                  </small>{" "}
+                </FormLabel>
                 <FormControl
                   isInvalid={
                     !!touched.parentCatagoryImg && !!errors.parentCatagoryImg
@@ -192,11 +201,7 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-12 btn-page text-center">
-                <Button
-                  disabled={isLoading}
-                  variant="primary btn-rounded"
-                  type="submit"
-                >
+                <Button disabled={isLoading} variant="primary" type="submit">
                   Add Parent Category
                 </Button>
               </FormGroup>

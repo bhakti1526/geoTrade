@@ -52,16 +52,17 @@ const add = () => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
-    img: Yup.mixed()
-      .required("A file is required")
-      .test("fileFormat", "image only", () => {
-        if (img === null || img === undefined) return false;
-        return img.type === "image/png"
-          ? true
-          : img.type === "image/jpeg"
-          ? true
-          : false;
-      }),
+    img: Yup.mixed(),
+    // .required("A file is required")
+    // .test("fileFormat", "image only", () => {
+    //   if (img === null || img === undefined) return false;
+    //   return img.type === "image/png"
+    //     ? true
+    //     : img.type === "image/jpeg"
+    //     ? true
+    //     : false;
+    // }),
+
     price: Yup.number().min(0).required(),
     tax: Yup.string().required(),
     note: Yup.string().required(),
@@ -353,11 +354,7 @@ const add = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button
-                    disabled={isLoading}
-                    variant="primary btn-rounded"
-                    type="submit"
-                  >
+                  <Button disabled={isLoading} variant="primary " type="submit">
                     Add Package
                   </Button>
                 </FormGroup>

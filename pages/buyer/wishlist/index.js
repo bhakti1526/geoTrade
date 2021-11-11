@@ -32,9 +32,7 @@ const index = () => {
     },
     {
       Header: "action",
-      Cell: (e) => (
-        <button className="btn btn-primary rounded-pill">remove</button>
-      ),
+      Cell: (e) => <button className="btn btn-primary">remove</button>,
     },
   ];
 

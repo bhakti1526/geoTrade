@@ -478,11 +478,14 @@ const add = () => {
                       ></i>
                     )}
                   </div>
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    image size : 600 x 450
+                  </small>
                 </div>
 
                 <FormGroup className="col-md-12  text-center">
                   <div className="btn-page mt-5">
-                    <Button variant="primary btn-rounded" type="submit">
+                    <Button variant="primary " type="submit">
                       Add Post
                     </Button>
                   </div>

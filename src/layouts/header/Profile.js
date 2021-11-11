@@ -19,8 +19,10 @@ const Profile = ({ logoutUser }) => {
   const { pathname, push } = useRouter();
 
   const handleLogOut = (e) => {
-    push("/admin");
     dispatch({ type: "LOG-OUT" });
+    // push("/admin");
+
+    window.location.href = "/admin";
   };
 
   return (

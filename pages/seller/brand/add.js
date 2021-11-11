@@ -241,11 +241,21 @@ const brand = () => {
                               isInvalid={!!touched.img && !!errors.img}
                             />
                           </div>
+                          <div>
+                            <small
+                              style={{
+                                color: "blue",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              Image size 468 x 152
+                            </small>
+                          </div>
                         </div>
 
                         <FormGroup className="col-md-12  text-center">
                           <div className="btn-page mt-5">
-                            <Button variant="primary btn-rounded" type="submit">
+                            <Button variant="primary " type="submit">
                               Update Brand
                             </Button>
                           </div>

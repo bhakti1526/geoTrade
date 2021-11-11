@@ -82,11 +82,7 @@ const changePassword = () => {
                   </Col>
                 </Row>
                 <Form.Group className="text-center">
-                  <Button
-                    disabled={isLoading}
-                    type="submit"
-                    className="rounded-pill"
-                  >
+                  <Button disabled={isLoading} type="submit">
                     change password
                   </Button>
                 </Form.Group>

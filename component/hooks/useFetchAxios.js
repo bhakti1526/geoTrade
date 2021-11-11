@@ -35,7 +35,9 @@ const useFetchAxios = (url) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getData();
+    if (!url.includes("undefined")) {
+      getData();
+    }
   }, [url]);
 
   return { isLoading, response, error, getData };

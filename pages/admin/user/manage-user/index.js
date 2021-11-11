@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import moment from "moment";
 import Link from "next/link";
 import { Dropdown } from "react-bootstrap";
 import WrapTable from "../../../../src/components/admin/WrapTable";
@@ -15,6 +16,8 @@ const manageUser = () => {
 
   if (isLoading === true) return <AppLoader />;
 
+  console.log("RESPONSE", response);
+
   const column = [
     {
       Header: "no",
@@ -24,23 +27,44 @@ const manageUser = () => {
       Header: "user info",
       accessor: "firstName",
     },
+    // {
+    //   Header: "email",
+    //   accessor: "email",
+    // },
     {
-      Header: "email",
-      accessor: "email",
+      Header: "date of registration",
+      accessor: "createdAt",
+      Cell: (e) => moment(e.value).format("DD/MM/YYYY"),
     },
     {
-      Header: "premium",
-      accessor: "package.isPackageActive",
-      Cell: (e) => (
-        <span
-          className={
-            e.value ? "badge light badge-success" : "badge light badge-danger"
-          }
-        >
-          {e.value ? "active".toUpperCase() : "disabled".toUpperCase()}
-        </span>
-      ),
+      Header: "package",
+      accessor: "package.subscription.package.name",
     },
+    // {
+    //   Header: "country",
+    //   accessor: "country.name",
+    // },
+    // {
+    //   Header: "state",
+    //   accessor: "state.name",
+    // },
+    // {
+    //   Header: "city",
+    //   accessor: "city.name",
+    // },
+    // {
+    //   Header: "package",
+    //   Cell: (s) => {
+    //     // try {
+    //     //   return moment(s?.row?.original?.package?.subscription?.paidDate).add(
+    //     //     "DD-MM-YYYY",
+    //     //     s?.row?.original?.package?.subscription?.duration
+    //     //   );
+    //     // } catch {
+    //     //   return "";
+    //     // }
+    //   },
+    // },
     {
       Header: "status",
       accessor: "isActive",
@@ -73,6 +97,13 @@ const manageUser = () => {
             </svg>
           </Dropdown.Toggle>
           <Dropdown.Menu alignRight={true}>
+            <Link
+              href={`${window.location}/edit/${s.row.original._id}`}
+              passHref
+            >
+              <Dropdown.Item as="a">edit seller</Dropdown.Item>
+            </Link>
+
             <Link href={`${window.location}/${s.row.original._id}`} passHref>
               <Dropdown.Item as="a">add packages</Dropdown.Item>
             </Link>

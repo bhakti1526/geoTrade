@@ -1,113 +1,117 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Editor } from "@tinymce/tinymce-react";
+import { useRouter } from "next/router";
+import { css } from "@emotion/css";
 import {
   Form,
-  FormLabel,
-  FormCheck,
   FormGroup,
+  FormLabel,
   FormControl,
   Button,
+  Col,
+  Row,
+  FormCheck,
 } from "react-bootstrap";
-import axios from "axios";
+import WrapFrom from "../../../../src/components/admin/WrapForm";
+import usePostAxios from "../../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../../component/hooks/useFetchAxios";
-import WrapForm from "../../../../src/components/admin/WrapForm";
 import AppLoader from "../../../../src/components/admin/AppLoader";
 
-const validatinSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  img: Yup.string().required(),
-  description: Yup.string().required(),
-  price: Yup.number().min(1).required(),
-  unit: Yup.string().required(),
-  brand: Yup.string().required(),
-  sellerType: Yup.string().required(),
-  parentCategory: Yup.string().required(),
-  parentGroup: Yup.string().required(),
-  isAdminApproved: Yup.bool().oneOf([true, false]).required(),
-});
+const imgStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  border: 1px solid rgb(212, 217, 222);
+  width: 80%;
+`;
 
-const id = () => {
-  const [img, setImg] = useState(null);
-  const [unitList, setUnitList] = useState([]);
-  const [brandList, setBrandList] = useState([]);
-  const [sellerTypeList, setSellerTypeList] = useState([]);
-  const [parentGroupList, setParentGroupList] = useState([]);
-  const [parentCategoryList, setParentCategoryList] = useState([]);
-
-  const [initSchema, setInitSchema] = useState({
+const add = () => {
+  const [initData, setInitData] = useState({
     name: "",
-    img: "",
     description: "",
-    price: "",
-    unit: "",
+    // sellerType: "",
+    // parentType: "",
+    // parentCategory: "",
     brand: "",
-    sellerType: "",
-    parentCategory: "",
-    parentGroup: "",
+    unit: "",
+    price: "",
+    img: "",
+    visibleCountry: "",
+    visibleState: "",
+    visibleCity: "",
+    geoCategory: "",
+    geoSubCategory: "",
     isAdminApproved: false,
   });
 
+  const imgRef = useRef(null);
+
   const {
-    query: { id },
     push,
+    query: { id },
   } = useRouter();
 
-  const { isLoading: productLoad, response: productRes } = useFetchAxios(
+  // const { isLoading: sellerLoad, response: sellerRes } = useFetchAxios(
+  //   "/api/other/sellertype"
+  // );
+
+  const { isLoading: postLoad, response: postRes } = useFetchAxios(
     `/getPost?id=${id}`
   );
 
-  const { isLoading: unitLoad, response: unitRes } = useFetchAxios("/getUnits");
-  const { isLoading: sellerLoad, response: sellerRes } =
-    useFetchAxios("/getSellerType");
-  const { isLoading: parentLoad, response: categoryRes } =
-    useFetchAxios("/getParentCategory");
-  const { isLoading: parentGroupLoad, response: groupRes } =
-    useFetchAxios("/getParentGroup");
-  const { isLoading: brandLoad, response: brandRes } =
-    useFetchAxios("/getBrands");
+  // const { isLoading: parentLoad, response: parentRes } = useFetchAxios(
+  //   "/api/other/parenttype"
+  // );
 
-  useEffect(() => {
-    if (productRes) {
-      setInitSchema({
-        ...productRes,
-        parentCategory: productRes?.parentCategory?._id,
-        parentGroup: productRes?.parentType?._id,
-        sellerType: productRes?.sellerType?._id,
-        unit: productRes?.unit?._id,
-        brand: productRes?.brand?._id,
-      });
-    }
-  }, [productRes]);
+  // const { isLoading: paremtCategoryLoad, response: paremtCategoryRes } =
+  //   useFetchAxios("/api/other/parentcategory");
 
-  useEffect(() => {
-    setUnitList(unitRes);
-  }, [unitRes]);
+  const { isLoading: geoLoad, response: geoRes } = useFetchAxios(
+    "/api/public/geobazar/category"
+  );
 
-  useEffect(() => {
-    setSellerTypeList(sellerRes);
-  }, [sellerRes]);
+  const { isLoading: unitLoad, response: unitRes } =
+    useFetchAxios("/api/other/unit");
 
-  useEffect(() => {
-    setParentCategoryList(categoryRes);
-  }, [categoryRes]);
+  const { isLoading: brnadLoad, response: brandRes } = useFetchAxios(
+    "/api/other/brand?isSelect=true"
+  );
 
-  useEffect(() => {
-    setParentGroupList(groupRes);
-  }, [groupRes]);
+  const { isLoading: countryLoad, response: countryRes } =
+    useFetchAxios("/api/other/country");
 
-  useEffect(() => {
-    setBrandList(brandRes);
-  }, [brandRes]);
+  const { isLoading: stateLoad, response: stateRes } =
+    useFetchAxios("/api/other/state");
 
-  if (productLoad === true) return <AppLoader />;
-  if (unitLoad === true) return <AppLoader />;
-  if (sellerLoad === true) return <AppLoader />;
-  if (parentLoad === true) return <AppLoader />;
-  if (parentGroupLoad === true) return <AppLoader />;
-  if (brandLoad === true) return <AppLoader />;
+  const { isLoading: cityLoad, response: cityRes } =
+    useFetchAxios("/api/other/city");
+
+  console.log(countryRes, stateRes, cityRes);
+
+  const [img, setImg] = useState(null);
+  const [imgUrl, setImgUrl] = useState("");
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(),
+    description: Yup.string().required(),
+    // sellerType: Yup.string().required(),
+    // parentType: Yup.string().required(),
+    // parentCategory: Yup.string().required(),
+    geoCategory: Yup.string().required(),
+    geoSubCategory: Yup.string().required(),
+    brand: Yup.string().required(),
+    unit: Yup.string().required(),
+    price: Yup.number().required().min(20),
+    visibleCountry: Yup.string().required(),
+    visibleState: Yup.string().required(),
+    visibleCity: Yup.string().required(),
+    img: Yup.string().required(),
+    isAdminApproved: Yup.bool().oneOf([true, false]),
+  });
 
   const handleSubmit = async (val) => {
     if (img !== null && img !== undefined) {
@@ -117,190 +121,444 @@ const id = () => {
         .post(`${process.env.NEXT_PUBLIC_API_URL}/api/img/upload`, formData)
         .then((res) => {
           axios
-            .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePost`, {
+            .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePost/${id}`, {
               ...val,
               img: res.data.data,
             })
             .then((res) => {
-              push(`/admin/user/manage-post?id=${productRes.createdBy._id}`);
+              push(`/admin/user/manage-post?id=${postRes.createdBy}`);
             });
         });
     } else {
       axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePost`, {
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/updatePost/${id}`, {
           ...val,
         })
         .then((res) => {
-          push(`/admin/user/manage-post?id=${productRes.createdBy._id}`);
+          push(`/admin/user/manage-post?id=${postRes.createdBy._id}`);
         });
     }
   };
 
+  // const [parentGroup, setParentGroup] = useState([]);
+  // const [parentCategory, setParentCategory] = useState([]);
+  // const [sellerTypes, setSellerType] = useState([]);
+  const [brand, setBrand] = useState([]);
+  const [unit, setUnit] = useState([]);
+
+  // useEffect(() => {
+  //   if (parentRes) {
+  //     setParentGroup(parentRes);
+  //   }
+  // }, [parentRes]);
+
+  // useEffect(() => {
+  //   if (paremtCategoryRes) {
+  //     setParentCategory(paremtCategoryRes);
+  //   }
+  // }, [paremtCategoryRes]);
+
+  // useEffect(() => {
+  //   if (sellerRes) {
+  //     setSellerType(sellerRes);
+  //   }
+  // }, [sellerRes]);
+
+  useEffect(() => {
+    if (brandRes) {
+      setBrand(brandRes);
+    }
+  }, [brandRes]);
+
+  useEffect(() => {
+    if (unitRes) {
+      setUnit(unitRes);
+    }
+  }, [unitRes]);
+
+  useEffect(() => {
+    if (postRes) {
+      console.log("PRICE!!!", postRes.price);
+      setInitData({
+        name: postRes.name,
+        description: postRes.description,
+        brand: postRes.brand._id,
+        unit: postRes.unit._id,
+        price: postRes.price,
+        img: postRes.img,
+        visibleCountry: postRes.visibleCountry,
+        visibleState: postRes.visibleState,
+        visibleCity: postRes.visibleCity,
+        geoCategory: postRes.geoCategory._id,
+        geoSubCategory: postRes.geoSubCategory._id,
+        isAdminApproved: postRes.isAdminApproved,
+      });
+
+      setImgUrl(postRes.img);
+    }
+  }, [postRes]);
+
+  // if (sellerLoad === true) return <AppLoader />;
+  // if (parentLoad === true) return <AppLoader />;
+  // if (paremtCategoryLoad === true) return <AppLoader />;
+  if (brnadLoad === true) return <AppLoader />;
+  if (unitLoad === true) return <AppLoader />;
+  if (countryLoad === true) return <AppLoader />;
+  if (stateLoad === true) return <AppLoader />;
+  if (cityLoad === true) return <AppLoader />;
+  if (geoLoad === true) return <AppLoader />;
+
   return (
-    <WrapForm title="update post">
+    <WrapFrom title="add post">
       <Formik
-        enableReinitialize
         onSubmit={handleSubmit}
-        validationSchema={validatinSchema}
-        initialValues={initSchema}
+        enableReinitialize
+        initialValues={initData}
+        validationSchema={validationSchema}
       >
         {({
           handleSubmit,
           handleChange,
           values,
-          touched,
-          errors,
           setFieldValue,
+          errors,
+          touched,
         }) => {
+          console.log(values);
+
           return (
             <>
               <Form
-                onSubmit={handleSubmit}
-                onChange={handleChange}
                 className="row"
+                onChange={handleChange}
+                onSubmit={handleSubmit}
               >
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Product Name</FormLabel>
-                  <FormControl
-                    type="text"
-                    className="form-control"
-                    placeholder=""
-                    name="name"
-                    value={values.name}
-                  />
-                </FormGroup>
+                <div className="col-md-8">
+                  <div className="row">
+                    <FormGroup className="col-md-12 col-lg-4">
+                      <FormLabel> Product Name</FormLabel>
+                      <FormControl
+                        name="name"
+                        type="text"
+                        className="form-control"
+                        placeholder=""
+                        isInvalid={!!touched.name && !!errors.name}
+                        value={values.name}
+                      />
+                    </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Product Image</FormLabel>
-                  <FormControl
-                    name="img"
-                    type="file"
-                    className="form-control"
-                    accept="image/*"
-                    onChange={(e) => setImg(e.target.files[0])}
-                    isInvalid={!!touched.img && !!errors.img}
-                  />
-                </FormGroup>
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel> Price</FormLabel>
+                      <FormControl
+                        type="text"
+                        className="form-control"
+                        placeholder=""
+                        name="price"
+                        isInvalid={!!touched.price && !!errors.price}
+                        value={values.price}
+                      />
+                    </FormGroup>
 
-                <FormGroup className="col-md-12 col-lg-12">
-                  <FormLabel> Post Description</FormLabel>
-                  <div className="summernote">
-                    <Editor
-                      initialValue={values.description}
-                      onChange={(e) =>
-                        setFieldValue("description", e.target.getContent())
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel> Unit</FormLabel>
+                      <Form.Control
+                        isInvalid={!!touched.unit && !!errors.unit}
+                        as="select"
+                        name="unit"
+                        defaultValue="Choose..."
+                        value={values.unit}
+                      >
+                        <option>Choosee....</option>
+                        {unit.map((ui) => (
+                          <option key={ui._id} value={ui._id}>
+                            {ui.name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-12 col-lg-12">
+                      <FormLabel> Porduct Info </FormLabel>
+                      <div
+                        className="summernote"
+                        style={{
+                          border:
+                            !!touched.description && !!errors.description
+                              ? "1px solid red"
+                              : "1px solid transparent",
+                        }}
+                      >
+                        <Editor
+                          initialValue={initData.description}
+                          onChange={(e) =>
+                            setFieldValue("description", e.target.getContent())
+                          }
+                        />
+                      </div>
+                    </FormGroup>
+
+                    {/* <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel> Seller Type</FormLabel>
+                      <Form.Control
+                        value={values.sellerType}
+                        isInvalid={!!touched.sellerType && !!errors.sellerType}
+                        as="select"
+                        name="sellerType"
+                      >
+                        <option>Choosee....</option>
+
+                        {sellerTypes.map((s) => (
+                          <option key={s._id} value={s._id}>
+                            {s.sellerTypeName}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel> Parent type</FormLabel>
+                      <Form.Control
+                        value={values.parentType}
+                        isInvalid={!!touched.parentType && !!errors.parentType}
+                        name="parentType"
+                        as="select"
+                        defaultValue="Choose..."
+                        disabled={!values.sellerType}
+                      >
+                        <option>Choosee....</option>
+                        {parentGroup
+                          .filter((x) => x.sellerType == values.sellerType)
+                          .map((p) => (
+                            <option key={p._id} value={p._id}>
+                              {p.parentGroupName}
+                            </option>
+                          ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel> Parent Category</FormLabel>
+                      <Form.Control
+                        value={values.parentCategory}
+                        isInvalid={
+                          !!touched.parentCategory && !!errors.parentCategory
+                        }
+                        as="select"
+                        name="parentCategory"
+                        defaultValue="Choose..."
+                        disabled={!values.parentType}
+                      >
+                        <option>Choosee....</option>
+                        {parentCategory
+                          .filter((x) => x.parentGroup == values.parentType)
+                          .map((p) => (
+                            <option key={p._id} value={p._id}>
+                              {p.parentCatagoryName}
+                            </option>
+                          ))}
+                      </Form.Control>
+                    </FormGroup> */}
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel>Brand</FormLabel>
+                      <Form.Control
+                        value={values.brand}
+                        isInvalid={!!touched.brand && !!errors.brand}
+                        as="select"
+                        name="brand"
+                      >
+                        <option>Choosee....</option>
+                        {brand.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel>category</FormLabel>
+                      <Form.Control
+                        isInvalid={
+                          !!touched.geoCategory && !!errors.geoCategory
+                        }
+                        as="select"
+                        name="geoCategory"
+                        value={values.geoCategory}
+                      >
+                        <option>Choosee....</option>
+                        {geoRes.category.map((x) => (
+                          <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </FormGroup>
+
+                    <FormGroup className="col-md-6 col-lg-4">
+                      <FormLabel>subcategory</FormLabel>
+                      <Form.Control
+                        isInvalid={
+                          !!touched.geoSubCategory && !!errors.geoSubCategory
+                        }
+                        as="select"
+                        name="geoSubCategory"
+                        value={values.geoSubCategory}
+                      >
+                        <option>Choosee....</option>
+                        {geoRes.subcategory
+                          .filter((x) => x.category === values.geoCategory)
+                          .map((x) => (
+                            <option key={x._id} value={x._id}>
+                              {x.name}
+                            </option>
+                          ))}
+                      </Form.Control>
+                    </FormGroup>
+                  </div>
+                  <Row>
+                    <Form.Group as={Col} md="4">
+                      <Form.Label>available country</Form.Label>
+                      <Form.Control
+                        name="visibleCountry"
+                        value={values.visibleCountry}
+                        isInvalid={
+                          !!touched.visibleCountry && !!errors.visibleCountry
+                        }
+                        as="select"
+                      >
+                        <option>Choosee...</option>
+                        {countryRes.map((x) => (
+                          <option value={x._id}>{x.name}</option>
+                        ))}
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group as={Col} md="4">
+                      <Form.Label>available state</Form.Label>
+                      <Form.Control
+                        name="visibleState"
+                        value={values.visibleState}
+                        isInvalid={
+                          !!touched.visibleState && !!errors.visibleState
+                        }
+                        as="select"
+                        disabled={!values.visibleCountry}
+                      >
+                        <option>Choosee...</option>
+                        {stateRes
+                          .filter((x) => x.country == values.visibleCountry)
+                          .map((x) => (
+                            <option value={x._id}>{x.name}</option>
+                          ))}
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group as={Col} md="4">
+                      <Form.Label>available city</Form.Label>
+                      <Form.Control
+                        name="visibleCity"
+                        value={values.visibleCity}
+                        isInvalid={
+                          !!touched.visibleCity && !!errors.visibleCity
+                        }
+                        as="select"
+                        disabled={!values.visibleState}
+                      >
+                        <option>Choosee...</option>
+                        {cityRes
+                          .filter((x) => x.state == values.visibleState)
+                          .map((x) => (
+                            <option value={x._id}>{x.name}</option>
+                          ))}
+                      </Form.Control>
+                    </Form.Group>
+                  </Row>
+
+                  <FormGroup className="col-md-6 col-lg-4">
+                    <FormLabel> isAdminApproved</FormLabel>
+                    <FormCheck
+                      name="isActive"
+                      type="checkbox"
+                      label="active or inactive"
+                      checked={values.isAdminApproved}
+                      onChange={() =>
+                        setFieldValue(
+                          "isAdminApproved",
+                          !values.isAdminApproved
+                        )
                       }
                     />
+                  </FormGroup>
+                </div>
+
+                <div className="col-md-4">
+                  <div
+                    className={imgStyle}
+                    onClick={() => imgRef.current.click()}
+                    style={{
+                      border:
+                        !!touched.img && !!errors.img
+                          ? "1px solid red"
+                          : "1px solid rgb(212, 217, 222)",
+                    }}
+                  >
+                    <FormControl
+                      name="img"
+                      type="file"
+                      className="form-control"
+                      accept="image/*"
+                      style={{
+                        display: "none",
+                      }}
+                      ref={imgRef}
+                      onChange={(e) => {
+                        const type = e.target.files[0].type;
+                        if (type === "image/jpeg" || type === "image/png") {
+                          setImg(e.target.files[0]);
+                          setImgUrl("");
+                        }
+                      }}
+                      isInvalid={!!touched.img && !!errors.img}
+                    />
+
+                    {imgUrl !== "" || img !== null ? (
+                      <img
+                        style={{ width: "85%", height: "auto" }}
+                        src={
+                          imgUrl
+                            ? `${process.env.NEXT_PUBLIC_API_URL}/api/img/${imgUrl}`
+                            : URL.createObjectURL(img)
+                        }
+                      />
+                    ) : (
+                      <i
+                        className="flaticon-381-photo-camera"
+                        style={{ fontSize: "34px" }}
+                      ></i>
+                    )}
                   </div>
-                </FormGroup>
+                  <>
+                    <small
+                      style={{ color: "blue", textDecoration: "underline" }}
+                    >
+                      image size : 600 x 450
+                    </small>
+                  </>
+                </div>
 
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Price</FormLabel>
-                  <FormControl
-                    type="text"
-                    className="form-control"
-                    placeholder=""
-                    name="price"
-                    value={values.price}
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Choose Unit</FormLabel>
-                  <Form.Control name="unit" value={values.unit} as="select">
-                    <option>select</option>
-                    {unitList.map((x) => (
-                      <option key={x._id} value={x._id}>
-                        {x.name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Choose Brand</FormLabel>
-                  <Form.Control name="brand" value={values.brand} as="select">
-                    <option>select</option>
-                    {brandList.map((x) => (
-                      <option key={x._id} value={x._id}>
-                        {x.name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Choose Seller Type</FormLabel>
-                  <Form.Control
-                    name="sellerType"
-                    value={values.sellerType}
-                    as="select"
-                  >
-                    <option>select</option>
-                    {sellerTypeList.map((x) => (
-                      <option key={x._id} value={x._id}>
-                        {x.sellerTypeName}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Parent Group</FormLabel>
-                  <Form.Control
-                    name="parentGroup"
-                    value={values.parentGroup}
-                    as="select"
-                  >
-                    <option>select</option>
-                    {parentGroupList.map((x) => (
-                      <option key={x._id} value={x._id}>
-                        {x.parentGroupName}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Parent Category</FormLabel>
-                  <Form.Control
-                    name="parentCategory"
-                    value={values.parentCategory}
-                    as="select"
-                  >
-                    <option>select</option>
-                    {parentCategoryList.map((x) => (
-                      <option key={x._id} value={x._id}>
-                        {x.parentCatagoryName}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </FormGroup>
-
-                <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Admin Approved</FormLabel>
-                  <FormCheck
-                    checked={values.isAdminApproved}
-                    onClick={() =>
-                      setFieldValue("isAdminApproved", !values.isAdminApproved)
-                    }
-                    type="checkbox"
-                    label="active or inactive"
-                  />
-                </FormGroup>
-
-                <FormGroup className="col-md-12 btn-page text-center">
-                  <Button variant="primary btn-rounded" type="submit">
-                    Update Post
-                  </Button>
+                <FormGroup className="col-md-12  text-center">
+                  <div className="btn-page mt-5">
+                    <Button variant="primary " type="submit">
+                      Add Post
+                    </Button>
+                  </div>
                 </FormGroup>
               </Form>
             </>
           );
         }}
       </Formik>
-    </WrapForm>
+    </WrapFrom>
   );
 };
 
-export default id;
+export default add;

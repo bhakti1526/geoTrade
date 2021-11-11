@@ -93,7 +93,7 @@ const update = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(),
-    img: Yup.string().required(),
+    img: Yup.mixed(),
     description: Yup.string().required(),
     stateDate: Yup.string().required(),
     endDate: Yup.string().required(),
@@ -173,7 +173,15 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">
-                  <FormLabel> Offer Name</FormLabel>
+                  <FormLabel>
+                    {" "}
+                    Offer image{" "}
+                    <small
+                      style={{ color: "blue", textDecoration: "underline" }}
+                    >
+                      image size : 140 x 95
+                    </small>{" "}
+                  </FormLabel>
                   <FormControl
                     type="file"
                     className="form-control"
@@ -377,7 +385,7 @@ const update = () => {
                 </FormGroup>
 
                 <FormGroup className="col-md-12 btn-page text-center">
-                  <Button variant="primary btn-rounded" type="submit">
+                  <Button variant="primary " type="submit">
                     Add Offers
                   </Button>
                 </FormGroup>

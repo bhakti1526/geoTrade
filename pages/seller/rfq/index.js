@@ -12,7 +12,7 @@ const index = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card">
             <div className="card-header d-flex">
-              <h4 className="card-title">RFQ's</h4>
+              <h4 className="card-title">Request for Quotation</h4>
             </div>
             <div className="card-body">
               {isLoading === true ? (
