@@ -156,7 +156,7 @@ const add = () => {
                 </Form.Control.Feedback>
               </FormGroup>
 
-              <Form.Group>
+              <Form.Group className="col-md-6 col-lg-4">
                 <Form.Label>show index</Form.Label>
                 <Form.Control
                   name="indexNo"

@@ -126,7 +126,7 @@ const WrapTable = ({
             <div className="table-responsive">
               <div className="dataTables_wrapper">
                 <table
-                  className="table table-responsive-md text-center vb-table"
+                  className="table table-responsive-md table-responsive-xl text-center vb-table"
                   {...getTableProps()}
                 >
                   <thead>

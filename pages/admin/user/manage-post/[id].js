@@ -26,7 +26,7 @@ const imgStyle = css`
   align-items: center;
   height: 30vh;
   border: 1px solid rgb(212, 217, 222);
-  width: 80%;
+  width: 100%;
 `;
 
 const add = () => {
@@ -233,7 +233,7 @@ const add = () => {
                 onChange={handleChange}
                 onSubmit={handleSubmit}
               >
-                <div className="col-md-8">
+                <div className="col-md-12 col-lg-12 col-xl-8">
                   <div className="row">
                     <FormGroup className="col-md-12 col-lg-4">
                       <FormLabel> Product Name</FormLabel>
@@ -490,7 +490,7 @@ const add = () => {
                   </FormGroup>
                 </div>
 
-                <div className="col-md-4">
+                <div className="col-md-12 col-lg-12 col-xl-4">
                   <div
                     className={imgStyle}
                     onClick={() => imgRef.current.click()}

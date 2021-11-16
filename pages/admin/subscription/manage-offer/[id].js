@@ -162,7 +162,7 @@ const update = () => {
                 onSubmit={handleSubmit}
                 className="row"
               >
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Name</FormLabel>
                   <FormControl
                     type="text"
@@ -172,7 +172,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>
                     {" "}
                     Offer image{" "}
@@ -192,7 +192,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-12">
+                <FormGroup className="col-md-12 col-lg-12">
                   <FormLabel> Offer Description </FormLabel>
                   <div className="summernote">
                     <Editor
@@ -205,7 +205,7 @@ const update = () => {
                   </div>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Start Date</FormLabel>
                   <FormControl
                     type="date"
@@ -218,7 +218,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> End Date</FormLabel>
                   <FormControl
                     type="date"
@@ -233,7 +233,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Code </FormLabel>
                   <FormControl
                     type="text"
@@ -243,7 +243,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer User Count </FormLabel>
                   <FormControl
                     type="text"
@@ -253,7 +253,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-12">
+                <FormGroup className="col-md-12 col-lg-12">
                   <FormLabel> Offer Terms </FormLabel>
                   <div className="summernote">
                     <Editor
@@ -266,7 +266,7 @@ const update = () => {
                   </div>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Country</FormLabel>
                   <FormControl
                     value={values.offerOnCountry}
@@ -280,7 +280,7 @@ const update = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>state</FormLabel>
                   <FormControl
                     value={values.offerOnState}
@@ -294,7 +294,7 @@ const update = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> City</FormLabel>
                   <FormControl
                     value={values.offerOnCity}
@@ -308,7 +308,7 @@ const update = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer ammount Type</FormLabel>
                   <FormControl
                     value={values.offerAmountType}
@@ -321,7 +321,7 @@ const update = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Percentage/Ammount </FormLabel>
                   <FormControl
                     type="text"
@@ -331,7 +331,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Offer Minimum Ammount </FormLabel>
                   <FormControl
                     type="text"
@@ -341,7 +341,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Maximum Applicable On </FormLabel>
                   <FormControl
                     type="text"
@@ -351,7 +351,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Maximum Offer Applicable On</FormLabel>
                   <FormControl
                     type="text"
@@ -361,7 +361,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Is Min Applicable On</FormLabel>
                   <Form.Check
                     checked={values.IsMinApplicableOn}
@@ -375,7 +375,7 @@ const update = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Status</FormLabel>
                   <Form.Check
                     checked={values.isActive}

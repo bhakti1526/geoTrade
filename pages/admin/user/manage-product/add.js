@@ -253,8 +253,8 @@ const product = () => {
                         onChange={handleChange}
                         onSubmit={handleSubmit}
                       >
-                        <div className="row">
-                          <div className="col-md-6">
+                        <div className="row m-0">
+                          <div className="col-md-12 col-xl-6">
                             <div className="row m-0">
                               <div className="col-4 col-md-3 col-lg-2 p-0">
                                 <ImgBlock img={img1} setImg={setImg1} />
@@ -263,7 +263,7 @@ const product = () => {
                                 <ImgBlock img={img4} setImg={setImg4} />
                                 <ImgBlock img={img5} setImg={setImg5} />
                               </div>
-                              <div className="col-8 col-md-9 col-lg-9 p-0">
+                              <div className="col-8 col-md-9 col-lg-10 p-0">
                                 <BigImgBlock img={img} setImg={setImg} />
                                 <div className="row m-0">
                                   <OverlayTrigger
@@ -322,7 +322,7 @@ const product = () => {
                             </div>
                           </div>
 
-                          <div class="col-md-6">
+                          <div class="col-md-12 col-xl-6 mt-4 mt-xl-0">
                             <div className="row align-items-center mt-4 mt-md-0">
                               <FormGroup className="form-group col-md-12">
                                 <FormLabel>Product/Service Name</FormLabel>
@@ -394,7 +394,7 @@ const product = () => {
                           </div>
                         </div>
 
-                        <Col md="3">
+                        <Col md="6" lg="6" xl="3">
                           <Form.Group>
                             <Form.Label>Brand</Form.Label>
                             <Form.Control
@@ -433,7 +433,7 @@ const product = () => {
                           </FormGroup>
                         </Col> */}
 
-                        <Col md="3">
+                        <Col md="6" lg="6" xl="3">
                           <Form.Group>
                             <Form.Label>Parent group</Form.Label>
                             <Form.Control
@@ -458,7 +458,7 @@ const product = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="3">
+                        <Col md="6" lg="6" xl="3">
                           <Form.Group>
                             <Form.Label>Parent category</Form.Label>
                             <Form.Control
@@ -485,7 +485,7 @@ const product = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col md="3">
+                        <Col md="6" lg="6" xl="3">
                           <Form.Group>
                             <Form.Label>Sub Parent category</Form.Label>
                             <Form.Control
@@ -513,7 +513,7 @@ const product = () => {
                           </Form.Group>
                         </Col>
 
-                        <Col md="4">
+                        <Col md="6" lg="6" xl="3">
                           <Form.Label>
                             search tags (seprate it with coma)
                           </Form.Label>

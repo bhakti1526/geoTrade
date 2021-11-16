@@ -112,7 +112,7 @@ const id = () => {
               >
                 <div className="col-md-12">
                   <div className="row">
-                    <FormGroup className="col-md-4  ">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel> Brand Name</FormLabel>
                       <FormControl
                         type="text"
@@ -123,7 +123,7 @@ const id = () => {
                       />
                     </FormGroup>
 
-                    <FormGroup className="col-md-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel>
                         Brand image
                         <small

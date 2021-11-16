@@ -148,7 +148,7 @@ const add = () => {
                 onSubmit={handleSubmit}
                 className="row"
               >
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Name</FormLabel>
                   <FormControl
                     type="text"
@@ -157,7 +157,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>
                     Offer image
                     <small
@@ -178,7 +178,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-12">
+                <FormGroup className="col-md-12 col-lg-12">
                   <FormLabel> Offer Description </FormLabel>
                   <div className="summernote">
                     <Editor
@@ -190,7 +190,7 @@ const add = () => {
                   </div>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Start Date</FormLabel>
                   <FormControl
                     type="date"
@@ -202,7 +202,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> End Date</FormLabel>
                   <FormControl
                     type="date"
@@ -216,7 +216,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Code </FormLabel>
                   <FormControl
                     type="text"
@@ -225,7 +225,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer User Count </FormLabel>
                   <FormControl
                     type="text"
@@ -234,7 +234,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-12">
+                <FormGroup className="col-md-12 col-lg-12">
                   <FormLabel> Offer Terms </FormLabel>
                   <div className="summernote">
                     <Editor
@@ -246,7 +246,7 @@ const add = () => {
                   </div>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Country</FormLabel>
                   <FormControl name="offerOnCountry" as="select">
                     <option>select</option>
@@ -256,7 +256,7 @@ const add = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>state</FormLabel>
                   <FormControl name="offerOnState" as="select">
                     <option>select</option>
@@ -266,7 +266,7 @@ const add = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> City</FormLabel>
                   <FormControl name="offerOnCity" as="select">
                     <option>select</option>
@@ -276,7 +276,7 @@ const add = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer ammount Type</FormLabel>
                   <FormControl name="offerAmountType" as="select">
                     <option>select</option>
@@ -285,7 +285,7 @@ const add = () => {
                   </FormControl>
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Percentage/Ammount </FormLabel>
                   <FormControl
                     type="text"
@@ -294,7 +294,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Offer Minimum Ammount </FormLabel>
                   <FormControl
                     type="text"
@@ -303,7 +303,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Offer Maximum Applicable On </FormLabel>
                   <FormControl
                     type="text"
@@ -312,7 +312,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel> Maximum Offer Applicable On</FormLabel>
                   <FormControl
                     type="text"
@@ -321,7 +321,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Is Min Applicable On</FormLabel>
                   <Form.Check
                     checked={values.IsMinApplicableOn}
@@ -335,7 +335,7 @@ const add = () => {
                   />
                 </FormGroup>
 
-                <FormGroup className="col-md-6 col-lg-4">
+                <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                   <FormLabel>Status</FormLabel>
                   <Form.Check
                     checked={values.isActive}

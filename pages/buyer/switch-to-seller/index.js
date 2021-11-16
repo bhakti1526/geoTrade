@@ -7,9 +7,9 @@ import Select from "react-select";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import { useRouter } from "next/router";
-// import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { createCustomEqual } from "fast-equals";
-// import { isLatLngLiteral } from "@googlemaps/typescript-guards";
+import { isLatLngLiteral } from "@googlemaps/typescript-guards";
 
 import axios from "axios";
 
@@ -224,7 +224,7 @@ const SecondForm = ({ location, setFormVal }) => {
             `}
           >
             <Form.Label>Map</Form.Label>
-            {/* <Wrapper
+            <Wrapper
               apiKey={"AIzaSyBr6sMoz4SQBmeSEI4lIDTkyjOEVCkKSj0"}
               render={render}
             >
@@ -239,7 +239,7 @@ const SecondForm = ({ location, setFormVal }) => {
                   <Marker key={i} position={latLng} />
                 ))}
               </Map>
-            </Wrapper> */}
+            </Wrapper>
           </Form.Group>
         </Col>
       </Row>

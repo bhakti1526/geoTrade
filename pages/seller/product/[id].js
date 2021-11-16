@@ -501,9 +501,7 @@ const id = () => {
                                 <FormLabel className="d-none d-md-block">
                                   &nbsp;
                                 </FormLabel>
-                                <p className="mb-0 text-center">
-                                  <small>Quantity Type</small>
-                                </p>
+                                <p className="mb-0 text-center">-per-</p>
                               </FormGroup>
                               <FormGroup className="form-group col-md-5">
                                 <FormLabel className="d-none d-md-block">
@@ -561,7 +559,7 @@ const id = () => {
                           </div>
                         </div>
 
-                        <Col md="6" lg="4" xl="3">
+                        <Col md="3">
                           <Form.Group>
                             <Form.Label>Brand</Form.Label>
                             <Form.Control
@@ -598,9 +596,9 @@ const id = () => {
                             </Form.Control>
                           </FormGroup>
                         </Col> */}
-                        <Col md="6" lg="4" xl="3">
+                        <Col md="3">
                           <Form.Group>
-                            <Form.Label>Industeries </Form.Label>
+                            <Form.Label>Parent group</Form.Label>
                             <Form.Control
                               name="parentGroup"
                               isInvalid={
@@ -623,7 +621,7 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="6" lg="4" xl="3">
+                        <Col md="3">
                           <Form.Group>
                             <Form.Label>Parent category</Form.Label>
                             <Form.Control
@@ -649,7 +647,7 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="6" lg="4" xl="3">
+                        <Col md="3">
                           <Form.Group>
                             <Form.Label>Sub Parent category</Form.Label>
                             <Form.Control
@@ -676,12 +674,9 @@ const id = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col md="6" lg="4" xl="3">
+                        <Col md="4">
                           <Form.Label>
-                            Marketing Keyword
-                            <small style={{ color: "blue" }}>
-                              (seprate it with coma)
-                            </small>
+                            search tags (seprate it with coma)
                           </Form.Label>
                           <Form.Control
                             name="searchTag"

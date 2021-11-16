@@ -55,7 +55,7 @@ const add = () => {
           return (
             <Form onChange={handleChange} onSubmit={handleSubmit}>
               <Row>
-                <Col md="4">
+                <Col md="6" lg="6" xl="4">
                   <Form.Group>
                     <Form.Label>GeoBazar category</Form.Label>
                     <Form.Control
@@ -71,7 +71,7 @@ const add = () => {
                     </Form.Control>
                   </Form.Group>
                 </Col>
-                <Col md="4">
+                <Col md="6" lg="6" xl="4">
                   <Form.Group>
                     <Form.Label>GeoBazar sub category</Form.Label>
                     <Form.Control
@@ -81,7 +81,7 @@ const add = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col md="4">
+                <Col md="6" lg="6" xl="4">
                   <Form.Group>
                     <Form.Label>Status</Form.Label>
                     <Form.Check
@@ -95,7 +95,7 @@ const add = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col  md="12">
                   <Button type="submit" disabled={postLoading}>
                     add
                   </Button>
