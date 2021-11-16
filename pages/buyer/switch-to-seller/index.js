@@ -7,6 +7,9 @@ import Select from "react-select";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import { useRouter } from "next/router";
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { createCustomEqual } from "fast-equals";
+import { isLatLngLiteral } from "@googlemaps/typescript-guards";
 
 import axios from "axios";
 
@@ -60,6 +63,10 @@ const FirstForm = ({ setFormVal, response }) => {
   );
 };
 
+const render = (status) => {
+  return <h1>{status}</h1>;
+};
+
 const SecondForm = ({ location, setFormVal }) => {
   const [values, setValues] = useState({
     companyName: "",
@@ -67,6 +74,7 @@ const SecondForm = ({ location, setFormVal }) => {
     country: "",
     state: "",
     city: "",
+    startYear: "",
   });
 
   const [docs, setDocs] = useState(null);
@@ -81,6 +89,33 @@ const SecondForm = ({ location, setFormVal }) => {
 
   const { country, state, city } = location;
 
+  const [clicks, setClicks] = React.useState([]);
+  const [zoom, setZoom] = React.useState(3);
+  const [center, setCenter] = React.useState({
+    lat: 0,
+    lng: 0,
+  });
+
+  var __spreadArrays =
+    (this && this.__spreadArrays) ||
+    function () {
+      for (var s = 0, i = 0, il = arguments.length; i < il; i++)
+        s += arguments[i].length;
+      for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+          r[k] = a[j];
+      return r;
+    };
+  var onClick = function (e) {
+    setClicks(__spreadArrays(clicks, [e.latLng]));
+  };
+
+  var onIdle = function (m) {
+    console.log("onIdle");
+    setZoom(m.getZoom());
+    setCenter(m.getCenter().toJSON());
+  };
+
   return (
     <>
       <Row>
@@ -90,6 +125,17 @@ const SecondForm = ({ location, setFormVal }) => {
             <Form.Control
               onChange={(e) =>
                 setValues((x) => ({ ...x, companyName: e.target.value }))
+              }
+            />
+          </Form.Group>
+        </Col>
+        <Col md="6">
+          <Form.Group>
+            <Form.Label>company establisment year</Form.Label>
+            <Form.Control
+              type="date"
+              onChange={(e) =>
+                setValues((x) => ({ ...x, startYear: e.target.value }))
               }
             />
           </Form.Group>
@@ -170,14 +216,135 @@ const SecondForm = ({ location, setFormVal }) => {
         </Col>
 
         <Col md="12">
-          <Form.Group>
+          <Form.Group
+            className={css`
+              div {
+                height: 30vh !important;
+              }
+            `}
+          >
             <Form.Label>Map</Form.Label>
+            <Wrapper
+              apiKey={"AIzaSyBr6sMoz4SQBmeSEI4lIDTkyjOEVCkKSj0"}
+              render={render}
+            >
+              <Map
+                center={center}
+                onClick={onClick}
+                onIdle={onIdle}
+                zoom={zoom}
+                style={{ flexGrow: "1", height: "100%" }}
+              >
+                {clicks.map((latLng, i) => (
+                  <Marker key={i} position={latLng} />
+                ))}
+              </Map>
+            </Wrapper>
           </Form.Group>
         </Col>
       </Row>
     </>
   );
 };
+
+const Marker = (options) => {
+  const [marker, setMarker] = React.useState();
+
+  React.useEffect(() => {
+    if (!marker) {
+      setMarker(new google.maps.Marker());
+    }
+
+    // remove marker from map on unmount
+    return () => {
+      if (marker) {
+        marker.setMap(null);
+      }
+    };
+  }, [marker]);
+
+  React.useEffect(() => {
+    if (marker) {
+      marker.setOptions(options);
+    }
+  }, [marker, options]);
+
+  return null;
+};
+
+const Map = ({ onClick, onIdle, children, style, ...options }) => {
+  const ref = React.useRef(null);
+  const [map, setMap] = React.useState();
+
+  React.useEffect(() => {
+    if (ref.current && !map) {
+      setMap(new window.google.maps.Map(ref.current, {}));
+    }
+  }, [ref, map]);
+
+  useDeepCompareEffectForMaps(() => {
+    if (map) {
+      map.setOptions(options);
+    }
+  }, [map, options]);
+
+  React.useEffect(() => {
+    if (map) {
+      ["click", "idle"].forEach((eventName) =>
+        google.maps.event.clearListeners(map, eventName)
+      );
+
+      if (onClick) {
+        map.addListener("click", onClick);
+      }
+
+      if (onIdle) {
+        map.addListener("idle", () => onIdle(map));
+      }
+    }
+  }, [map, onClick, onIdle]);
+
+  return (
+    <>
+      <div ref={ref} style={style} />
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { map });
+        }
+      })}
+    </>
+  );
+};
+
+var deepCompareEqualsForMaps = createCustomEqual(function (deepEqual) {
+  return function (a, b) {
+    if (
+      isLatLngLiteral(a) ||
+      a instanceof google.maps.LatLng ||
+      isLatLngLiteral(b) ||
+      b instanceof google.maps.LatLng
+    ) {
+      return new google.maps.LatLng(a).equals(new google.maps.LatLng(b));
+    }
+    // TODO extend to other types
+    // use fast-equals for other objects
+    return deepEqual(a, b);
+  };
+});
+
+function useDeepCompareMemoize(value) {
+  const ref = React.useRef();
+
+  if (!deepCompareEqualsForMaps(value, ref.current)) {
+    ref.current = value;
+  }
+
+  return ref.current;
+}
+
+function useDeepCompareEffectForMaps(callback, dependencies) {
+  React.useEffect(callback, dependencies.map(useDeepCompareMemoize));
+}
 
 const index = () => {
   const { isLoading, response } = useFetchAxios("/api/public/get-all-category");

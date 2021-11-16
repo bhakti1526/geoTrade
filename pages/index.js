@@ -6,7 +6,7 @@ import { AppContext, Dispatch } from "../component/context/app.context";
 
 const index = () => {
   const {
-    auth: { isAuth, isBuyer, isSeller },
+    auth: { isAuth, isBuyer, isSeller, isAdmin },
   } = useContext(AppContext);
   const dispatch = useContext(Dispatch);
 
@@ -24,7 +24,7 @@ const index = () => {
       return push("/seller");
     }
 
-    if (isAuth && isSeller) {
+    if (isAuth && isAdmin) {
       return push("/admin/dashboard");
     }
 

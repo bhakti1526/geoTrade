@@ -146,13 +146,12 @@ const add = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel>
-                    {" "}
                     Parent Group Image
                     <small
                       style={{ color: "blue", textDecoration: "underline" }}
                     >
                       image size : 500 x 500
-                    </small>{" "}
+                    </small>
                   </FormLabel>
                   <FormControl
                     name="parentGroupImg"

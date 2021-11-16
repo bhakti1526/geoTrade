@@ -201,9 +201,9 @@ const add = () => {
                 onChange={handleChange}
                 onSubmit={handleSubmit}
               >
-                <div className="col-md-8">
+                <div className="col-md-12 col-lg-8">
                   <div className="row">
-                    <FormGroup className="col-md-12 col-lg-4">
+                    <FormGroup className="col-md-12 col-lg-6 col-xl-4">
                       <FormLabel> Product Name</FormLabel>
                       <FormControl
                         name="name"
@@ -214,7 +214,7 @@ const add = () => {
                       />
                     </FormGroup>
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel> Price</FormLabel>
                       <FormControl
                         type="text"
@@ -225,7 +225,7 @@ const add = () => {
                       />
                     </FormGroup>
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel> Unit</FormLabel>
                       <Form.Control
                         isInvalid={!!touched.unit && !!errors.unit}
@@ -244,7 +244,17 @@ const add = () => {
 
                     <FormGroup className="col-md-12 col-lg-12">
                       <FormLabel> Porduct Info </FormLabel>
-                      <div
+                      <Form.Control
+                        name="description"
+                        as="textarea"
+                        row="15"
+                        style={{ minHeight: "150px" }}
+                        value={values.description}
+                        isInvalid={
+                          !!touched.description && !!errors.description
+                        }
+                      />
+                      {/* <div
                         className="summernote"
                         style={{
                           border:
@@ -258,7 +268,7 @@ const add = () => {
                             setFieldValue("description", e.target.getContent())
                           }
                         />
-                      </div>
+                      </div> */}
                     </FormGroup>
 
                     {/* <FormGroup className="col-md-6 col-lg-4">
@@ -322,7 +332,7 @@ const add = () => {
                       </Form.Control>
                     </FormGroup> */}
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel>Brand</FormLabel>
                       <Form.Control
                         isInvalid={!!touched.brand && !!errors.brand}
@@ -338,7 +348,7 @@ const add = () => {
                       </Form.Control>
                     </FormGroup>
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel>category</FormLabel>
                       <Form.Control
                         isInvalid={
@@ -356,7 +366,7 @@ const add = () => {
                       </Form.Control>
                     </FormGroup>
 
-                    <FormGroup className="col-md-6 col-lg-4">
+                    <FormGroup className="col-md-6 col-lg-6 col-xl-4">
                       <FormLabel>subcategory</FormLabel>
                       <Form.Control
                         isInvalid={
@@ -377,7 +387,7 @@ const add = () => {
                     </FormGroup>
                   </div>
                   <Row>
-                    <Form.Group as={Col} md="4">
+                    <Form.Group as={Col} md="6" lg="6" xl="3">
                       <Form.Label>available country</Form.Label>
                       <Form.Control
                         name="visibleCountry"
@@ -393,7 +403,7 @@ const add = () => {
                         ))}
                       </Form.Control>
                     </Form.Group>
-                    <Form.Group as={Col} md="4">
+                    <Form.Group as={Col} md="6" lg="6" xl="3">
                       <Form.Label>available state</Form.Label>
                       <Form.Control
                         name="visibleState"
@@ -414,7 +424,7 @@ const add = () => {
                             ))}
                       </Form.Control>
                     </Form.Group>
-                    <Form.Group as={Col} md="4">
+                    <Form.Group as={Col} md="6" lg="6" xl="3">
                       <Form.Label>available city</Form.Label>
                       <Form.Control
                         name="visibleCity"
@@ -437,7 +447,7 @@ const add = () => {
                   </Row>
                 </div>
 
-                <div className="col-md-4">
+                <div className="col-md-12 col-lg-4">
                   <div
                     className={imgStyle}
                     onClick={() => imgRef.current.click()}

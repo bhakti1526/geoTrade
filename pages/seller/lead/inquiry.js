@@ -1,4 +1,6 @@
 import React from "react";
+import { useRouter } from "next/router";
+import usePostAxios from "../../../component/hooks/usePostAxios";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import WrapTableLead from "./WrapTableLead";
@@ -7,6 +9,15 @@ const inquiry = () => {
   const { isLoading, response, error } = useFetchAxios(
     "/api/user/lead?type=inquiry"
   );
+
+  const { push } = useRouter();
+
+  const { postData } = usePostAxios("/api/user/chats/gen/chat");
+
+  const genChat = async (id) => {
+    await postData({ seller: id });
+    push("/buyer/chats");
+  };
 
   if (isLoading === true) return <AppLoader />;
 
@@ -23,6 +34,8 @@ const inquiry = () => {
     {
       Header: "mobile",
       accessor: "buyer.mobile",
+      Cell: (e) =>
+        e.value.slice(0, 2) + e.value.slice(2).replace(/.(?=...)/g, "*"),
     },
 
     {
@@ -37,7 +50,16 @@ const inquiry = () => {
     {
       Header: "Action",
       accessor: "contact",
-      Cell: (e) => <button className="btn btn-primary">contact</button>,
+      Cell: (e) => (
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            genChat(e.row.original.buyer._id);
+          }}
+        >
+          contact
+        </button>
+      ),
     },
   ];
 

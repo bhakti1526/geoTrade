@@ -125,13 +125,12 @@ const id = () => {
 
                     <FormGroup className="col-md-4">
                       <FormLabel>
-                        {" "}
-                        Brand image{" "}
+                        Brand image
                         <small
                           style={{ color: "blue", textDecoration: "underline" }}
                         >
                           (image size : 468 x 152)
-                        </small>{" "}
+                        </small>
                       </FormLabel>
                       <FormControl
                         type="text"
@@ -141,6 +140,15 @@ const id = () => {
                         accept="image/*"
                         onChange={(e) => setImg(e.target.files[0])}
                       />
+                      <small>
+                        <a
+                          style={{ color: "blue", textDecoration: "underline" }}
+                          href={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${initSchema.img}`}
+                          target="_blank"
+                        >
+                          prev image
+                        </a>
+                      </small>
                     </FormGroup>
                   </div>
                   <div className="row">

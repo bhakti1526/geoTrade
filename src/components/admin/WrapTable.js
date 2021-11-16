@@ -67,13 +67,18 @@ const WrapTable = ({
         <div className="card">
           <div className="card-header d-flex">
             <h4 className="card-title  text-capitalize">{title}</h4>
-            {/* <input
-              placeholder="search something"
-              className="form-control w-25 rounded-pill"
-              onChange={(e) => {
-                onChange(e.target.value);
-              }}
-            /> */}
+            {/* <div id="example_filter" className="dataTables_filter mb-2">
+              <label className="d-flex align-items-center">
+                <span className="mr-2">Search:</span>
+                <input
+                  placeholder="search something"
+                  className="form-control"
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                  }}
+                />
+              </label>
+            </div> */}
             {cbText && (
               <Link
                 href={`${

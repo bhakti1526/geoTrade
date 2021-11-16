@@ -149,13 +149,16 @@ const update = () => {
 
                 <FormGroup className="col-md-6 col-lg-4">
                   <FormLabel>
-                    {" "}
                     Parent Group Image
                     <small
-                      style={{ color: "blue", textDecoration: "underline" }}
+                      style={{
+                        color: "blue",
+                        textDecoration: "underline",
+                        fontSize: "0.7rem",
+                      }}
                     >
                       image size : 500 x 500
-                    </small>{" "}
+                    </small>
                   </FormLabel>
                   <FormControl
                     name="parentGroupImg"
@@ -167,6 +170,15 @@ const update = () => {
                       !!touched.parentGroupImg && !!errors.parentGroupImg
                     }
                   />
+                  <small>
+                    <a
+                      style={{ color: "blue", textDecoration: "underline" }}
+                      href={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${initValue.parentGroupImg}`}
+                      target="_blank"
+                    >
+                      prev image
+                    </a>
+                  </small>
                 </FormGroup>
 
                 <FormGroup className="col-md-6 col-lg-4">

@@ -259,7 +259,17 @@ const add = () => {
 
                     <FormGroup className="col-md-12 col-lg-12">
                       <FormLabel> Porduct Info </FormLabel>
-                      <div
+                      <Form.Control
+                        name="description"
+                        as="textarea"
+                        row="15"
+                        style={{ minHeight: "150px" }}
+                        value={values.description}
+                        isInvalid={
+                          !!touched.description && !!errors.description
+                        }
+                      />
+                      {/* <div
                         className="summernote"
                         style={{
                           border:
@@ -274,7 +284,7 @@ const add = () => {
                             setFieldValue("description", e.target.getContent())
                           }
                         />
-                      </div>
+                      </div> */}
                     </FormGroup>
 
                     {/* <FormGroup className="col-md-6 col-lg-4">

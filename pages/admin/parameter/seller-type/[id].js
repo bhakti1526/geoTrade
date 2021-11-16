@@ -123,7 +123,12 @@ const add = () => {
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">
-                <FormLabel> Seller Type Image</FormLabel>
+                <FormLabel>
+                  Seller Type Image
+                  <small style={{ color: "blue", textDecoration: "underline" }}>
+                    img size : 500 * 500
+                  </small>
+                </FormLabel>
                 <FormControl
                   type="file"
                   name="sellerTypeImg"
@@ -132,6 +137,15 @@ const add = () => {
                   onChange={(e) => setImg(e.target.files[0])}
                   isInvalid={!!touched.sellerTypeImg && !!errors.sellerTypeImg}
                 />
+                <small>
+                  <a
+                    style={{ color: "blue", textDecoration: "underline" }}
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${initSchema.sellerTypeImg}`}
+                    target="_blank"
+                  >
+                    prev image
+                  </a>
+                </small>
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">

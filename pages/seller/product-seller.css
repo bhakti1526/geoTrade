@@ -87,7 +87,7 @@
 .vb-table .min-height-auto-scroll {
   display: block;
   max-height: 240px;
-  /* height: 240px; */
+  height: 240px;
   overflow-y: auto;
 }
 

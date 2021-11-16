@@ -161,11 +161,10 @@ const update = () => {
 
               <FormGroup className="col-md-6 col-lg-4">
                 <FormLabel>
-                  {" "}
                   Parent Category Image
                   <small style={{ color: "blue", textDecoration: "underline" }}>
                     image size : 500 x 500
-                  </small>{" "}
+                  </small>
                 </FormLabel>
                 <FormControl
                   type="file"
@@ -174,6 +173,15 @@ const update = () => {
                   onChange={(e) => setImg(e.target.files[0])}
                   className="form-control"
                 />
+                <small>
+                  <a
+                    style={{ color: "blue", textDecoration: "underline" }}
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/api/img/${initValue.parentCatagoryImg}`}
+                    target="_blank"
+                  >
+                    prev image
+                  </a>
+                </small>
               </FormGroup>
 
               <FormGroup className="col-md-6 col-lg-4">

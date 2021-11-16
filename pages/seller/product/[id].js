@@ -528,7 +528,18 @@ const id = () => {
                                     Uses, Details, Benefits, etc.
                                   </small>
                                 </FormLabel>
-                                <div className="summernote">
+                                <Form.Control
+                                  name="description"
+                                  as="textarea"
+                                  row="15"
+                                  style={{ minHeight: "150px" }}
+                                  value={values.description}
+                                  isInvalid={
+                                    !!touched.description &&
+                                    !!errors.description
+                                  }
+                                />
+                                {/* <div className="summernote">
                                   <Editor
                                     initialValue={productDetails.description}
                                     onChange={(e) =>
@@ -538,7 +549,7 @@ const id = () => {
                                       )
                                     }
                                   />
-                                </div>
+                                </div> */}
                                 <small className="d-block mt-2 text-right float-right text-secondary">
                                   0 character (maximum of 4000) including
                                   formatting.

@@ -73,7 +73,10 @@ const invoice = () => {
                   <div>Email: {response?.user?.email} </div>
                 </Col>
                 <Col md="6">
-                  <Table className="text-start font-weight-normal">
+                  <Table
+                    className="text-start font-weight-normal"
+                    style={{ wordBreak: "break-word" }}
+                  >
                     <tbody>
                       <tr>
                         <td
@@ -133,6 +136,7 @@ const invoice = () => {
                   className="text-center font-weight-normal"
                   striped
                   bordered
+                  responsive
                 >
                   <thead>
                     <tr>

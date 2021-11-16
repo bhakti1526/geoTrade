@@ -1,60 +1,129 @@
 import React, { memo, useContext, useEffect, useState } from "react";
-import { css } from "@emotion/css";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { Form } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import { FormControl, FormGroup } from "react-bootstrap";
 import { Link } from "@material-ui/core";
 import { AppContext } from "../../component/context/app.context";
 import axios from "axios";
-import useFetchAxios from "../../component/hooks/useFetchAxios";
+import moment from "moment";
 
-const ChatItem = memo(({ data }) => {
+const ChatItem = ({ x, buyer, seller }) => {
   const { token } = useContext(AppContext);
-  const { _id } = jwt_decode(token);
-  // const { author, msg, isRead } = data;
+
   return (
     <div
-      className={
-        // _id === author
-        true ? "sent-chat" : "reply-chat"
-      }
+      className={jwt_decode(token)._id === x.user ? "sent-chat" : "reply-chat"}
     >
       <h6>
-        <span className="text-success">+91 9824281021</span>
-        <small>~ Barodaweb</small>
+        <span className="text-success">
+          {jwt_decode(token)._id === x.user ? buyer?.mobile : seller?.mobile}
+        </span>
+        <small className="ml-1">
+          {jwt_decode(token)._id === x.user ? "you" : seller?.firstName}
+        </small>
       </h6>
-      <p>Hello, Rushil Patel</p>
-      <small className="d-block float-right">08, Sept, 6:33 AM</small>
+      <p>{x?.message}</p>
+      <small className="d-block float-right">
+        {moment(x?.sentOn).fromNow()}
+      </small>
     </div>
   );
-});
+};
 
-const ChatLists = () => {
+const ChatLists = ({ x, setChats, setOpenChatId }) => {
+  const [showInfo, setShowInfo] = useState();
+
+  const { token } = useContext(AppContext);
+
+  useEffect(() => {
+    const { buyer, seller } = x;
+
+    const { _id } = jwt_decode(token);
+
+    if (buyer._id === _id) {
+      setShowInfo(seller);
+    } else {
+      setShowInfo(buyer);
+    }
+  }, []);
+
   // active-chat
 
+  const handleClick = () => {
+    setOpenChatId(x._id);
+    setChats(x);
+  };
+
   return (
-    <div className="chat-person">
+    <div className="chat-person" onClick={handleClick}>
       <h5>
-        Barodaweb <small>+91 9824281021</small>
+        {showInfo?.firstName} <small>{showInfo?.mobile}</small>
       </h5>
-      <p>Alkapuri, Vadodara, Gujarat</p>
-      <p>
+      <p>{showInfo?.address}</p>
+      {/* <p>
         <i className="fas fa-cart-plus"></i> B2B Website Development
-      </p>
+      </p> */}
     </div>
   );
 };
 
 const rfq = () => {
   const [allChats, setAllChats] = useState([]);
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState();
+  const [openChatId, setOpenChatId] = useState("");
+  const { token } = useContext(AppContext);
 
-  // const { response, isLoading } = useFetchAxios("/api/user/chats");
+  const getData = async () => {
+    axios.defaults.headers.common["Authorization"] = token;
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/chats`)
+      .then((res) => {
+        setAllChats(res.data.data);
+        setChats(res.data.data[0]);
+        setOpenChatId(res.data.data[0]._id);
+      })
+      .catch((err) => console.error(err));
+  };
 
-  // useEffect(() => {
-  //   const chatIntervel = setInterval(() => {}, 30000);
+  useEffect(() => {
+    getData();
+  }, []);
 
-  //   return () => clearInterval(chatIntervel);
-  // }, []);
+  useEffect(() => {
+    const chatIntervel = setInterval(() => {
+      (async () => {
+        axios.defaults.headers.common["Authorization"] = token;
+        await axios
+          .get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/chats`)
+          .then((res) => {
+            setAllChats(res.data.data);
+            setChats(res.data.data[0]);
+          })
+          .catch((err) => console.error(err));
+      })();
+    }, 1000);
+
+    return () => clearInterval(chatIntervel);
+  }, []);
+
+  const handleSubmit = async (val, { resetForm }) => {
+    axios.defaults.headers.common["Authorization"] = token;
+    console.log("OK HEADER IS SET");
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/chats`, {
+        message: val.message,
+        chatId: chats._id,
+      })
+      .then(async () => {
+        await getData();
+        resetForm();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -80,11 +149,15 @@ const rfq = () => {
 
                       <div className="name-chat">
                         {/* side chat here */}
-                        <ChatLists />
-                        <ChatLists />
-                        <ChatLists />
-                        <ChatLists />
-                        <ChatLists />
+                        {allChats.map((x) => {
+                          return (
+                            <ChatLists
+                              x={x}
+                              setChats={setChats}
+                              setOpenChatId={setOpenChatId}
+                            />
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -94,7 +167,17 @@ const rfq = () => {
                           <i className="fas fa-arrow-left d-block d-md-none"></i>
 
                           <h5>
-                            Barodaweb <small>+91 9824281021</small>
+                            {chats &&
+                            jwt_decode(token)._id === chats?.buyer?._id
+                              ? chats?.seller?.firstName
+                              : chats?.buyer?.firstName}
+                            {"         "}
+                            <small>
+                              {chats &&
+                              jwt_decode(token)._id === chats?.buyer?._id
+                                ? chats?.seller?.mobile
+                                : chats?.buyer?.mobile}
+                            </small>
                           </h5>
                         </div>
 
@@ -102,57 +185,81 @@ const rfq = () => {
                           <div className="row">
                             <div className="col-md-12">
                               {/* put chats here */}
-                              <ChatItem />
-                              <ChatItem />
-                              <ChatItem />
-                              <ChatItem />
-                              <ChatItem />
+
+                              {chats?.chat.map((x) => {
+                                return (
+                                  <ChatItem
+                                    key={x}
+                                    x={x}
+                                    buyer={chats?.buyer}
+                                    seller={chats?.seller}
+                                  />
+                                );
+                              })}
                             </div>
                           </div>
                         </div>
 
-                        <div className="chat-typing">
-                          <div className="row align-items-center">
-                            <div className="col-10 col-md-9 col-lg-10">
-                              <FormControl
-                                type="text"
-                                className="form-control"
-                                placeholder="Type your Message...."
-                              />
-                            </div>
+                        <Formik
+                          onSubmit={handleSubmit}
+                          initialValues={{ message: "" }}
+                          validationSchema={Yup.object().shape({
+                            message: Yup.string().required(),
+                          })}
+                        >
+                          {({
+                            handleSubmit,
+                            handleChange,
+                            touched,
+                            errors,
+                            values,
+                          }) => {
+                            return (
+                              <Form
+                                onSubmit={handleSubmit}
+                                onChange={handleChange}
+                              >
+                                <div className="chat-typing">
+                                  <div className="row align-items-center">
+                                    <div className="col-10 col-md-9 col-lg-10">
+                                      <FormControl
+                                        name="message"
+                                        value={values.message}
+                                        isInvalid={
+                                          !!touched.message && !!errors.message
+                                        }
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Type your Message...."
+                                      />
+                                    </div>
 
-                            <div className="col-2 col-md-3 col-lg-2">
-                              <div className="float-left">
-                                {/* <Link to="#" className="mr-2 text-info">
-                                  <svg
-                                    viewBox="0 0 24 24"
-                                    width="24"
-                                    height="24"
-                                    className=""
-                                  >
-                                    <path
-                                      fill="currentColor"
-                                      d="M1.816 15.556v.002c0 1.502.584 2.912 1.646 3.972s2.472 1.647 3.974 1.647a5.58 5.58 0 0 0 3.972-1.645l9.547-9.548c.769-.768 1.147-1.767 1.058-2.817-.079-.968-.548-1.927-1.319-2.698-1.594-1.592-4.068-1.711-5.517-.262l-7.916 7.915c-.881.881-.792 2.25.214 3.261.959.958 2.423 1.053 3.263.215l5.511-5.512c.28-.28.267-.722.053-.936l-.244-.244c-.191-.191-.567-.349-.957.04l-5.506 5.506c-.18.18-.635.127-.976-.214-.098-.097-.576-.613-.213-.973l7.915-7.917c.818-.817 2.267-.699 3.23.262.5.501.802 1.1.849 1.685.051.573-.156 1.111-.589 1.543l-9.547 9.549a3.97 3.97 0 0 1-2.829 1.171 3.975 3.975 0 0 1-2.83-1.173 3.973 3.973 0 0 1-1.172-2.828c0-1.071.415-2.076 1.172-2.83l7.209-7.211c.157-.157.264-.579.028-.814L11.5 4.36a.572.572 0 0 0-.834.018l-7.205 7.207a5.577 5.577 0 0 0-1.645 3.971z"
-                                    ></path>
-                                  </svg>
-                                </Link> */}
-                                <Link to="#" className="mr-2 text-success">
-                                  <svg
-                                    viewBox="0 0 24 24"
-                                    width="24"
-                                    height="24"
-                                    className=""
-                                  >
-                                    <path
-                                      fill="currentColor"
-                                      d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"
-                                    ></path>
-                                  </svg>
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                                    <div className="col-2 col-md-3 col-lg-2">
+                                      <div className="float-left">
+                                        <button
+                                          type="submit"
+                                          className="mr-2 text-success bg-transparant"
+                                        >
+                                          <svg
+                                            viewBox="0 0 24 24"
+                                            width="24"
+                                            height="24"
+                                            className=""
+                                          >
+                                            <path
+                                              fill="currentColor"
+                                              d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"
+                                            ></path>
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Form>
+                            );
+                          }}
+                        </Formik>
                       </div>
                     </div>
                   </div>

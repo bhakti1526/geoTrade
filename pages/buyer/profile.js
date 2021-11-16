@@ -43,7 +43,7 @@ const profile = () => {
     firstName: Yup.string().required(),
     email: Yup.string().email().required(),
     mobile: Yup.string().required(),
-    website: Yup.string().required(),
+    website: Yup.string(),
     gstNumber: Yup.number(),
     panNo: Yup.number(),
     stqlNo: Yup.number(),

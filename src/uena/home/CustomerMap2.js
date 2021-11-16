@@ -82,7 +82,7 @@ class CustomerMap2 extends React.Component {
         tooltip: {
           y: {
             formatter: function (val) {
-              return "$ " + val + " thousands";
+              return "₹" + val + " thousands";
             },
           },
         },

@@ -16,13 +16,13 @@ const NavHeader = () => {
   const url = pathname.startsWith("/admin/") ? "/admin/dashboard" : "/seller";
 
   return (
-    <div className="nav-header">
+    <div className="nav-header mobile-w-100">
       <Link href={url} passHref>
         <a className="brand-logo">
           <img style={{ width: "100px" }} src={Logo} />
         </a>
       </Link>
-      <div className="nav-control">
+      <div className="nav-control mobile-left-right-pr" style={{}}>
         <div
           className={`hamburger ${active ? "is-active" : ""}`}
           onClick={() => toggleFun()}

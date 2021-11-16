@@ -49,7 +49,7 @@ const subscription = () => {
                     return a["sellCost"] > b["sellCost"];
                   })
                   .map((x) => (
-                    <Col md="4">
+                    <Col md="12" lg="6" xl="4">
                       <RenderPost
                         paymentGet={paymentGet}
                         statusGet={statusGet}

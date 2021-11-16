@@ -37,3 +37,13 @@
   > a {
   font-size: 14px;
 }
+
+@media screen and (max-width: 767px) {
+  .mobile-w-100 {
+    width: 100%;
+  }
+  .mobile-left-right-pr {
+    left: 0;
+    right: auto;
+  }
+}

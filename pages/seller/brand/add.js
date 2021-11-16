@@ -167,7 +167,17 @@ const brand = () => {
 
                             <FormGroup className="col-md-12 col-lg-12">
                               <FormLabel>Brand Info</FormLabel>
-                              <div className="summernote">
+                              <Form.Control
+                                name="description"
+                                as="textarea"
+                                row="15"
+                                style={{ minHeight: "150px" }}
+                                value={values.description}
+                                isInvalid={
+                                  !!touched.description && !!errors.description
+                                }
+                              />
+                              {/* <div className="summernote">
                                 <Editor
                                   onChange={(e) =>
                                     setFieldValue(
@@ -176,7 +186,7 @@ const brand = () => {
                                     )
                                   }
                                 />
-                              </div>
+                              </div> */}
                             </FormGroup>
 
                             {/* <FormGroup className="col-md-12 col-lg-12">

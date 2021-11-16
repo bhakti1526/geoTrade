@@ -133,7 +133,7 @@ class Menu extends React.Component {
           },
           y: {
             formatter: function (val) {
-              return "$" + val + " thousands";
+              return "₹" + val + " thousands";
             },
           },
         },

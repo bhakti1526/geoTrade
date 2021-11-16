@@ -1,5 +1,7 @@
 import React from "react";
+import { useRouter } from "next/router";
 import useFetchAxios from "../../../component/hooks/useFetchAxios";
+import usePostAxios from "../../../component/hooks/usePostAxios";
 import AppLoader from "../../../src/components/admin/AppLoader";
 import WrapTableLead from "./WrapTableLead";
 
@@ -8,7 +10,16 @@ const contact = () => {
     "/api/user/lead?type=contect"
   );
 
+  const { push } = useRouter();
+
+  const { postData } = usePostAxios("/api/user/chats/gen/chat");
+
   if (isLoading === true) return <AppLoader />;
+
+  const genChat = async (id) => {
+    await postData({ seller: id });
+    push("/buyer/chats");
+  };
 
   const column = [
     {
@@ -22,6 +33,8 @@ const contact = () => {
     {
       Header: "mobile",
       accessor: "buyer.mobile",
+      Cell: (e) =>
+        e.value.slice(0, 2) + e.value.slice(2).replace(/.(?=...)/g, "*"),
     },
     // {
     //   Header: "product / post",
@@ -34,7 +47,16 @@ const contact = () => {
     {
       Header: "Action",
       accessor: "contact",
-      Cell: (e) => <button className="btn btn-primary">contact</button>,
+      Cell: (e) => (
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            genChat(e.row.original.buyer._id);
+          }}
+        >
+          contact
+        </button>
+      ),
     },
   ];
 

@@ -21,8 +21,7 @@ const Profile = ({ logoutUser }) => {
   const handleLogOut = (e) => {
     dispatch({ type: "LOG-OUT" });
     // push("/admin");
-
-    window.location.href = "/admin";
+    // window.location.href = "/admin";
   };
 
   return (
