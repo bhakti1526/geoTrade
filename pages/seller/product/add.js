@@ -353,7 +353,9 @@ const product = () => {
                                 <FormLabel className="d-none d-md-block">
                                   &nbsp;
                                 </FormLabel>
-                                <p className="mb-0 text-center">-per-</p>
+                                <p className="mb-0 text-center">
+                                  <small>Quantity Type</small>
+                                </p>
                               </FormGroup>
                               <FormGroup className="form-group col-md-5">
                                 <FormLabel className="d-none d-md-block">
@@ -446,7 +448,7 @@ const product = () => {
 
                         <Col md="6" lg="4" xl="3">
                           <Form.Group>
-                            <Form.Label>Parent group</Form.Label>
+                            <Form.Label>Industeries</Form.Label>
                             <Form.Control
                               name="parentGroup"
                               isInvalid={
@@ -520,10 +522,13 @@ const product = () => {
                             </Form.Control>
                           </Form.Group>
                         </Col>
-
                         <Col md="6" lg="4" xl="3">
                           <Form.Label>
-                            search tags (seprate it with coma)
+                            Marketing Keyword{" "}
+                            <small style={{ color: "blue" }}>
+                              {" "}
+                              (seprate it with coma){" "}
+                            </small>
                           </Form.Label>
                           <Form.Control
                             name="searchTag"

@@ -5,6 +5,7 @@ import useFetchAxios from "../../component/hooks/useFetchAxios";
 
 const rfqs = () => {
   const { response, isLoading } = useFetchAxios("/api/user/rfq?userId=true");
+
   return (
     <div>
       <div className="row">
